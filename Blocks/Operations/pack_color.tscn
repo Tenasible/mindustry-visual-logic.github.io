@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://cnsjd7gugwr2m"]
+[gd_scene format=3 uid="uid://cnsjd7gugwr2m"]
 
 [ext_resource type="Theme" uid="uid://bwqifwabah580" path="res://Themes/logic_block.tres" id="1_avq5c"]
 [ext_resource type="StyleBox" uid="uid://bid1es6bkyxvw" path="res://LogicBlockStyles/operation.tres" id="2_2hwm1"]
@@ -7,28 +7,26 @@
 resource_name = "pack_color"
 script/source = "extends LogicBlocks
 
+
 func load_value(value: Array):
 	%a.text = value[1]
 	%b.text = value[2]
 	%c.text = value[3]
 	%d.text = value[4]
 	%e.text = value[5]
-	pass
 
-func option_get_item(node: OptionButton, optext : String):
+
+func option_get_item(node: OptionButton, optext: String):
 	for i in range(node.get_popup().item_count):
 		if node.get_item_text(i) == optext:
 			node.select(i)
 
 
 func compile():
-	return(\"packcolor \" + %a.text + \" \" + %b.text + \" \" + %c.text + \" \" + %d.text + \" \" + %e.text + \"\\n\")
-
-
-
+	return \"packcolor %s %s %s %s %s\\n\" % [%a.text, %b.text, %c.text, %d.text, %e.text]
 "
 
-[node name="PackColor" type="PanelContainer"]
+[node name="PackColor" type="PanelContainer" unique_id=1006013736]
 offset_right = 40.0
 offset_bottom = 40.0
 size_flags_horizontal = 0
@@ -37,26 +35,26 @@ theme = ExtResource("1_avq5c")
 theme_override_styles/panel = ExtResource("2_2hwm1")
 script = SubResource("GDScript_exypw")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1002151783]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Label" type="Label" parent="HBoxContainer"]
+[node name="Label" type="Label" parent="HBoxContainer" unique_id=1638433346]
 layout_mode = 2
 text = "Pack Color"
 
-[node name="a" type="LineEdit" parent="HBoxContainer"]
+[node name="a" type="LineEdit" parent="HBoxContainer" unique_id=154852584]
 unique_name_in_owner = true
 layout_mode = 2
 text = "result"
 expand_to_text_length = true
 select_all_on_focus = true
 
-[node name="Label2" type="Label" parent="HBoxContainer"]
+[node name="Label2" type="Label" parent="HBoxContainer" unique_id=408791043]
 layout_mode = 2
 text = "= pack"
 
-[node name="b" type="LineEdit" parent="HBoxContainer"]
+[node name="b" type="LineEdit" parent="HBoxContainer" unique_id=1016373638]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/minimum_character_width = 2
@@ -64,7 +62,7 @@ text = "1"
 expand_to_text_length = true
 select_all_on_focus = true
 
-[node name="c" type="LineEdit" parent="HBoxContainer"]
+[node name="c" type="LineEdit" parent="HBoxContainer" unique_id=1665071545]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/minimum_character_width = 2
@@ -72,7 +70,7 @@ text = "0"
 expand_to_text_length = true
 select_all_on_focus = true
 
-[node name="d" type="LineEdit" parent="HBoxContainer"]
+[node name="d" type="LineEdit" parent="HBoxContainer" unique_id=851309921]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/minimum_character_width = 2
@@ -80,7 +78,7 @@ text = "0"
 expand_to_text_length = true
 select_all_on_focus = true
 
-[node name="e" type="LineEdit" parent="HBoxContainer"]
+[node name="e" type="LineEdit" parent="HBoxContainer" unique_id=1980806734]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/minimum_character_width = 2

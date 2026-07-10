@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://bv5o21i84qj7y"]
+[gd_scene format=3 uid="uid://bv5o21i84qj7y"]
 
 [ext_resource type="Theme" uid="uid://bwqifwabah580" path="res://Themes/logic_block.tres" id="1_2y7xu"]
 [ext_resource type="StyleBox" uid="uid://cv24igfk83rly" path="res://LogicBlockStyles/unit.tres" id="2_jejf4"]
@@ -10,68 +10,57 @@
 resource_name = "unit_type"
 script/source = "extends LogicBlocks
 
+
 var unit_menu_scene = preload(\"res://Scenes/unit_select_container.tscn\")
 var unit_menu
+
 
 func load_value(value: Array):
 	%a.text = value[1]
 
-	pass
 
-func option_get_item(node: OptionButton, optext : String):
+func option_get_item(node: OptionButton, optext: String):
 	for i in range(node.get_popup().item_count):
 		if node.get_item_text(i) == optext:
 			node.select(i)
 
 
 func compile():
-	return(\"ubind \" + %a.text + \"\\n\")
-
+	return \"ubind %s\\n\" % %a.text
 
 
 func _on_button_toggled(toggled_on: bool) -> void:
 	%TagLabel1.visible = toggled_on
 	%TagLabel2.visible = toggled_on
-	pass # Replace with function body.
 
 
 func _on_unit_choose_button_pressed() -> void:
 	if unit_menu:
 		unit_menu.queue_free()
-		
 	else:
-		
 		if input_node.get_child_count() == 0 and get_parent() == origin_node:
 			%FreeControl.position = %UnitChooseButton.position + Vector2(0, 30)
 			
 			unit_menu = unit_menu_scene.instantiate()
 			unit_menu.select_owner = %FreeControl
 			
-			input_node.add_child( unit_menu )
+			input_node.add_child(unit_menu)
 			unit_menu.z_index = 16
 			unit_menu.button_pressed.connect(_on_unit_chooser_button_pressed)
-		
-	pass # Replace with function body.
-
 
 
 func _on_unit_chooser_button_pressed(unit: String) -> void:
 	%a.text = unit
 	if unit_menu:
 		unit_menu.queue_free()
-	
-	pass # Replace with function body.
 
 
 func _on_tree_exiting() -> void:
-	
 	if unit_menu:
 		unit_menu.queue_free()
-	
-	pass # Replace with function body.
 "
 
-[node name="UnitBind" type="PanelContainer"]
+[node name="UnitBind" type="PanelContainer" unique_id=1916276339]
 offset_right = 40.0
 offset_bottom = 40.0
 size_flags_horizontal = 0
@@ -80,35 +69,35 @@ theme = ExtResource("1_2y7xu")
 theme_override_styles/panel = ExtResource("2_jejf4")
 script = SubResource("GDScript_kh666")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=762263472]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Label" type="Label" parent="HBoxContainer"]
+[node name="Label" type="Label" parent="HBoxContainer" unique_id=651707783]
 layout_mode = 2
 text = "Unit Bind : type"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="HBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="HBoxContainer" unique_id=478436632]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="a" type="LineEdit" parent="HBoxContainer/HBoxContainer2"]
+[node name="a" type="LineEdit" parent="HBoxContainer/HBoxContainer2" unique_id=931563322]
 unique_name_in_owner = true
 layout_mode = 2
 text = "@poly"
 expand_to_text_length = true
 select_all_on_focus = true
 
-[node name="UnitChooseButton" type="Button" parent="HBoxContainer/HBoxContainer2"]
+[node name="UnitChooseButton" type="Button" parent="HBoxContainer/HBoxContainer2" unique_id=1038501854]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_styles/hover_pressed = ExtResource("3_uo4kw")
-theme_override_styles/hover = ExtResource("4_kjxrr")
-theme_override_styles/pressed = ExtResource("3_uo4kw")
 theme_override_styles/normal = ExtResource("4_kjxrr")
+theme_override_styles/pressed = ExtResource("3_uo4kw")
+theme_override_styles/hover = ExtResource("4_kjxrr")
+theme_override_styles/hover_pressed = ExtResource("3_uo4kw")
 icon = ExtResource("5_xji08")
 
-[node name="FreeControl" type="Node2D" parent="."]
+[node name="FreeControl" type="Node2D" parent="." unique_id=1687258285]
 unique_name_in_owner = true
 position = Vector2(200, 50)
 

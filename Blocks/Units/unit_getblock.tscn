@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://c5tn2k3i8r4xk"]
+[gd_scene format=3 uid="uid://c5tn2k3i8r4xk"]
 
 [ext_resource type="Theme" uid="uid://bwqifwabah580" path="res://Themes/logic_block.tres" id="1_gyf61"]
 [ext_resource type="StyleBox" uid="uid://cv24igfk83rly" path="res://LogicBlockStyles/unit.tres" id="2_co5gy"]
@@ -7,27 +7,26 @@
 resource_name = "unit_getblock"
 script/source = "extends LogicBlocks
 
+
 func load_value(value: Array):
 	%a.text = value[2]
 	%b.text = value[3]
 	%c.text = value[4]
 	%d.text = value[5]
 	%e.text = value[6]
-	
-	
-	pass
 
-func option_get_item(node: OptionButton, optext : String):
+
+func option_get_item(node: OptionButton, optext: String):
 	for i in range(node.get_popup().item_count):
 		if node.get_item_text(i) == optext:
 			node.select(i)
 
 
 func compile():
-	return(\"ucontrol getBlock \" + %a.text + \" \" + %b.text + \" \" + %c.text + \" \" + %d.text + \" \" + %e.text + \"\\n\")
+	return \"ucontrol getBlock %s %s %s %s %s\\n\" % [%a.text, %b.text, %c.text, %d.text, %e.text]
 "
 
-[node name="UnitGetblock" type="PanelContainer"]
+[node name="UnitGetblock" type="PanelContainer" unique_id=1714941221]
 offset_right = 40.0
 offset_bottom = 40.0
 size_flags_horizontal = 0
@@ -36,67 +35,67 @@ theme = ExtResource("1_gyf61")
 theme_override_styles/panel = ExtResource("2_co5gy")
 script = SubResource("GDScript_duoxp")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=970401557]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=1435625477]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer" unique_id=697121886]
 layout_mode = 2
 text = "Unit CtrlGetBlock x"
 
-[node name="a" type="LineEdit" parent="VBoxContainer/HBoxContainer"]
+[node name="a" type="LineEdit" parent="VBoxContainer/HBoxContainer" unique_id=1373324204]
 unique_name_in_owner = true
 layout_mode = 2
 text = "0"
 expand_to_text_length = true
 select_all_on_focus = true
 
-[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer"]
+[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer" unique_id=479947294]
 layout_mode = 2
 text = "y"
 
-[node name="b" type="LineEdit" parent="VBoxContainer/HBoxContainer"]
+[node name="b" type="LineEdit" parent="VBoxContainer/HBoxContainer" unique_id=2058231896]
 unique_name_in_owner = true
 layout_mode = 2
 text = "0"
 expand_to_text_length = true
 select_all_on_focus = true
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer" unique_id=1572499845]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Label3" type="Label" parent="VBoxContainer/HBoxContainer2"]
+[node name="Label3" type="Label" parent="VBoxContainer/HBoxContainer2" unique_id=851794418]
 layout_mode = 2
 text = "type"
 
-[node name="c" type="LineEdit" parent="VBoxContainer/HBoxContainer2"]
+[node name="c" type="LineEdit" parent="VBoxContainer/HBoxContainer2" unique_id=1644174783]
 unique_name_in_owner = true
 layout_mode = 2
 text = "0"
 expand_to_text_length = true
 select_all_on_focus = true
 
-[node name="Label4" type="Label" parent="VBoxContainer/HBoxContainer2"]
+[node name="Label4" type="Label" parent="VBoxContainer/HBoxContainer2" unique_id=1176120963]
 layout_mode = 2
 text = "building"
 
-[node name="d" type="LineEdit" parent="VBoxContainer/HBoxContainer2"]
+[node name="d" type="LineEdit" parent="VBoxContainer/HBoxContainer2" unique_id=1622375152]
 unique_name_in_owner = true
 layout_mode = 2
 text = "0"
 expand_to_text_length = true
 select_all_on_focus = true
 
-[node name="Label5" type="Label" parent="VBoxContainer/HBoxContainer2"]
+[node name="Label5" type="Label" parent="VBoxContainer/HBoxContainer2" unique_id=904556030]
 layout_mode = 2
 text = "floor"
 
-[node name="e" type="LineEdit" parent="VBoxContainer/HBoxContainer2"]
+[node name="e" type="LineEdit" parent="VBoxContainer/HBoxContainer2" unique_id=464933678]
 unique_name_in_owner = true
 layout_mode = 2
 text = "0"

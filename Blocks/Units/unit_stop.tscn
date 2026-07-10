@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://c7pgov04u66p7"]
+[gd_scene format=3 uid="uid://c7pgov04u66p7"]
 
 [ext_resource type="Theme" uid="uid://bwqifwabah580" path="res://Themes/logic_block.tres" id="1_l2u80"]
 [ext_resource type="StyleBox" uid="uid://cv24igfk83rly" path="res://LogicBlockStyles/unit.tres" id="2_4o3fm"]
@@ -7,23 +7,22 @@
 resource_name = "unit_stop"
 script/source = "extends LogicBlocks
 
-func load_value(value: Array):
 
+func load_value(value: Array):
 	pass
 
-func option_get_item(node: OptionButton, optext : String):
+
+func option_get_item(node: OptionButton, optext: String):
 	for i in range(node.get_popup().item_count):
 		if node.get_item_text(i) == optext:
 			node.select(i)
 
 
 func compile():
-	
-	return(\"ucontrol stop 0 0 0 0 0\\n\")
-
+	return \"ucontrol stop 0 0 0 0 0\\n\"
 "
 
-[node name="UnitStop" type="PanelContainer"]
+[node name="UnitStop" type="PanelContainer" unique_id=1477010852]
 offset_right = 40.0
 offset_bottom = 40.0
 size_flags_horizontal = 0
@@ -32,10 +31,10 @@ theme = ExtResource("1_l2u80")
 theme_override_styles/panel = ExtResource("2_4o3fm")
 script = SubResource("GDScript_mctvw")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=296248075]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Label" type="Label" parent="HBoxContainer"]
+[node name="Label" type="Label" parent="HBoxContainer" unique_id=631505800]
 layout_mode = 2
 text = "Unit stop"

@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://b0mvl7i8h1w8w"]
+[gd_scene format=3 uid="uid://b0mvl7i8h1w8w"]
 
 [ext_resource type="FontFile" uid="uid://i8tur3ohx1u2" path="res://Fonts/font.woff" id="1_pjesn"]
 [ext_resource type="FontFile" uid="uid://bhll3agi3g24y" path="res://Fonts/tech.ttf" id="2_ouje8"]
@@ -19,19 +19,23 @@ border_color = Color(0.25792, 0.2232, 0.31, 1)
 resource_name = "message_bar"
 script/source = "extends PanelContainer
 
-var label : RichTextLabel
-var time : Label
 
-func _ready():
-	label = %RichTextLabel
-	time = %Time
+var time: String = \"未注明时间\":
+	get:
+		return %Time.text
+	set(value):
+		if value != null:
+			%Time.text = value
 
-func set_text(label_text :String = \"空文本\", time: String = \"未注明时间\"):
-	%Time.text = time
-	%RichTextLabel.text = label_text
+var content: String = \"空文本\":
+	get:
+		return %RichTextLabel.text
+	set(value):
+		if value != null:
+			%RichTextLabel.text = value
 "
 
-[node name="MessageBar" type="PanelContainer"]
+[node name="MessageBar" type="PanelContainer" unique_id=1257117258]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -40,15 +44,15 @@ grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_mfnnl")
 script = SubResource("GDScript_pjesn")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1419070842]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Time" type="Label" parent="VBoxContainer"]
+[node name="Time" type="Label" parent="VBoxContainer" unique_id=475368417]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer"]
+[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer" unique_id=1958970355]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 2

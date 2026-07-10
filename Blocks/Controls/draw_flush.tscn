@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://c8jvjlxs17tpl"]
+[gd_scene format=3 uid="uid://c8jvjlxs17tpl"]
 
 [ext_resource type="Theme" uid="uid://bwqifwabah580" path="res://Themes/logic_block.tres" id="1_x4yi6"]
 [ext_resource type="StyleBox" uid="uid://c45dgypyhoqva" path="res://LogicBlockStyles/control.tres" id="2_od00e"]
@@ -7,29 +7,22 @@
 resource_name = "draw_flush"
 script/source = "extends LogicBlocks
 
+
 func load_value(value: Array):
 	%a.text = value[1]
 
-	
-	
-	pass
 
-func option_get_item(node: OptionButton, optext : String):
+func option_get_item(node: OptionButton, optext: String):
 	for i in range(node.get_popup().item_count):
 		if node.get_item_text(i) == optext:
 			node.select(i)
 
+
 func compile():
-	return(\"drawflush \" + %a.text + \"\\n\")
-
-# Called when the node enters the scene tree for the first time.
-
-
-
-
+	return \"drawflush %s\\n\" % %a.text
 "
 
-[node name="DrawFlush" type="PanelContainer"]
+[node name="DrawFlush" type="PanelContainer" unique_id=1114910774]
 offset_right = 40.0
 offset_bottom = 40.0
 size_flags_horizontal = 0
@@ -38,15 +31,15 @@ theme = ExtResource("1_x4yi6")
 theme_override_styles/panel = ExtResource("2_od00e")
 script = SubResource("GDScript_x4yi6")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=557527929]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Label" type="Label" parent="HBoxContainer"]
+[node name="Label" type="Label" parent="HBoxContainer" unique_id=1351566080]
 layout_mode = 2
 text = "DrawFlush to"
 
-[node name="a" type="LineEdit" parent="HBoxContainer"]
+[node name="a" type="LineEdit" parent="HBoxContainer" unique_id=1555906410]
 unique_name_in_owner = true
 layout_mode = 2
 text = "display1"

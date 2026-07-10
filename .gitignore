@@ -1,13 +1,14 @@
-# 六六六。还是ai大蛇。
-# Godot 4+ 专用忽略规则
 # 忽略整个 .godot/ 目录，它包含编辑器数据和缓存
 .godot/
 
-# 忽略神秘超大文件
-andriod/
+# 忽略Android构建模板
+android/
 
-# 如果你还想忽略导入缓存（也在 .godot/ 下，但上述规则已覆盖），可以显式声明
-# .godot/imported/
+# 忽略插件文件夹
+addons/
+
+# 忽略导出文件夹
+build/
 
 # 忽略项目根目录下可能生成的特定文件
 *.translation

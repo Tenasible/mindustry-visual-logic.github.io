@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://crmr28nmruuhd"]
+[gd_scene format=3 uid="uid://crmr28nmruuhd"]
 
 [ext_resource type="Theme" uid="uid://bwqifwabah580" path="res://Themes/logic_block.tres" id="1_pups8"]
 [ext_resource type="StyleBox" uid="uid://c45dgypyhoqva" path="res://LogicBlockStyles/control.tres" id="2_yppmr"]
@@ -10,49 +10,45 @@
 resource_name = "sensor"
 script/source = "extends LogicBlocks
 
+
 var sensor_menu_scene = preload(\"res://Scenes/sensor_selector.tscn\")
 var sensor_menu
 
-func load_value(value: Array):
 
+func load_value(value: Array):
 	%a.text = value[1]
 	%b.text = value[2]
 	%c.text = value[3]
-	
-	pass
 
-func option_get_item(node: OptionButton, optext : String):
+
+func option_get_item(node: OptionButton, optext: String):
 	for i in range(node.get_popup().item_count):
 		if node.get_item_text(i) == optext:
 			node.select(i)
 
-func compile():
-	
-	return(\"sensor \" + %a.text + \" \" + %b.text + \" \" + %c.text + \"\\n\")
 
-func _on_unit_selected(unit : String ):
+func compile():
+	return \"sensor %s %s %s\\n\" % [%a.text, %b.text, %c.text]
+
+
+func _on_unit_selected(unit: String):
 	%c.text = unit
 	sensor_menu.queue_free()
 
+
 func _on_select_button_pressed() -> void:
-	
-	
 	if sensor_menu:
 		sensor_menu.queue_free()
-		
 	else:
-		
 		if input_node.get_child_count() == 0 and get_parent() == origin_node:
 			%FreeControl.position = %SelectButton.position + Vector2(0, 30)
 			
 			sensor_menu = sensor_menu_scene.instantiate()
 			sensor_menu.select_owner = %FreeControl
 			
-			input_node.add_child( sensor_menu )
+			input_node.add_child(sensor_menu)
 			sensor_menu.z_index = 16
 			sensor_menu.unit_selected.connect(_on_unit_selected)
-		
-	pass # Replace with function body.
 
 
 func _on_tree_exited() -> void:
@@ -60,7 +56,7 @@ func _on_tree_exited() -> void:
 		sensor_menu.queue_free()
 "
 
-[node name="Sensor" type="PanelContainer"]
+[node name="Sensor" type="PanelContainer" unique_id=951070122]
 offset_right = 40.0
 offset_bottom = 40.0
 size_flags_horizontal = 0
@@ -69,58 +65,58 @@ theme = ExtResource("1_pups8")
 theme_override_styles/panel = ExtResource("2_yppmr")
 script = SubResource("GDScript_cfhjb")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=179613655]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Label" type="Label" parent="HBoxContainer"]
+[node name="Label" type="Label" parent="HBoxContainer" unique_id=371685892]
 layout_mode = 2
 text = "Sensor"
 
-[node name="a" type="LineEdit" parent="HBoxContainer"]
+[node name="a" type="LineEdit" parent="HBoxContainer" unique_id=525160322]
 unique_name_in_owner = true
 layout_mode = 2
 text = "result"
 expand_to_text_length = true
 select_all_on_focus = true
 
-[node name="Label2" type="Label" parent="HBoxContainer"]
+[node name="Label2" type="Label" parent="HBoxContainer" unique_id=156287262]
 layout_mode = 2
 text = "="
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer" unique_id=1376960463]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="c" type="LineEdit" parent="HBoxContainer/HBoxContainer"]
+[node name="c" type="LineEdit" parent="HBoxContainer/HBoxContainer" unique_id=1277105091]
 unique_name_in_owner = true
 layout_mode = 2
 text = "@copper"
 expand_to_text_length = true
 select_all_on_focus = true
 
-[node name="SelectButton" type="Button" parent="HBoxContainer/HBoxContainer"]
+[node name="SelectButton" type="Button" parent="HBoxContainer/HBoxContainer" unique_id=1330598185]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_styles/hover_pressed = ExtResource("3_lbq7f")
-theme_override_styles/hover = ExtResource("4_ljehj")
-theme_override_styles/pressed = ExtResource("3_lbq7f")
 theme_override_styles/normal = ExtResource("4_ljehj")
+theme_override_styles/pressed = ExtResource("3_lbq7f")
+theme_override_styles/hover = ExtResource("4_ljehj")
+theme_override_styles/hover_pressed = ExtResource("3_lbq7f")
 icon = ExtResource("5_ynn77")
 
-[node name="Label3" type="Label" parent="HBoxContainer"]
+[node name="Label3" type="Label" parent="HBoxContainer" unique_id=945311693]
 unique_name_in_owner = true
 layout_mode = 2
 text = "in"
 
-[node name="b" type="LineEdit" parent="HBoxContainer"]
+[node name="b" type="LineEdit" parent="HBoxContainer" unique_id=477209920]
 unique_name_in_owner = true
 layout_mode = 2
 text = "block1"
 expand_to_text_length = true
 select_all_on_focus = true
 
-[node name="FreeControl" type="Node2D" parent="."]
+[node name="FreeControl" type="Node2D" parent="." unique_id=1334314637]
 unique_name_in_owner = true
 position = Vector2(220, 54)
 

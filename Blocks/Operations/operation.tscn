@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://djjmyevep7nq4"]
+[gd_scene format=3 uid="uid://djjmyevep7nq4"]
 
 [ext_resource type="Theme" uid="uid://bwqifwabah580" path="res://Themes/logic_block.tres" id="1_5cdfo"]
 [ext_resource type="StyleBox" uid="uid://bid1es6bkyxvw" path="res://LogicBlockStyles/operation.tres" id="2_8go7g"]
@@ -8,77 +8,43 @@
 resource_name = "operation"
 script/source = "extends LogicBlocks
 
+
 func load_value(value: Array):
 	option_get_item(%op1,value[1])
 	%a.text = value[2]
 	%b.text = value[3]
 	%c.text = value[4]
 
-	pass
 
-func option_get_item(node: OptionButton, optext : String):
+func option_get_item(node: OptionButton, optext: String):
 	for i in range(node.get_popup().item_count):
 		if op_list[i] == optext:
 			node.select(i)
-			_on_op_1_item_selected(i)
+
 
 var index1
 var index2
-var op_list = {
-		0 : \"add\" ,
-		1 : \"sub\" ,
-		2 : \"mul\" ,
-		3 : \"div\" ,
-		4 : \"idiv\" ,
-		5 : \"mod\" ,
-		6 : \"pow\" ,
-		7 : \"equal\" ,
-		8 : \"notEqual\" ,
-		9 : \"land\" ,
-		10 : \"lessThan\" ,
-		11 : \"lessThanEq\" ,
-		12 : \"greaterThan\" ,
-		13 : \"greaterThanEq\" ,
-		14 : \"strictEqual\" ,
-		15 : \"shl\" ,
-		16 : \"shr\" ,
-		17 : \"ushr\" ,
-		18 : \"or\" ,
-		19 : \"and\" ,
-		20 : \"xor\" ,
-		21 : \"not\" ,
-		22 : \"max\" ,
-		23 : \"min\" ,
-		24 : \"angle\" ,
-		25 : \"angleDiff\" ,
-		26 : \"len\" ,
-		27 : \"noise\" ,
-		28 : \"abs\" ,
-		29 : \"sign\" ,
-		30 : \"log\" ,
-		31 : \"logn\" ,
-		32 : \"log10\" ,
-		33 : \"floor\" ,
-		34 : \"ceil\" ,
-		35 : \"round\" ,
-		36 : \"sqrt\" ,
-		37 : \"rand\" ,
-		38 : \"sin\" ,
-		39 : \"cos\" ,
-		40 : \"tan\" ,
-		41 : \"asin\" ,
-		42 : \"acos\" ,
-		43 : \"atan\" ,
-	}
-	
+const op_list = [
+	\"add\", \"sub\", \"mul\", \"div\", \"idiv\", \"mod\", \"pow\",
+	\"equal\", \"notEqual\", \"land\",
+	\"lessThan\", \"lessThanEq\", \"greaterThan\", \"greaterThanEq\", \"strictEqual\",
+	\"shl\", \"shr\", \"ushr\",
+	\"or\", \"and\", \"xor\", \"not\",
+	\"max\", \"min\",
+	\"angle\", \"angleDiff\",
+	\"len\", \"noise\",
+	\"abs\", \"sign\",
+	\"log\", \"logn\", \"log10\",
+	\"floor\", \"ceil\",
+	\"round\",
+	\"sqrt\",
+	\"rand\",
+	\"sin\", \"cos\", \"tan\", \"asin\", \"acos\", \"atan\",
+]
+
+
 func compile():
-
-	return( \"op \" + op_list[%op1.selected] + \" \" + %a.text + \" \" + %b.text + \" \" + %c.text + \"\\n\" )
-	
-	pass
-	
-
-
+	return \"op %s %s %s %s\\n\" % [op_list[%op1.selected], %a.text, %b.text, %c.text]
 
 
 func _on_op_1_item_selected(index: int) -> void:
@@ -87,19 +53,15 @@ func _on_op_1_item_selected(index: int) -> void:
 	else:
 		%c.visible = true
 	
-	if index >= 21 and  index != 31:
-		#$HBoxContainer.move_child(%b,index2)
-		$HBoxContainer.move_child(%op1,3)
+	if index >= 21 and index != 31:
+		$HBoxContainer.move_child(%op1, 3)
 	else:
-		#$HBoxContainer.move_child(%b,index1)
-		$HBoxContainer.move_child(%op1,4)
-	
-	pass # Replace with function body.
+		$HBoxContainer.move_child(%op1, 4)
 "
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yod6u"]
 
-[node name="Operation" type="PanelContainer"]
+[node name="Operation" type="PanelContainer" unique_id=1049018513]
 offset_right = 40.0
 offset_bottom = 40.0
 size_flags_horizontal = 0
@@ -108,40 +70,40 @@ theme = ExtResource("1_5cdfo")
 theme_override_styles/panel = ExtResource("2_8go7g")
 script = SubResource("GDScript_5cdfo")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1543543000]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Label" type="Label" parent="HBoxContainer"]
+[node name="Label" type="Label" parent="HBoxContainer" unique_id=1434312916]
 layout_mode = 2
 text = "Operation"
 
-[node name="a" type="LineEdit" parent="HBoxContainer"]
+[node name="a" type="LineEdit" parent="HBoxContainer" unique_id=1006170916]
 unique_name_in_owner = true
 layout_mode = 2
 text = "result"
 expand_to_text_length = true
 select_all_on_focus = true
 
-[node name="Label2" type="Label" parent="HBoxContainer"]
+[node name="Label2" type="Label" parent="HBoxContainer" unique_id=754539714]
 layout_mode = 2
 text = "="
 
-[node name="b" type="LineEdit" parent="HBoxContainer"]
+[node name="b" type="LineEdit" parent="HBoxContainer" unique_id=1911278808]
 unique_name_in_owner = true
 layout_mode = 2
 text = "a"
 expand_to_text_length = true
 select_all_on_focus = true
 
-[node name="op1" type="OptionButton" parent="HBoxContainer"]
+[node name="op1" type="OptionButton" parent="HBoxContainer" unique_id=1958054452]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_styles/focus = SubResource("StyleBoxEmpty_yod6u")
-theme_override_styles/hover_pressed = ExtResource("3_8go7g")
-theme_override_styles/hover = ExtResource("3_8go7g")
-theme_override_styles/pressed = ExtResource("3_8go7g")
 theme_override_styles/normal = ExtResource("3_8go7g")
+theme_override_styles/pressed = ExtResource("3_8go7g")
+theme_override_styles/hover = ExtResource("3_8go7g")
+theme_override_styles/hover_pressed = ExtResource("3_8go7g")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_yod6u")
 alignment = 1
 selected = 0
 fit_to_longest_item = false
@@ -163,9 +125,9 @@ popup/item_6/text = "^"
 popup/item_6/id = 6
 popup/item_7/text = "=="
 popup/item_7/id = 7
-popup/item_8/text = "not"
+popup/item_8/text = "!="
 popup/item_8/id = 8
-popup/item_9/text = "and"
+popup/item_9/text = "&&"
 popup/item_9/id = 9
 popup/item_10/text = "<"
 popup/item_10/id = 10
@@ -236,7 +198,7 @@ popup/item_42/id = 42
 popup/item_43/text = "atan"
 popup/item_43/id = 43
 
-[node name="c" type="LineEdit" parent="HBoxContainer"]
+[node name="c" type="LineEdit" parent="HBoxContainer" unique_id=508849495]
 unique_name_in_owner = true
 layout_mode = 2
 text = "b"

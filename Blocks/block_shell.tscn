@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://113nsxeomwtt"]
+[gd_scene format=3 uid="uid://113nsxeomwtt"]
 
 [ext_resource type="Theme" uid="uid://bwqifwabah580" path="res://Themes/logic_block.tres" id="1_fqpkh"]
 
@@ -10,15 +10,15 @@ script/source = "extends PanelContainer
 
 @export var dragging_node: Node2D
 @export var origin_node: VBoxContainer
+@export var is_given_block := false
+@export var target_node: PanelContainer
 var node
 var moving = false
 var to_mouse_position
 var shadow_block
 var spawning_shadow = false
 var self_index
-@export var is_given_block := false
 var self_block_instance_path
-@export var target_node: PanelContainer
 
 var jump_drag # jump被拉动箭头时，替代 \"jump_to\" 节点的 Node2d 节点
 
@@ -48,26 +48,14 @@ func add_block( instance_path: String ):
 			node.jumped.connect(_on_node_jumped)
 			node.jumping.connect(_on_jump_block_jumping)
 			node.parent = self
-			
-	pass
 
 
-
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	
-	
-	
 	if %BlockContainer.get_child_count() > 0:
 		node = %BlockContainer.get_child(0)
-	
-	pass # Replace with function body.
 
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	
 	%Index.text = str(get_index())
 	
 	# jump_drag 处理
@@ -76,23 +64,17 @@ func _process(delta: float) -> void:
 		
 		# 计算目标位置
 		if origin_node != null:
-			
 			var min_dis = INF
 			var min_block = origin_node.get_child(0)
 			
 			for i in origin_node.get_children():
-		
 				if abs(i.global_position.y + i.size.y * 0.5 - get_global_mouse_position().y) < min_dis:
-			
 					min_block = i
 					min_dis = abs(i.global_position.y + i.size.y * 0.5 - get_global_mouse_position().y)
-					
+			
 			if get_global_mouse_position().x < origin_node.global_position.x:
-				
 				jump_drag.global_position.x = get_global_mouse_position().x
-				
 			else:
-				
 				jump_drag.global_position.x = min_block.global_position.x
 			
 			# 若jump目标是自己则不锁定
@@ -100,39 +82,28 @@ func _process(delta: float) -> void:
 			if min_block == self:
 				node.c.value = -1
 				node.jump_to = null
-				set_jump_dictionary( self.get_index() )
-			
+				set_jump_dictionary(self.get_index())
 			else:
 				node.c.value = min_block.get_index()
 				node.jump_to = min_block
-				set_jump_dictionary( min_block.get_index() )
+				set_jump_dictionary(min_block.get_index())
 		
 		# 松鼠标左键后消失
 		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) == false:
-			
 			jump_drag.queue_free()
-		
-		pass
-		
 	# 积木拖动处理
 	if moving == true:
 		%Index.visible = false
-		
 		global_position = get_global_mouse_position() + to_mouse_position
 		
 		# 计算阴影位置
-		
 		if shadow_block != null:
-			
 			if origin_node != null:
-				
 				var min_dis = INF
 				var min_block = origin_node.get_child(0)
 				
 				for i in origin_node.get_children():
-			
 					if abs(i.global_position.y + i.size.y - get_global_mouse_position().y) < min_dis:
-				
 						min_block = i
 						min_dis = abs(i.global_position.y + i.size.y - get_global_mouse_position().y)
 
@@ -153,15 +124,12 @@ func _process(delta: float) -> void:
 		
 		
 		# 当自身被松开
-		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) == false and Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT) == false:
-			
+		if (Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) == false and 
+			Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT) == false):
 			if self.global_position.x < origin_node.global_position.x - 100:
 				if shadow_block != null:
-					
 					shadow_block.queue_free()
 				self.queue_free()
-			
-			
 			
 			moving = false
 			%Index.visible = not is_given_block
@@ -173,51 +141,35 @@ func _process(delta: float) -> void:
 			shadow_block.queue_free()
 				
 			origin_node.emit_signal(\"block_move\")
-			
 	else:
-		
 		%Index.visible = not is_given_block
-		pass
 	
 
 func _on_block_mouse_motion(pressed):
-	
 	# 检测到自身被按下
 	if pressed:
-		
 		if is_given_block or Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT) == true:
-			
 			var child_block_shell = add_block_shell(self_block_instance_path)
-			
 			child_block_shell.load_value( (node.compile().erase( node.compile().length() - 1 , 1)).split(\" \") )
-
 		else:
-			
 			self_index = self.get_index()
-				
 			# 把自己转移到Dragging节点下
-			
 			to_mouse_position = global_position - get_global_mouse_position() + Vector2(40 , 0)
 			reparent(dragging_node)
 			moving = true
-					
 			# 在自身位置生成一个虚影
-				
 			spawn_shadow()
 
-	else:
-		pass
 
-# 生成积木阴影，一般在积木被拿起时生成，用于预览积木放下的位置
+## 生成积木阴影，一般在积木被拿起时生成，用于预览积木放下的位置
 func spawn_shadow():
-	
 	shadow_block = PanelContainer.new()
 	shadow_block.custom_minimum_size = self.size
 	origin_node.add_child(shadow_block)
+	return shadow_block
 
-	return(shadow_block)
-	
-# 生成并配置一个与自身同类的节点。
+
+## 生成并配置一个与自身同类的节点。
 func add_block_shell(instance):
 	var block_shell = load(\"res://Blocks/block_shell.tscn\")
 	block_shell = block_shell.instantiate()
@@ -230,74 +182,63 @@ func add_block_shell(instance):
 	block_shell.spawn_shadow()
 	block_shell.moving = true
 
-	
-	return(block_shell)
+	return block_shell
 
-# 这个函数目前没有用。检测鼠标进入自身的判定方法已弃用。
+
+## 这个函数目前没有用。检测鼠标进入自身的判定方法已弃用。
 func _on_mouse_entered() -> void:
-	
 	origin_node.jump = self
 
-	pass # Replace with function body.
 
-# 包含的积木为jump且其指向目标改变时发出触发。
+## 包含的积木为jump且其指向目标改变时发出触发。
 func _on_node_jumped(jump_index):
-	
 	if node.name == \"Jump\":
-		
 		if node.has_signal(\"_on_c_value_changed\") and jump_index == \"fuck you\":
 			target_node = origin_node.get_child(node.c.value)
 			node.jump_to = target_node
-		
 		elif jump_index == -1:
 			target_node = null
 			node.jump_to = null
-			set_jump_dictionary( self.get_index() )
-		
+			set_jump_dictionary(self.get_index())
 		else:
 			target_node = origin_node.get_child(int(jump_index))
 			node.jump_to = target_node
-			set_jump_dictionary( jump_index )
-	
-	pass
+			set_jump_dictionary(jump_index)
 
-# UserBlocks（容纳这些blockshell的节点）重新排列子节点时触发，主要用于更新jump值。
+
+## UserBlocks（容纳这些blockshell的节点）重新排列子节点时触发，主要用于更新jump值。
 func _on_any_block_moved():
-	
-	
 	if node.name == \"Jump\":
 		if target_node != null:
-			node.set_jump( target_node.get_index() )
-			set_jump_dictionary( target_node.get_index() )
-	pass
+			node.set_jump(target_node.get_index())
+			set_jump_dictionary(target_node.get_index())
+			
 
-# 传递从更上方传来的同名方法。目前此方法的发出源仅见于editor的绑定脚本。
-func load_value(value : Array):
+## 传递从更上方传来的同名方法。目前此方法的发出源仅见于editor的绑定脚本。
+func load_value(value: Array):
 	node.load_value(value)
 
-# jump箭头被拖动时触发。用来实现拖动效果，无法响应只更改jump值的情况。
+
+## jump箭头被拖动时触发。用来实现拖动效果，无法响应只更改jump值的情况。
 func _on_jump_block_jumping():
-	
-	if is_given_block:
-		pass
-		
-	else:
+	if not is_given_block:
 		# 若 Dragging 已有子节点（正在有其他对象被拖动），则不执行任何操作
 		if dragging_node.get_child_count() > 0:
 			return null
-			
+		
 		jump_drag = PanelContainer.new()
 		dragging_node.add_child(jump_drag)
 
-# 向UserBlocks声明自己的jump信息。
-func set_jump_dictionary(index : int):
+
+## 向UserBlocks声明自己的jump信息。
+func set_jump_dictionary(index: int):
 	if \"jump_lines\" in origin_node:
 		origin_node.jump_lines[self] = [self.get_index(), index]
 "
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_q14p2"]
 
-[node name="BlockShell" type="PanelContainer"]
+[node name="BlockShell" type="PanelContainer" unique_id=582697639]
 offset_right = 946.0
 offset_bottom = 40.0
 size_flags_horizontal = 3
@@ -306,17 +247,17 @@ theme = ExtResource("1_fqpkh")
 theme_override_styles/panel = SubResource("StyleBoxEmpty_cbbac")
 script = SubResource("GDScript_qgnq2")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=2014554080]
 layout_mode = 2
 
-[node name="Index" type="Label" parent="HBoxContainer"]
+[node name="Index" type="Label" parent="HBoxContainer" unique_id=848030000]
 unique_name_in_owner = true
 modulate = Color(0.46, 0.46, 0.46, 0.458824)
 custom_minimum_size = Vector2(40, 0)
 layout_mode = 2
 text = "1"
 
-[node name="BlockContainer" type="PanelContainer" parent="HBoxContainer"]
+[node name="BlockContainer" type="PanelContainer" parent="HBoxContainer" unique_id=886678147]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0

@@ -8,6 +8,10 @@
 
 config_version=5
 
+[animation]
+
+compatibility/default_parent_skeleton_in_mesh_instance_3d=true
+
 [application]
 
 config/name="MVL_可视化逻辑编辑"
@@ -17,10 +21,10 @@ config/name_localized={
 config/version="0.2.0"
 run/main_scene="uid://d0ibbb4m6d486"
 config/auto_accept_quit=false
-config/features=PackedStringArray("4.4", "GL Compatibility")
+config/features=PackedStringArray("4.6", "GL Compatibility")
 run/max_fps=60
 boot_splash/show_image=false
-boot_splash/fullsize=false
+boot_splash/stretch_mode=0
 boot_splash/use_filter=false
 boot_splash/image="uid://cbllkqi002sl8"
 config/icon="uid://vve5nvl1huwc"

@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://dhi8fvs1yj6rp"]
+[gd_scene format=3 uid="uid://dhi8fvs1yj6rp"]
 
 [ext_resource type="Theme" uid="uid://bwqifwabah580" path="res://Themes/logic_block.tres" id="1_upd0i"]
 [ext_resource type="StyleBox" uid="uid://ndwncrglcvfk" path="res://LogicBlockStyles/test.tres" id="2_0mp4r"]
@@ -10,23 +10,14 @@ resource_name = "test_1"
 script/source = "extends LogicBlocks
 
 
-
 func compile():
-	return(\"op add 测试 \" + %a.text + \" \" + %op1.text + \"\\n\")
-
-# Called when the node enters the scene tree for the first time.
-
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+	return \"op add 测试 %s %s\\n\" % [%a.text, %op1.text]
 "
 
 [sub_resource type="LabelSettings" id="LabelSettings_nmdwr"]
 font = ExtResource("2_xd01p")
 
-[node name="Test1" type="PanelContainer"]
+[node name="Test1" type="PanelContainer" unique_id=1674856851]
 offset_right = 40.0
 offset_bottom = 40.0
 size_flags_horizontal = 0
@@ -35,29 +26,29 @@ theme = ExtResource("1_upd0i")
 theme_override_styles/panel = ExtResource("2_0mp4r")
 script = SubResource("GDScript_wlwug")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=317211298]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Label" type="Label" parent="HBoxContainer"]
+[node name="Label" type="Label" parent="HBoxContainer" unique_id=730930371]
 layout_mode = 2
 text = "Test 测试内容"
 label_settings = SubResource("LabelSettings_nmdwr")
 
-[node name="a" type="LineEdit" parent="HBoxContainer"]
+[node name="a" type="LineEdit" parent="HBoxContainer" unique_id=1000480346]
 unique_name_in_owner = true
 layout_mode = 2
 text = "result"
 expand_to_text_length = true
 select_all_on_focus = true
 
-[node name="op1" type="OptionButton" parent="HBoxContainer"]
+[node name="op1" type="OptionButton" parent="HBoxContainer" unique_id=1296254052]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_styles/hover_pressed = ExtResource("3_0mp4r")
-theme_override_styles/hover = ExtResource("3_0mp4r")
-theme_override_styles/pressed = ExtResource("3_0mp4r")
 theme_override_styles/normal = ExtResource("3_0mp4r")
+theme_override_styles/pressed = ExtResource("3_0mp4r")
+theme_override_styles/hover = ExtResource("3_0mp4r")
+theme_override_styles/hover_pressed = ExtResource("3_0mp4r")
 selected = 0
 item_count = 3
 popup/item_0/text = "id:0"

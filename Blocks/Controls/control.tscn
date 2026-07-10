@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://3fpbh0ru4lsp"]
+[gd_scene format=3 uid="uid://3fpbh0ru4lsp"]
 
 [ext_resource type="Theme" uid="uid://bwqifwabah580" path="res://Themes/logic_block.tres" id="1_lapbg"]
 [ext_resource type="StyleBox" uid="uid://c45dgypyhoqva" path="res://LogicBlockStyles/control.tres" id="2_67usd"]
@@ -8,76 +8,62 @@
 resource_name = "control"
 script/source = "extends LogicBlocks
 
+
 func load_value(value: Array):
-	option_get_item(%op1,value[1])
+	option_get_item(%op1, value[1])
 	%a.text = value[2]
 	%b.text = value[3]
 	%c.text = value[4]
 	%d.text = value[5]
 	%e.text = value[6]
-	
-	
-	pass
 
-func option_get_item(node: OptionButton, optext : String):
+
+func option_get_item(node: OptionButton, optext: String):
 	for i in range(node.get_popup().item_count):
 		if node.get_item_text(i) == optext:
 			node.select(i)
-			_on_op_1_item_selected(i)
-			
-	
+
 
 func compile():
+	const op_list = [
+		\"enabled\",
+		\"shoot\",
+		\"shootp\",
+		\"config\",
+		\"color\",
+	]
 	
-	var op_list = {
-		0 : \"enabled\" ,
-		1 : \"shoot\" ,
-		2 : \"shootp\" ,
-		3 : \"config\" ,
-		4 : \"color\" ,
-	}
-	
-	return(\"control \" + op_list[%op1.selected] + \" \" + %a.text + \" \" + %b.text + \" \" + %c.text + \" \" + %d.text + \" \" + %e.text + \"\\n\")
-
-
+	return \"control %s %s %s %s %s %s\\n\" % [op_list[%op1.selected], %a.text, %b.text, %c.text, %d.text, %e.text]
 
 
 func _on_op_1_item_selected(index: int) -> void:
-	
-	if index == 0 or index == 3 or index == 4:
-		
-		%Label3.text = \"to\"
-		
-		%Label4.visible = false
-		%Label5.visible = false
-		%c.visible = false
-		%d.visible = false
-		
-	elif index == 1:
-		
-		%Label3.text = \"x\"
-		%Label4.text = \"y\"
-		
-		%Label4.visible = true
-		%Label5.visible = true
-		%c.visible = true
-		%d.visible = true
-		
-	elif index == 2:
-		
-		%Label3.text = \"unit\"
-		%Label4.text = \"shoot\"
-		
-		%Label4.visible = true
-		%c.visible = true
-		
-		%Label5.visible = false
-		%d.visible = false
-	
-	pass # Replace with function body.
+	match index:
+		0, 3, 4:
+			%Label3.text = \"to\"
+			
+			%Label4.visible = false
+			%Label5.visible = false
+			%c.visible = false
+			%d.visible = false
+		1:
+			%Label3.text = \"x\"
+			%Label4.text = \"y\"
+			
+			%Label4.visible = true
+			%Label5.visible = true
+			%c.visible = true
+			%d.visible = true
+		2:
+			%Label3.text = \"unit\"
+			%Label4.text = \"shoot\"
+			
+			%Label4.visible = true
+			%c.visible = true
+			%Label5.visible = false
+			%d.visible = false
 "
 
-[node name="Control" type="PanelContainer"]
+[node name="Control" type="PanelContainer" unique_id=1530884885]
 offset_right = 40.0
 offset_bottom = 40.0
 size_flags_horizontal = 0
@@ -86,21 +72,21 @@ theme = ExtResource("1_lapbg")
 theme_override_styles/panel = ExtResource("2_67usd")
 script = SubResource("GDScript_37m3r")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1975787484]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Label" type="Label" parent="HBoxContainer"]
+[node name="Label" type="Label" parent="HBoxContainer" unique_id=1355721608]
 layout_mode = 2
 text = "Control"
 
-[node name="op1" type="OptionButton" parent="HBoxContainer"]
+[node name="op1" type="OptionButton" parent="HBoxContainer" unique_id=1272164321]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_styles/hover_pressed = ExtResource("3_lccr0")
-theme_override_styles/hover = ExtResource("3_lccr0")
-theme_override_styles/pressed = ExtResource("3_lccr0")
 theme_override_styles/normal = ExtResource("3_lccr0")
+theme_override_styles/pressed = ExtResource("3_lccr0")
+theme_override_styles/hover = ExtResource("3_lccr0")
+theme_override_styles/hover_pressed = ExtResource("3_lccr0")
 selected = 0
 fit_to_longest_item = false
 allow_reselect = true
@@ -116,36 +102,36 @@ popup/item_3/id = 3
 popup/item_4/text = "color"
 popup/item_4/id = 4
 
-[node name="Label2" type="Label" parent="HBoxContainer"]
+[node name="Label2" type="Label" parent="HBoxContainer" unique_id=1617331352]
 layout_mode = 2
 text = "of"
 
-[node name="a" type="LineEdit" parent="HBoxContainer"]
+[node name="a" type="LineEdit" parent="HBoxContainer" unique_id=2008096854]
 unique_name_in_owner = true
 layout_mode = 2
 text = "block1"
 expand_to_text_length = true
 select_all_on_focus = true
 
-[node name="Label3" type="Label" parent="HBoxContainer"]
+[node name="Label3" type="Label" parent="HBoxContainer" unique_id=1242874475]
 unique_name_in_owner = true
 layout_mode = 2
 text = "to"
 
-[node name="b" type="LineEdit" parent="HBoxContainer"]
+[node name="b" type="LineEdit" parent="HBoxContainer" unique_id=1516242351]
 unique_name_in_owner = true
 layout_mode = 2
 text = "0"
 expand_to_text_length = true
 select_all_on_focus = true
 
-[node name="Label4" type="Label" parent="HBoxContainer"]
+[node name="Label4" type="Label" parent="HBoxContainer" unique_id=1703405140]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 text = "y"
 
-[node name="c" type="LineEdit" parent="HBoxContainer"]
+[node name="c" type="LineEdit" parent="HBoxContainer" unique_id=1025718608]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
@@ -153,13 +139,13 @@ text = "0"
 expand_to_text_length = true
 select_all_on_focus = true
 
-[node name="Label5" type="Label" parent="HBoxContainer"]
+[node name="Label5" type="Label" parent="HBoxContainer" unique_id=1920420072]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 text = "shoot"
 
-[node name="d" type="LineEdit" parent="HBoxContainer"]
+[node name="d" type="LineEdit" parent="HBoxContainer" unique_id=1772611959]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
@@ -167,13 +153,13 @@ text = "0"
 expand_to_text_length = true
 select_all_on_focus = true
 
-[node name="Label6" type="Label" parent="HBoxContainer"]
+[node name="Label6" type="Label" parent="HBoxContainer" unique_id=1656810996]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 text = "阿努克的神秘无用项"
 
-[node name="e" type="LineEdit" parent="HBoxContainer"]
+[node name="e" type="LineEdit" parent="HBoxContainer" unique_id=1276609264]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2

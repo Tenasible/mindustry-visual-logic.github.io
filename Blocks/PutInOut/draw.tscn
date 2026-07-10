@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://ce12cdqgctqk2"]
+[gd_scene format=3 uid="uid://ce12cdqgctqk2"]
 
 [ext_resource type="Theme" uid="uid://bwqifwabah580" path="res://Themes/logic_block.tres" id="1_2svu6"]
 [ext_resource type="StyleBox" uid="uid://d4hc2s0f7vavr" path="res://LogicBlockStyles/put_in_out.tres" id="2_onqgg"]
@@ -8,6 +8,7 @@
 resource_name = "draw"
 script/source = "extends LogicBlocks
 
+
 func load_value(value: Array):
 	option_get_item(%op1,value[1])
 	%a.text = value[2]
@@ -16,308 +17,276 @@ func load_value(value: Array):
 	%d.text = value[5]
 	%e.text = value[6]
 	%e.text = value[7]
-	
-	pass
 
-func option_get_item(node: OptionButton, optext : String):
+
+func option_get_item(node: OptionButton, optext: String):
 	for i in range(node.get_popup().item_count):
-		if op_list[i] == optext:
+		if node.get_item_text(i) == optext:
 			node.select(i)
-			_on_op_1_item_selected(i)
 
-
-
-var op_list = {
-		0 : \"clear\" ,
-		1 : \"color\" ,
-		2 : \"col\" ,
-		3 : \"stroke\" ,
-		4 : \"line\" ,
-		5 : \"rect\" ,
-		6 : \"lineRect\" ,
-		7 : \"poly\" ,
-		8 : \"linePoly\" ,
-		9 : \"triangle\" ,
-		10 : \"image\" ,
-		11 : \"print\" ,
-		12 : \"translate\" ,
-		13 : \"scale\" ,
-		14 : \"rotate\" ,
-		15 : \"reset\" ,
-	}
 
 func compile():
+	const op_list = [
+		\"clear\",
+		\"color\",
+		\"col\",
+		\"stroke\",
+		\"line\",
+		\"rect\",
+		\"lineRect\",
+		\"poly\",
+		\"linePoly\",
+		\"triangle\",
+		\"image\",
+		\"print\",
+		\"translate\",
+		\"scale\",
+		\"rotate\",
+		\"reset\",
+	]
 	
-	
-	return(\"draw \" + op_list[%op1.selected] + \" \" + %a.text + \" \" + %b.text + \" \" + %c.text + \" \" + %d.text + \" \" + %e.text + \" \" + %f.text + \"\\n\")
-
-# Called when the node enters the scene tree for the first time.
+	return \"draw %s %s %s %s %s %s %s\\n\" % [op_list[%op1.selected], %a.text, %b.text, 
+											%c.text, %d.text, %e.text, %f.text]
 
 
 func _on_op_1_item_selected(index: int) -> void:
-	if index == 0:
-		
-		%Label1.text = \"r\"
-		%Label2.text = \"g\"
-		%Label3.text = \"b\"
-		
-		%Label1.visible = true
-		%Label2.visible = true
-		%Label3.visible = true
-		%a.visible = true
-		%b.visible = true
-		%c.visible = true
-		
-		%Label4.visible = false
-		%Label5.visible = false
-		%Label6.visible = false
-		%d.visible = false
-		%e.visible = false
-		%f.visible = false
-	
-	elif index == 1:
-		
-		%Label1.text = \"r\"
-		%Label2.text = \"g\"
-		%Label3.text = \"b\"
-		%Label4.text = \"a\"
-		%d.text = \"255\"
-		
-		%Label1.visible = true
-		%Label2.visible = true
-		%Label3.visible = true
-		%Label4.visible = true
-		%a.visible = true
-		%b.visible = true
-		%c.visible = true
-		%d.visible = true
-		
-		%Label5.visible = false
-		%Label6.visible = false
-		%e.visible = false
-		%f.visible = false
-		
-	elif index == 2:
-		
-		%Label1.text = \"color\"
-		
-		%Label1.visible = true
-		%a.visible = true
-		
-		%Label2.visible = false
-		%Label3.visible = false
-		%Label4.visible = false
-		%Label5.visible = false
-		%Label6.visible = false
-		%b.visible = false
-		%c.visible = false
-		%d.visible = false
-		%e.visible = false
-		%f.visible = false
-	
-	elif index == 3:
-		
-		%Label1.text = \"stroke\"
-		
-		%Label1.visible = true
-		%a.visible = true
-		
-		%Label2.visible = false
-		%Label3.visible = false
-		%Label4.visible = false
-		%Label5.visible = false
-		%Label6.visible = false
-		%b.visible = false
-		%c.visible = false
-		%d.visible = false
-		%e.visible = false
-		%f.visible = false
-	
-	elif index == 4:
-		
-		%Label1.text = \"x1\"
-		%Label2.text = \"y1\"
-		%Label3.text = \"x2\"
-		%Label4.text = \"y2\"
-		
-		%Label1.visible = true
-		%Label2.visible = true
-		%Label3.visible = true
-		%Label4.visible = true
-		%a.visible = true
-		%b.visible = true
-		%c.visible = true
-		%d.visible = true
-		
-		%Label5.visible = false
-		%Label6.visible = false
-		%e.visible = false
-		%f.visible = false
-	
-	elif index == 5 or index == 6:
-		
-		%Label1.text = \"x\"
-		%Label2.text = \"y\"
-		%Label3.text = \"weight\"
-		%Label4.text = \"height\"
-		
-		%Label1.visible = true
-		%Label2.visible = true
-		%Label3.visible = true
-		%Label4.visible = true
-		%a.visible = true
-		%b.visible = true
-		%c.visible = true
-		%d.visible = true
-		
-		%Label5.visible = false
-		%Label6.visible = false
-		%e.visible = false
-		%f.visible = false
-		
-	elif index == 7 or index == 8:
-		
-		%Label1.text = \"x\"
-		%Label2.text = \"y\"
-		%Label3.text = \"sides\"
-		%Label4.text = \"radius\"
-		%Label5.text = \"rotation\"
-		
-		%Label1.visible = true
-		%Label2.visible = true
-		%Label3.visible = true
-		%Label4.visible = true
-		%Label5.visible = true
-		%a.visible = true
-		%b.visible = true
-		%c.visible = true
-		%d.visible = true
-		%e.visible = true
-		
-		%Label6.visible = false
-		%f.visible = false
-		
-	elif index == 9:
-		
-		%Label1.text = \"x1\"
-		%Label2.text = \"y1\"
-		%Label3.text = \"x2\"
-		%Label4.text = \"y2\"
-		%Label5.text = \"x3\"
-		%Label6.text = \"y3\"
-		
-		%Label1.visible = true
-		%Label2.visible = true
-		%Label3.visible = true
-		%Label4.visible = true
-		%Label5.visible = true
-		%Label6.visible = true
-		%a.visible = true
-		%b.visible = true
-		%c.visible = true
-		%d.visible = true
-		%e.visible = true
-		%f.visible = true
-		
-	elif index == 10:
-		
-		%Label1.text = \"x\"
-		%Label2.text = \"y\"
-		%Label3.text = \"image\"
-		%Label4.text = \"size\"
-		%Label5.text = \"rotation\"
-		%c.text = \"@copper\"
-		%d.text = \"32\"
-		%e.text = \"0\"
-		
-		%Label1.visible = true
-		%Label2.visible = true
-		%Label3.visible = true
-		%Label4.visible = true
-		%Label5.visible = true
-		%a.visible = true
-		%b.visible = true
-		%c.visible = true
-		%d.visible = true
-		%e.visible = true
-		
-		%Label6.visible = false
-		%f.visible = false
-		
-	elif index == 11:
-		
-		%Label1.text = \"此功能尚未完善。\"
-		
-		%Label1.visible = true
-		
-		%Label2.visible = false
-		%Label3.visible = false
-		%Label4.visible = false
-		%Label5.visible = false
-		%Label6.visible = false
-		%a.visible = false
-		%b.visible = false
-		%c.visible = false
-		%d.visible = false
-		%e.visible = false
-		%f.visible = false
-		
-	elif index == 12 or index == 13:
-		
-		%Label1.text = \"x\"
-		%Label2.text = \"y\"
-		
-		%Label1.visible = true
-		%Label2.visible = true
-		%a.visible = true
-		%b.visible = true
-		
-		%Label3.visible = false
-		%Label4.visible = false
-		%Label5.visible = false
-		%Label6.visible = false
-		%c.visible = false
-		%d.visible = false
-		%e.visible = false
-		%f.visible = false
-		
-	elif index == 14:
-		
-		%Label3.text = \"degrees\"
-		
-		%Label3.visible = true
-		%c.visible = true
-		
-		%Label1.visible = false
-		%Label2.visible = false
-		%Label4.visible = false
-		%Label5.visible = false
-		%Label6.visible = false
-		%a.visible = false
-		%b.visible = false
-		%d.visible = false
-		%e.visible = false
-		%f.visible = false
-		
-	elif index == 15:
-		
-		%Label1.visible = false
-		%Label2.visible = false
-		%Label3.visible = false
-		%Label4.visible = false
-		%Label5.visible = false
-		%Label6.visible = false
-		%a.visible = false
-		%b.visible = false
-		%c.visible = false
-		%d.visible = false
-		%e.visible = false
-		%f.visible = false
-		
-	pass # Replace with function body.
+	match index:
+		0:
+			%Label1.text = \"r\"
+			%Label2.text = \"g\"
+			%Label3.text = \"b\"
+			
+			%Label1.visible = true
+			%Label2.visible = true
+			%Label3.visible = true
+			%a.visible = true
+			%b.visible = true
+			%c.visible = true
+			
+			%Label4.visible = false
+			%Label5.visible = false
+			%Label6.visible = false
+			%d.visible = false
+			%e.visible = false
+			%f.visible = false
+		1:
+			%Label1.text = \"r\"
+			%Label2.text = \"g\"
+			%Label3.text = \"b\"
+			%Label4.text = \"a\"
+			%d.text = \"255\"
+			
+			%Label1.visible = true
+			%Label2.visible = true
+			%Label3.visible = true
+			%Label4.visible = true
+			%a.visible = true
+			%b.visible = true
+			%c.visible = true
+			%d.visible = true
+			
+			%Label5.visible = false
+			%Label6.visible = false
+			%e.visible = false
+			%f.visible = false
+		2:
+			%Label1.text = \"color\"
+			
+			%Label1.visible = true
+			%a.visible = true
+			
+			%Label2.visible = false
+			%Label3.visible = false
+			%Label4.visible = false
+			%Label5.visible = false
+			%Label6.visible = false
+			%b.visible = false
+			%c.visible = false
+			%d.visible = false
+			%e.visible = false
+			%f.visible = false
+		3:
+			%Label1.text = \"stroke\"
+			
+			%Label1.visible = true
+			%a.visible = true
+			
+			%Label2.visible = false
+			%Label3.visible = false
+			%Label4.visible = false
+			%Label5.visible = false
+			%Label6.visible = false
+			%b.visible = false
+			%c.visible = false
+			%d.visible = false
+			%e.visible = false
+			%f.visible = false
+		4:
+			%Label1.text = \"x1\"
+			%Label2.text = \"y1\"
+			%Label3.text = \"x2\"
+			%Label4.text = \"y2\"
+			
+			%Label1.visible = true
+			%Label2.visible = true
+			%Label3.visible = true
+			%Label4.visible = true
+			%a.visible = true
+			%b.visible = true
+			%c.visible = true
+			%d.visible = true
+			
+			%Label5.visible = false
+			%Label6.visible = false
+			%e.visible = false
+			%f.visible = false
+		5, 6:
+			%Label1.text = \"x\"
+			%Label2.text = \"y\"
+			%Label3.text = \"weight\"
+			%Label4.text = \"height\"
+			
+			%Label1.visible = true
+			%Label2.visible = true
+			%Label3.visible = true
+			%Label4.visible = true
+			%a.visible = true
+			%b.visible = true
+			%c.visible = true
+			%d.visible = true
+			
+			%Label5.visible = false
+			%Label6.visible = false
+			%e.visible = false
+			%f.visible = false
+		7, 8:
+			%Label1.text = \"x\"
+			%Label2.text = \"y\"
+			%Label3.text = \"sides\"
+			%Label4.text = \"radius\"
+			%Label5.text = \"rotation\"
+			
+			%Label1.visible = true
+			%Label2.visible = true
+			%Label3.visible = true
+			%Label4.visible = true
+			%Label5.visible = true
+			%a.visible = true
+			%b.visible = true
+			%c.visible = true
+			%d.visible = true
+			%e.visible = true
+			
+			%Label6.visible = false
+			%f.visible = false
+		9:
+			%Label1.text = \"x1\"
+			%Label2.text = \"y1\"
+			%Label3.text = \"x2\"
+			%Label4.text = \"y2\"
+			%Label5.text = \"x3\"
+			%Label6.text = \"y3\"
+			
+			%Label1.visible = true
+			%Label2.visible = true
+			%Label3.visible = true
+			%Label4.visible = true
+			%Label5.visible = true
+			%Label6.visible = true
+			%a.visible = true
+			%b.visible = true
+			%c.visible = true
+			%d.visible = true
+			%e.visible = true
+			%f.visible = true
+		10:
+			%Label1.text = \"x\"
+			%Label2.text = \"y\"
+			%Label3.text = \"image\"
+			%Label4.text = \"size\"
+			%Label5.text = \"rotation\"
+			%c.text = \"@copper\"
+			%d.text = \"32\"
+			%e.text = \"0\"
+			
+			%Label1.visible = true
+			%Label2.visible = true
+			%Label3.visible = true
+			%Label4.visible = true
+			%Label5.visible = true
+			%a.visible = true
+			%b.visible = true
+			%c.visible = true
+			%d.visible = true
+			%e.visible = true
+			
+			%Label6.visible = false
+			%f.visible = false
+		11:
+			%Label1.text = \"此功能尚未完善。\"
+			
+			%Label1.visible = true
+			
+			%Label2.visible = false
+			%Label3.visible = false
+			%Label4.visible = false
+			%Label5.visible = false
+			%Label6.visible = false
+			%a.visible = false
+			%b.visible = false
+			%c.visible = false
+			%d.visible = false
+			%e.visible = false
+			%f.visible = false
+		12, 13:
+			%Label1.text = \"x\"
+			%Label2.text = \"y\"
+			
+			%Label1.visible = true
+			%Label2.visible = true
+			%a.visible = true
+			%b.visible = true
+			
+			%Label3.visible = false
+			%Label4.visible = false
+			%Label5.visible = false
+			%Label6.visible = false
+			%c.visible = false
+			%d.visible = false
+			%e.visible = false
+			%f.visible = false
+		14:
+			%Label3.text = \"degrees\"
+			
+			%Label3.visible = true
+			%c.visible = true
+			
+			%Label1.visible = false
+			%Label2.visible = false
+			%Label4.visible = false
+			%Label5.visible = false
+			%Label6.visible = false
+			%a.visible = false
+			%b.visible = false
+			%d.visible = false
+			%e.visible = false
+			%f.visible = false
+		15:
+			%Label1.visible = false
+			%Label2.visible = false
+			%Label3.visible = false
+			%Label4.visible = false
+			%Label5.visible = false
+			%Label6.visible = false
+			%a.visible = false
+			%b.visible = false
+			%c.visible = false
+			%d.visible = false
+			%e.visible = false
+			%f.visible = false
 "
 
-[node name="Draw" type="PanelContainer"]
+[node name="Draw" type="PanelContainer" unique_id=1394685650]
 offset_right = 40.0
 offset_bottom = 40.0
 size_flags_horizontal = 0
@@ -326,21 +295,21 @@ theme = ExtResource("1_2svu6")
 theme_override_styles/panel = ExtResource("2_onqgg")
 script = SubResource("GDScript_m47hv")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1243572882]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Label" type="Label" parent="HBoxContainer"]
+[node name="Label" type="Label" parent="HBoxContainer" unique_id=708683125]
 layout_mode = 2
 text = "Draw"
 
-[node name="op1" type="OptionButton" parent="HBoxContainer"]
+[node name="op1" type="OptionButton" parent="HBoxContainer" unique_id=1515963905]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_styles/hover_pressed = ExtResource("3_md0mx")
-theme_override_styles/hover = ExtResource("3_md0mx")
-theme_override_styles/pressed = ExtResource("3_md0mx")
 theme_override_styles/normal = ExtResource("3_md0mx")
+theme_override_styles/pressed = ExtResource("3_md0mx")
+theme_override_styles/hover = ExtResource("3_md0mx")
+theme_override_styles/hover_pressed = ExtResource("3_md0mx")
 selected = 0
 fit_to_longest_item = false
 allow_reselect = true
@@ -378,12 +347,12 @@ popup/item_14/id = 14
 popup/item_15/text = "reset"
 popup/item_15/id = 15
 
-[node name="Label1" type="Label" parent="HBoxContainer"]
+[node name="Label1" type="Label" parent="HBoxContainer" unique_id=1351024898]
 unique_name_in_owner = true
 layout_mode = 2
 text = "r"
 
-[node name="a" type="LineEdit" parent="HBoxContainer"]
+[node name="a" type="LineEdit" parent="HBoxContainer" unique_id=1911234788]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/minimum_character_width = 2
@@ -391,12 +360,12 @@ text = "255"
 expand_to_text_length = true
 select_all_on_focus = true
 
-[node name="Label2" type="Label" parent="HBoxContainer"]
+[node name="Label2" type="Label" parent="HBoxContainer" unique_id=148901812]
 unique_name_in_owner = true
 layout_mode = 2
 text = "g"
 
-[node name="b" type="LineEdit" parent="HBoxContainer"]
+[node name="b" type="LineEdit" parent="HBoxContainer" unique_id=1714287481]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/minimum_character_width = 2
@@ -404,12 +373,12 @@ text = "0"
 expand_to_text_length = true
 select_all_on_focus = true
 
-[node name="Label3" type="Label" parent="HBoxContainer"]
+[node name="Label3" type="Label" parent="HBoxContainer" unique_id=221464318]
 unique_name_in_owner = true
 layout_mode = 2
 text = "b"
 
-[node name="c" type="LineEdit" parent="HBoxContainer"]
+[node name="c" type="LineEdit" parent="HBoxContainer" unique_id=1411452080]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/minimum_character_width = 2
@@ -417,13 +386,13 @@ text = "255"
 expand_to_text_length = true
 select_all_on_focus = true
 
-[node name="Label4" type="Label" parent="HBoxContainer"]
+[node name="Label4" type="Label" parent="HBoxContainer" unique_id=1070298514]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 text = "t"
 
-[node name="d" type="LineEdit" parent="HBoxContainer"]
+[node name="d" type="LineEdit" parent="HBoxContainer" unique_id=863899767]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
@@ -432,13 +401,13 @@ text = "d"
 expand_to_text_length = true
 select_all_on_focus = true
 
-[node name="Label5" type="Label" parent="HBoxContainer"]
+[node name="Label5" type="Label" parent="HBoxContainer" unique_id=982725858]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 text = "t"
 
-[node name="e" type="LineEdit" parent="HBoxContainer"]
+[node name="e" type="LineEdit" parent="HBoxContainer" unique_id=591914935]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
@@ -447,13 +416,13 @@ text = "e"
 expand_to_text_length = true
 select_all_on_focus = true
 
-[node name="Label6" type="Label" parent="HBoxContainer"]
+[node name="Label6" type="Label" parent="HBoxContainer" unique_id=987058299]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 text = "t"
 
-[node name="f" type="LineEdit" parent="HBoxContainer"]
+[node name="f" type="LineEdit" parent="HBoxContainer" unique_id=2100861798]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2

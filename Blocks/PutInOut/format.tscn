@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://c346mqma8b4tk"]
+[gd_scene format=3 uid="uid://c346mqma8b4tk"]
 
 [ext_resource type="Theme" uid="uid://bwqifwabah580" path="res://Themes/logic_block.tres" id="1_x7w57"]
 [ext_resource type="StyleBox" uid="uid://d4hc2s0f7vavr" path="res://LogicBlockStyles/put_in_out.tres" id="2_gel25"]
@@ -9,30 +9,27 @@
 resource_name = "format"
 script/source = "extends LogicBlocks
 
+
 func load_value(value: Array):
 	%a.text = value[1]
-	pass
 
-func option_get_item(node: OptionButton, optext : String):
+
+func option_get_item(node: OptionButton, optext: String):
 	for i in range(node.get_popup().item_count):
 		if node.get_item_text(i) == optext:
 			node.select(i)
 
 
 func compile():
-	if %Button.button_pressed == true:
-		return(\"format \\\"\" + %a.text + \"\\\"\\n\")
-	else:
-		return(\"format \" + %a.text + \"\\n\")
+	return (\"format \\\"%s\\\"\\n\" if %Button.button_pressed else \"format %s\\n\") % %a.text
 
 
 func _on_button_toggled(toggled_on: bool) -> void:
 	%TagLabel1.visible = toggled_on
 	%TagLabel2.visible = toggled_on
-	pass # Replace with function body.
 "
 
-[node name="Format" type="PanelContainer"]
+[node name="Format" type="PanelContainer" unique_id=1253891172]
 offset_right = 40.0
 offset_bottom = 40.0
 size_flags_horizontal = 0
@@ -41,44 +38,44 @@ theme = ExtResource("1_x7w57")
 theme_override_styles/panel = ExtResource("2_gel25")
 script = SubResource("GDScript_j73xu")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1069535981]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Label" type="Label" parent="HBoxContainer"]
+[node name="Label" type="Label" parent="HBoxContainer" unique_id=1481726751]
 layout_mode = 2
 text = "Format"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer" unique_id=174583205]
 layout_mode = 2
 theme_override_constants/separation = 3
 
-[node name="TagLabel2" type="Label" parent="HBoxContainer/HBoxContainer"]
+[node name="TagLabel2" type="Label" parent="HBoxContainer/HBoxContainer" unique_id=853307919]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 text = "\""
 
-[node name="a" type="LineEdit" parent="HBoxContainer/HBoxContainer"]
+[node name="a" type="LineEdit" parent="HBoxContainer/HBoxContainer" unique_id=422639759]
 unique_name_in_owner = true
 layout_mode = 2
 text = "\"frog\""
 expand_to_text_length = true
 select_all_on_focus = true
 
-[node name="TagLabel1" type="Label" parent="HBoxContainer/HBoxContainer"]
+[node name="TagLabel1" type="Label" parent="HBoxContainer/HBoxContainer" unique_id=996293881]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 text = "\""
 
-[node name="Button" type="Button" parent="HBoxContainer"]
+[node name="Button" type="Button" parent="HBoxContainer" unique_id=416303512]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_styles/hover_pressed = ExtResource("3_txreo")
-theme_override_styles/hover = ExtResource("4_wtcm7")
-theme_override_styles/pressed = ExtResource("3_txreo")
 theme_override_styles/normal = ExtResource("4_wtcm7")
+theme_override_styles/pressed = ExtResource("3_txreo")
+theme_override_styles/hover = ExtResource("4_wtcm7")
+theme_override_styles/hover_pressed = ExtResource("3_txreo")
 toggle_mode = true
 text = "txt"
 

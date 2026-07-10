@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://cd1xggw5wy8wq"]
+[gd_scene format=3 uid="uid://cd1xggw5wy8wq"]
 
 [ext_resource type="Theme" uid="uid://bwqifwabah580" path="res://Themes/logic_block.tres" id="1_wrb8p"]
 [ext_resource type="Texture2D" uid="uid://dvyqjbrjb20p3" path="res://Sprites/background.png" id="2_vjobr"]
@@ -21,32 +21,19 @@ script/source = "extends Control
 @export var user_blocks: VBoxContainer
 @export var machine := 0
 
+
 func reset_nodes(dragging):
 	dragging_node = dragging
 
-	
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
-	
 	machine = get_tree().get_current_scene().machine
 	
 	%MainSpilt.split_offset = DisplayServer.window_get_size().x * -0.5 + 200
 	user_blocks = %UserBlocks
 	
+	self.place_blocks()
 
-	
-	# 放出积木的计时器
-	timer = Timer.new()
-	add_child(timer)
-	timer.wait_time = 0.1
-	timer.one_shot = true
-	timer.timeout.connect(_on_place_blocks)
-	timer.start()
-	
-	
-	
-	pass # Replace with function body.
 
 func _physics_process(delta: float) -> void:
 	if %UpButton.button_pressed:
@@ -54,48 +41,54 @@ func _physics_process(delta: float) -> void:
 	
 	if %DownButton.button_pressed:
 		%UserBlockScroll.scroll_vertical += 5
+
+
+func compile():
+	# 复制一份积木列表到自己之下
+	var blocks_dup = %UserBlocks.duplicate()
+	blocks_dup.visible = false
+	self.add_child(blocks_dup)
+	
+	# 确保所有积木的内置变量不出错
+	for i in blocks_dup.get_children():
+		i.origin_node = blocks_dup
+	
+	# 第一步，jump锁定目标
+	for i in blocks_dup.get_children():
+		i.pre_compile(0)
+	
+	# 第二步，删除需要忽略的积木
+	for i in blocks_dup.get_children():
+		i.pre_compile(1)
+	# 刷新
+	for i in blocks_dup.get_children():
+		i._on_any_block_moved()
+	await get_tree().create_timer(0).timeout
+	
+	# 最后一步，导出到剪贴板
+	var compile_text: String
+	# 所有积木进行二级导出
+	for i in blocks_dup.get_children():
+		compile_text += i.compile()
+	
+	# 删除临时积木列表
+	blocks_dup.queue_free()
+	DisplayServer.clipboard_set(compile_text)
 	
 
-func compile() -> void:
-	%CompileManager.compile()
-	
-
-func add_block_shell(instance , index = -1):
-	#var block_shell = load(\"res://Blocks/block_shell.tscn\")
-	#block_shell = block_shell.instantiate()
-	#%UserBlocks.add_child(block_shell)
-	#block_shell.add_block(instance)
-	#block_shell.reset_nodes(dragging_node, %UserBlocks)
-	#
-	#if index == -1:
-		#pass
-	#else:
-		#block_shell.get_parent().move_child(block_shell, index)
-	#
-	#return(block_shell)
-	
+func add_block_shell(instance, index = -1):
 	var block = load(instance)
 	block = block.instantiate()
 	%UserBlocks.add_child(block)
 	block.origin_node = %UserBlocks
 	block.input_node = %EasyInput
-	if index == -1:
-		pass
-	else:
+	if index != -1:
 		block.get_parent().move_child(block, index)
 	
-	return(block)
+	return block
+
 
 func add_given_block(instance):
-	#var block_shell = load(\"res://Blocks/block_shell.tscn\")
-	#block_shell = block_shell.instantiate()
-	#%GivenBlocks.add_child(block_shell)
-	#block_shell.add_block(instance)
-	#block_shell.reset_nodes(dragging_node, %UserBlocks)
-	#block_shell.is_given_block = true
-	#
-	#return(block_shell)
-	
 	var block = load(instance)
 	block = block.instantiate()
 	block.is_given_block = true
@@ -105,17 +98,10 @@ func add_given_block(instance):
 	block.origin_node = %UserBlocks
 	block.input_node = %EasyInput
 	
-	return(block)
+	return block
 
 
-func _on_place_blocks():
-	
-	if timer:
-		timer.queue_free
-	
-	for i in %GivenBlocks.get_children():
-		i.queue_free()
-	
+func place_blocks():
 	%RenameEdit.text = self.name
 	
 	var spilt_pack = load(\"res://Blocks/spilt_line.tscn\")
@@ -191,17 +177,12 @@ func _on_place_blocks():
 	add_given_block(\"res://Blocks/Units/unit_unbind.tscn\")
 	add_given_block(\"res://Blocks/Units/unit_radar.tscn\")
 	add_given_block(\"res://Blocks/Units/unit_locate.tscn\")
-	
-	pass
 
-func read_from_clipboard( add = false , index = -1):
-	
-	if add:
-		pass
-	else:
+
+func read_from_clipboard(add = false, index = -1):
+	if not add:
 		for i in %UserBlocks.get_children():
 			i.queue_free()
-	
 	
 	var data = DisplayServer.clipboard_get()
 	var codes = data.replace(\"\\r\\n\" , \"\\n\").replace(\"\\r\" , \"\\n\").split(\"\\n\")
@@ -260,57 +241,46 @@ func read_from_clipboard( add = false , index = -1):
 	if add:
 		# 遍历剪贴板的每一行
 		for i in codes:
-			
 			# 检查此行是否符合要求
-			if code_list.has( i.split(\" \")[0] ):
-				
-				var node = add_block_shell( code_list[i.split(\" \")[0]] ,index)
+			if code_list.has(i.split(\" \")[0]):
+				var node = add_block_shell(code_list[i.split(\" \")[0]], index)
 				
 				if i.split(\" \")[0] == \"print\":
-					node.load_value( [\"print\", i.right(i.length() - 6)]  )
+					node.load_value([\"print\", i.right(i.length() - 6)])
 				elif i.split(\" \")[0] == \"format\":
-					node.load_value( [\"format\", i.right(i.length() - 7)] )
+					node.load_value([\"format\", i.right(i.length() - 7)])
 				elif i.split(\" \")[0] == \"jump\":
-					
 					var jump_load_value = i.split(\" \")
 					jump_load_value[1] = str(int(jump_load_value[1]) + origin_index)
 					
-					node.load_value( jump_load_value )
-					
+					node.load_value(jump_load_value)
 				else:
-					node.load_value( i.split(\" \") )
-				
+					node.load_value(i.split(\" \"))
 			elif i.split(\" \")[0] == \"ucontrol\":
-				if code_list.has( i.split(\" \")[0] + \" \" + i.split(\" \")[1]):
-					var node = add_block_shell( code_list[ i.split(\" \")[0] + \" \" + i.split(\" \")[1] ] ,index)
-					node.load_value( i.split(\" \") )
-			
+				if code_list.has(i.split(\" \")[0] + \" \" + i.split(\" \")[1]):
+					var node = add_block_shell(code_list[i.split(\" \")[0] + \" \" + i.split(\" \")[1]], index)
+					node.load_value(i.split(\" \"))
 			elif i.begins_with(\"#\"):
-				var node = add_block_shell( code_list[\"expression\"] ,index)
+				var node = add_block_shell(code_list[\"expression\"], index)
 				if i[1] == \" \":
-					node.load_value( [i.erase(0, 2)] )
+					node.load_value([i.erase(0, 2)])
 				else:
-					node.load_value( [i.erase(0)] )
-				
-			
+					node.load_value([i.erase(0)])
 			elif i.ends_with(\":\") and (not i.contains(\" \")):
-				var node = add_block_shell( code_list[\"jumplabel\"] ,index)
-				node.load_value( [i.replace(\":\", \"\")] )
-			
-			
+				var node = add_block_shell(code_list[\"jumplabel\"], index)
+				node.load_value([i.replace(\":\", \"\")])
 			index += 1
 			
 		# 修复jump问题
 		var check_index = origin_index
 		for i in codes:
-			
 			if i.split(\" \")[0] == \"jump\":
 				var jump_load_value = i.split(\" \")
 				if jump_load_value[1].is_valid_int():
 					jump_load_value[1] = str(int(jump_load_value[1]) + origin_index)
-				%UserBlocks.get_child(check_index).load_value( jump_load_value )
+				%UserBlocks.get_child(check_index).load_value(jump_load_value)
 				
-			if code_list.has( i.split(\" \")[0] ):
+			if code_list.has(i.split(\" \")[0]):
 				check_index += 1
 			elif i.split(\" \")[0] == \"ucontrol\":
 				check_index += 1
@@ -318,48 +288,44 @@ func read_from_clipboard( add = false , index = -1):
 				check_index += 1
 			elif i.ends_with(\":\") and (not i.contains(\" \")):
 				check_index += 1
-		
 	else:
 		# 遍历剪贴板的每一行
 		for i in codes:
-			
 			# 检查此行是否符合要求
-			if code_list.has( i.split(\" \")[0] ):
+			if code_list.has(i.split(\" \")[0]):
 				
-				var node = add_block_shell( code_list[i.split(\" \")[0]] )
+				var node = add_block_shell(code_list[i.split(\" \")[0]])
 				
 				if i.split(\" \")[0] == \"print\":
-					node.load_value( [\"print\", i.right(i.length() - 6)]  )
+					node.load_value([\"print\", i.right(i.length() - 6)])
 				elif i.split(\" \")[0] == \"format\":
-					node.load_value( [\"format\", i.right(i.length() - 7)] )
+					node.load_value([\"format\", i.right(i.length() - 7)])
 				else:
-					node.load_value( i.split(\" \") )
+					node.load_value(i.split(\" \"))
 				
 			elif i.split(\" \")[0] == \"ucontrol\":
-				if code_list.has( i.split(\" \")[0] + \" \" + i.split(\" \")[1]):
-					var node = add_block_shell( code_list[ i.split(\" \")[0] + \" \" + i.split(\" \")[1] ] )
-					node.load_value( i.split(\" \") )
+				if code_list.has(i.split(\" \")[0] + \" \" + i.split(\" \")[1]):
+					var node = add_block_shell(code_list[i.split(\" \")[0] + \" \" + i.split(\" \")[1]])
+					node.load_value(i.split(\" \"))
 			
 			elif i.begins_with(\"#\"):
-				var node = add_block_shell( code_list[\"expression\"] ,index)
+				var node = add_block_shell(code_list[\"expression\"], index)
 				if i[1] == \" \":
-					node.load_value( [i.erase(0, 2)] )
+					node.load_value([i.erase(0, 2)])
 				else:
-					node.load_value( [i.erase(0)] )
-				
-			
+					node.load_value([i.erase(0)])
+
 			elif i.ends_with(\":\") and (not i.contains(\" \")):
-				var node = add_block_shell( code_list[\"jumplabel\"] ,index)
-				node.load_value( [i.replace(\":\", \"\")] )
+				var node = add_block_shell(code_list[\"jumplabel\"], index)
+				node.load_value([i.replace(\":\", \"\")])
 			
 		# 修复jump问题
 		var check_index = 0
 		for i in codes:
-			
 			if i.split(\" \")[0] == \"jump\":
-				%UserBlocks.get_child(check_index).load_value( i.split(\" \") )
+				%UserBlocks.get_child(check_index).load_value(i.split(\" \"))
 		
-			if code_list.has( i.split(\" \")[0] ):
+			if code_list.has(i.split(\" \")[0]):
 				check_index += 1
 			elif i.split(\" \")[0] == \"ucontrol\":
 				check_index += 1
@@ -367,69 +333,50 @@ func read_from_clipboard( add = false , index = -1):
 				check_index += 1
 			elif i.ends_with(\":\") and (not i.contains(\" \")):
 				check_index += 1
-	
+
 	%UserBlocks._on_block_moved()
 
 
 func _on_clear_pressed() -> void:
-	
 	%ClearButton.get_child(0).visible = true
-	
-	
-	pass # Replace with function body.
 
 
 func _on_close_pressed() -> void:
-	
 	%CloseButton.get_child(0).visible = true
-	
-	pass # Replace with function body.
 
 
 func _on_rename_edit_editing_toggled(toggled_on: bool) -> void:
 	%RenameEdit.flat = toggled_on == false
-	pass # Replace with function body.
 
 
 func _on_rename_edit_text_submitted(new_text: String) -> void:
 	self.name = %RenameEdit.text
-	pass # Replace with function body.
 
 
 func _on_confirm_clear_confirmed(edit) -> void:
-	
 	for i in %UserBlocks.get_children():
 		i.queue_free()
-	
-	
-	pass # Replace with function body.
 
 
 func _on_confirm_close_confirmed(edit) -> void:
 	queue_free()
-	
-	pass # Replace with function body.
+
 
 func bind_confirm():
 	%LoadConfirm.visible = true
 
 
 func _on_set_load_edit_confirmed(value: int) -> void:
-	
-	read_from_clipboard(true , int(min(value, %UserBlocks.get_child_count() )) )
-	
-	pass # Replace with function body.
+	read_from_clipboard(true , int(min(value, %UserBlocks.get_child_count())))
 
 
 func _on_import_button_pressed() -> void:
 	compile()
 
 
-
-
 func _on_load_confirm_confirmed(edit: String) -> void:
 	if edit.is_valid_int():
-		read_from_clipboard(true , min(int(edit), %UserBlocks.get_child_count() ) )
+		read_from_clipboard(true , min(int(edit), %UserBlocks.get_child_count()))
 	else:
 		%LoadWarning.visible = true
 "
@@ -477,22 +424,18 @@ var input_node
 signal block_move
 
 func _on_block_moved():
-	
 	# 进行跳线计算
 	
 	# 剔除0长度跳线和不存在的跳线
 	var jump_line_true: Dictionary
 	for i in jump_lines:
-		if i == null:
-			continue
-			
-		if jump_lines[i][0] == jump_lines[i][1]:
-			continue
-		
-		if jump_lines[i][0] == -1 or jump_lines[i][1] == -1 :
-			continue
-		
-		jump_line_true[i] = jump_lines[i]
+		if not (
+			i == null or
+			jump_lines[i][0] == jump_lines[i][1] or 
+			jump_lines[i][0] == -1 or 
+			jump_lines[i][1] == -1 
+		):
+			jump_line_true[i] = jump_lines[i]
 	
 	# 整理数据化
 	var jump_line_numbers: Dictionary
@@ -500,18 +443,15 @@ func _on_block_moved():
 		if jump_line_true[i][0] == -1:
 			pass
 		else:
-			
 			jump_line_numbers[jump_line_true[i][0]] = jump_line_true[i][1]
 
 	# 剔除终点一致的跳线中较短的跳线
 	var long_lines: Dictionary
 	for i in jump_line_numbers:
-		
 		if long_lines.has(i):
 			# 若jump_lines有同目标的跳线跳线比当前这条更长
 			if abs(jump_line_numbers[i] - i) > abs(long_lines[i] - i):
 				long_lines[i] = jump_line_numbers[i]
-		
 		else:
 			long_lines[i] = jump_line_numbers[i]
 
@@ -535,7 +475,6 @@ func _on_block_moved():
 	var line_height: Dictionary
 	
 	for i in ranked_lines:
-		
 		var line_height_dup = line_height.duplicate()
 		line_height[i[0]] = [i[1], 1]
 		for j in line_height_dup:
@@ -545,29 +484,26 @@ func _on_block_moved():
 	# 整理
 	for i in line_height:
 		line_height[i] = line_height[i][1]
-	
 
 	jump_line_rank = line_height
 
 	emit_signal(\"block_move\")
 
-func is_related(var1, var2, var3, var4) -> bool:
-	return(not(
-		(var1 > var3 and var2 > var3 and var1 > var4 and var2 > var4) or 
-		(var1 < var3 and var2 < var3 and var1 < var4 and var2 < var4)
-	))
+
+func is_related(var1: int, var2: int, var3: int, var4: int) -> bool:
+	return (min(var1, var2) < max(var3, var4)) and (max(var1, var2) > min(var3, var4))
 "
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b78su"]
 bg_color = Color(0.176471, 0.156863, 0.2, 1)
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8howc"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_b78su"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yl2l4"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7fkqn"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yl2l4"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_b78su"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8howc"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7wlcy"]
 content_margin_left = 5.0
@@ -576,74 +512,12 @@ content_margin_right = 5.0
 content_margin_bottom = 5.0
 bg_color = Color(0.258824, 0.223529, 0.309804, 1)
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wkuwf"]
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8howc"]
 bg_color = Color(0, 0, 0, 0.352941)
 
-[sub_resource type="GDScript" id="GDScript_eo2o7"]
-resource_name = "compile_manager"
-script/source = "extends Node
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wkuwf"]
 
-var blocks_dup
-var step := 0
-
-func compile():
-	
-	blocks_dup = %UserBlocks.duplicate()
-	blocks_dup.visible = false
-	
-	# 复制一份积木列表到自己之下
-	self.add_child(blocks_dup)
-	
-	# 确保所有积木的内置变量不出错
-	for i in blocks_dup.get_children():
-		i.origin_node = blocks_dup
-	
-	step = 0
-	$CompileWait.start()
-
-## 每次计时器结束计时时，进行下一步。返回true时结束。
-func _on_timer_timeout() -> bool:
-	
-	# 第一步，jump锁定目标
-	if step == 0:
-		for i in blocks_dup.get_children():
-			i.pre_compile(0)
-		
-		step = 1
-	
-	# 第二步，删除需要忽略的积木
-	elif step == 1:
-		for i in blocks_dup.get_children():
-			i.pre_compile(1)
-		
-		step = 128
-	
-	# 最后一步，导出到剪贴板
-	elif step == 128:
-	
-		var compile_text: String
-		
-		# 所有积木进行二级导出
-		for i in blocks_dup.get_children():
-			compile_text += i.compile()
-		
-		# 删除临时积木列表
-		blocks_dup.queue_free()
-		
-		DisplayServer.clipboard_set(compile_text)
-		return true
-	
-	# 刷新
-	for i in blocks_dup.get_children():
-		i._on_any_block_moved()
-		
-	$CompileWait.start()
-	return false
-"
-
-[node name="Editor" type="Control"]
+[node name="Editor" type="Control" unique_id=1995262411]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -653,7 +527,7 @@ grow_vertical = 2
 theme = ExtResource("1_wrb8p")
 script = SubResource("GDScript_q0a35")
 
-[node name="Panel" type="Panel" parent="."]
+[node name="Panel" type="Panel" parent="." unique_id=1009303938]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -662,7 +536,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_a7iym")
 
-[node name="WorkArea" type="PanelContainer" parent="."]
+[node name="WorkArea" type="PanelContainer" parent="." unique_id=16028278]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -672,65 +546,66 @@ grow_vertical = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxEmpty_7wlcy")
 
-[node name="MainSpilt" type="HSplitContainer" parent="WorkArea"]
+[node name="MainSpilt" type="HSplitContainer" parent="WorkArea" unique_id=888209884]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 0
 theme_override_constants/minimum_grab_thickness = 25
 theme_override_constants/autohide = 0
-split_offset = -450
+split_offsets = PackedInt32Array(-450)
 dragger_visibility = 1
+split_offset = -450
 
-[node name="PanelContainer2" type="PanelContainer" parent="WorkArea/MainSpilt"]
+[node name="BlockArea" type="PanelContainer" parent="WorkArea/MainSpilt" unique_id=70361237]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_wlowb")
 
-[node name="MarginContainer" type="MarginContainer" parent="WorkArea/MainSpilt/PanelContainer2"]
+[node name="MarginContainer" type="MarginContainer" parent="WorkArea/MainSpilt/BlockArea" unique_id=2040477687]
 clip_contents = true
 layout_mode = 2
 theme_override_constants/margin_top = 3
 theme_override_constants/margin_right = 3
 theme_override_constants/margin_bottom = 3
 
-[node name="ScrollContainer" type="ScrollContainer" parent="WorkArea/MainSpilt/PanelContainer2/MarginContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="WorkArea/MainSpilt/BlockArea/MarginContainer" unique_id=2063301245]
 clip_contents = false
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="WorkArea/MainSpilt/PanelContainer2/MarginContainer/ScrollContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="WorkArea/MainSpilt/BlockArea/MarginContainer/ScrollContainer" unique_id=932348345]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/margin_left = 30
-theme_override_constants/margin_top = 50
+theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 0
-theme_override_constants/margin_bottom = 20
+theme_override_constants/margin_bottom = 30
 
-[node name="GivenBlocks" type="VBoxContainer" parent="WorkArea/MainSpilt/PanelContainer2/MarginContainer/ScrollContainer/MarginContainer"]
+[node name="GivenBlocks" type="VBoxContainer" parent="WorkArea/MainSpilt/BlockArea/MarginContainer/ScrollContainer/MarginContainer" unique_id=1085479223]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 15
 
-[node name="PanelContainer" type="PanelContainer" parent="WorkArea/MainSpilt"]
+[node name="EditArea" type="PanelContainer" parent="WorkArea/MainSpilt" unique_id=1911048559]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_qdoku")
 
-[node name="Panel" type="Panel" parent="WorkArea/MainSpilt/PanelContainer"]
+[node name="Panel" type="Panel" parent="WorkArea/MainSpilt/EditArea" unique_id=1501358803]
 z_as_relative = false
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_wkuwf")
 
-[node name="TextureRect" type="TextureRect" parent="WorkArea/MainSpilt/PanelContainer"]
+[node name="TextureRect" type="TextureRect" parent="WorkArea/MainSpilt/EditArea" unique_id=597007681]
 visible = false
 self_modulate = Color(1, 1, 1, 0.0392157)
 layout_mode = 2
 texture = ExtResource("2_vjobr")
 stretch_mode = 1
 
-[node name="TextureRect2" type="TextureRect" parent="WorkArea/MainSpilt/PanelContainer"]
+[node name="TextureRect2" type="TextureRect" parent="WorkArea/MainSpilt/EditArea" unique_id=1496732191]
 visible = false
 self_modulate = Color(1, 1, 1, 0.00392157)
 layout_mode = 2
@@ -739,7 +614,7 @@ size_flags_vertical = 4
 texture = ExtResource("3_wrb8p")
 stretch_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="WorkArea/MainSpilt/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="WorkArea/MainSpilt/EditArea" unique_id=295291010]
 clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -748,14 +623,14 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 0
 
-[node name="UserBlockScroll" type="ScrollContainer" parent="WorkArea/MainSpilt/PanelContainer/MarginContainer"]
+[node name="UserBlockScroll" type="ScrollContainer" parent="WorkArea/MainSpilt/EditArea/MarginContainer" unique_id=1576589318]
 unique_name_in_owner = true
 clip_contents = false
 layout_mode = 2
 size_flags_horizontal = 3
 follow_focus = true
 
-[node name="MarginContainer" type="MarginContainer" parent="WorkArea/MainSpilt/PanelContainer/MarginContainer/UserBlockScroll"]
+[node name="MarginContainer" type="MarginContainer" parent="WorkArea/MainSpilt/EditArea/MarginContainer/UserBlockScroll" unique_id=1224192810]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -764,51 +639,51 @@ theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 100
 
-[node name="UserBlocks" type="VBoxContainer" parent="WorkArea/MainSpilt/PanelContainer/MarginContainer/UserBlockScroll/MarginContainer"]
+[node name="UserBlocks" type="VBoxContainer" parent="WorkArea/MainSpilt/EditArea/MarginContainer/UserBlockScroll/MarginContainer" unique_id=1926500811]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 2
 script = SubResource("GDScript_a7iym")
 
-[node name="EasyInput" type="Node2D" parent="WorkArea/MainSpilt/PanelContainer/MarginContainer/UserBlockScroll/MarginContainer"]
+[node name="EasyInput" type="Node2D" parent="WorkArea/MainSpilt/EditArea/MarginContainer/UserBlockScroll/MarginContainer" unique_id=831448670]
 unique_name_in_owner = true
 position = Vector2(-185, -15)
 
-[node name="PanelContainer2" type="PanelContainer" parent="WorkArea/MainSpilt/PanelContainer"]
+[node name="ScrollButton" type="PanelContainer" parent="WorkArea/MainSpilt/EditArea" unique_id=1117537777]
 custom_minimum_size = Vector2(40, 0)
 layout_mode = 2
 size_flags_horizontal = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_b78su")
 
-[node name="MarginContainer" type="MarginContainer" parent="WorkArea/MainSpilt/PanelContainer/PanelContainer2"]
+[node name="MarginContainer" type="MarginContainer" parent="WorkArea/MainSpilt/EditArea/ScrollButton" unique_id=1660560088]
 layout_mode = 2
 theme_override_constants/margin_top = 40
 
-[node name="VBoxContainer" type="VBoxContainer" parent="WorkArea/MainSpilt/PanelContainer/PanelContainer2/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="WorkArea/MainSpilt/EditArea/ScrollButton/MarginContainer" unique_id=1061171092]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 
-[node name="UpButton" type="Button" parent="WorkArea/MainSpilt/PanelContainer/PanelContainer2/MarginContainer/VBoxContainer"]
+[node name="UpButton" type="Button" parent="WorkArea/MainSpilt/EditArea/ScrollButton/MarginContainer/VBoxContainer" unique_id=1308488381]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_8howc")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_b78su")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_7fkqn")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_yl2l4")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_7fkqn")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_b78su")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_8howc")
 action_mode = 0
 
-[node name="DownButton" type="Button" parent="WorkArea/MainSpilt/PanelContainer/PanelContainer2/MarginContainer/VBoxContainer"]
+[node name="DownButton" type="Button" parent="WorkArea/MainSpilt/EditArea/ScrollButton/MarginContainer/VBoxContainer" unique_id=1279171837]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_8howc")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_b78su")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_7fkqn")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_yl2l4")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_7fkqn")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_b78su")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_8howc")
 action_mode = 0
 
-[node name="PanelContainer" type="PanelContainer" parent="WorkArea/MainSpilt/PanelContainer"]
+[node name="Toolbar" type="PanelContainer" parent="WorkArea/MainSpilt/EditArea" unique_id=1103823226]
 z_index = 1
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
@@ -816,20 +691,20 @@ size_flags_vertical = 0
 theme = ExtResource("4_7wlcy")
 theme_override_styles/panel = SubResource("StyleBoxFlat_7wlcy")
 
-[node name="Tools" type="HBoxContainer" parent="WorkArea/MainSpilt/PanelContainer/PanelContainer"]
+[node name="Tools" type="HBoxContainer" parent="WorkArea/MainSpilt/EditArea/Toolbar" unique_id=1759145372]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Lefts" type="HBoxContainer" parent="WorkArea/MainSpilt/PanelContainer/PanelContainer/Tools"]
+[node name="Lefts" type="HBoxContainer" parent="WorkArea/MainSpilt/EditArea/Toolbar/Tools" unique_id=455811901]
 layout_mode = 2
 size_flags_horizontal = 2
 theme_override_constants/separation = 8
 
-[node name="RenameEdit" type="LineEdit" parent="WorkArea/MainSpilt/PanelContainer/PanelContainer/Tools/Lefts"]
+[node name="RenameEdit" type="LineEdit" parent="WorkArea/MainSpilt/EditArea/Toolbar/Tools/Lefts" unique_id=1481372322]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_styles/focus = SubResource("StyleBoxEmpty_wkuwf")
 theme_override_styles/normal = SubResource("StyleBoxFlat_8howc")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_wkuwf")
 text = "Editor"
 max_length = 36
 expand_to_text_length = true
@@ -837,7 +712,7 @@ emoji_menu_enabled = false
 flat = true
 select_all_on_focus = true
 
-[node name="CopyButton" type="Button" parent="WorkArea/MainSpilt/PanelContainer/PanelContainer/Tools/Lefts"]
+[node name="CopyButton" type="Button" parent="WorkArea/MainSpilt/EditArea/Toolbar/Tools/Lefts" unique_id=1169438668]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
@@ -845,12 +720,12 @@ icon = ExtResource("5_yl2l4")
 icon_alignment = 1
 expand_icon = true
 
-[node name="Rights" type="HBoxContainer" parent="WorkArea/MainSpilt/PanelContainer/PanelContainer/Tools"]
+[node name="Rights" type="HBoxContainer" parent="WorkArea/MainSpilt/EditArea/Toolbar/Tools" unique_id=1291905389]
 layout_mode = 2
 size_flags_horizontal = 10
 theme_override_constants/separation = 8
 
-[node name="ImportButton" type="Button" parent="WorkArea/MainSpilt/PanelContainer/PanelContainer/Tools/Rights"]
+[node name="ImportButton" type="Button" parent="WorkArea/MainSpilt/EditArea/Toolbar/Tools/Rights" unique_id=1269619111]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
@@ -858,7 +733,7 @@ icon = ExtResource("6_eo2o7")
 icon_alignment = 1
 expand_icon = true
 
-[node name="ClearButton" type="Button" parent="WorkArea/MainSpilt/PanelContainer/PanelContainer/Tools/Rights"]
+[node name="ClearButton" type="Button" parent="WorkArea/MainSpilt/EditArea/Toolbar/Tools/Rights" unique_id=86064245]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
@@ -866,19 +741,19 @@ icon = ExtResource("5_b78su")
 icon_alignment = 1
 expand_icon = true
 
-[node name="ConfirmClear" parent="WorkArea/MainSpilt/PanelContainer/PanelContainer/Tools/Rights/ClearButton" instance=ExtResource("6_yl2l4")]
+[node name="ConfirmClear" parent="WorkArea/MainSpilt/EditArea/Toolbar/Tools/Rights/ClearButton" unique_id=2029939672 instance=ExtResource("6_yl2l4")]
 unique_name_in_owner = true
 title = "清空项目"
 visible = false
 window_text = "是否清空该编辑器下的所有积木？"
 
-[node name="Label" parent="WorkArea/MainSpilt/PanelContainer/PanelContainer/Tools/Rights/ClearButton/ConfirmClear/Control/MarginContainer2/VBoxContainer" index="0"]
+[node name="Label" parent="WorkArea/MainSpilt/EditArea/Toolbar/Tools/Rights/ClearButton/ConfirmClear/Control/MarginContainer2/VBoxContainer" parent_id_path=PackedInt32Array(2029939672, 293426841) index="0" unique_id=1666603729]
 text = "是否清空该编辑器下的所有积木？"
 
-[node name="Title" parent="WorkArea/MainSpilt/PanelContainer/PanelContainer/Tools/Rights/ClearButton/ConfirmClear/Control/PanelContainer/TitlePanel" index="1"]
+[node name="Title" parent="WorkArea/MainSpilt/EditArea/Toolbar/Tools/Rights/ClearButton/ConfirmClear/Control/PanelContainer/TitlePanel" parent_id_path=PackedInt32Array(2029939672, 1146131521) index="1" unique_id=391144446]
 text = "清空项目"
 
-[node name="CloseButton" type="Button" parent="WorkArea/MainSpilt/PanelContainer/PanelContainer/Tools/Rights"]
+[node name="CloseButton" type="Button" parent="WorkArea/MainSpilt/EditArea/Toolbar/Tools/Rights" unique_id=2025555271]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
@@ -886,19 +761,19 @@ icon = ExtResource("6_7fkqn")
 icon_alignment = 1
 expand_icon = true
 
-[node name="ConfirmClose" parent="WorkArea/MainSpilt/PanelContainer/PanelContainer/Tools/Rights/CloseButton" instance=ExtResource("6_yl2l4")]
+[node name="ConfirmClose" parent="WorkArea/MainSpilt/EditArea/Toolbar/Tools/Rights/CloseButton" unique_id=688577729 instance=ExtResource("6_yl2l4")]
 unique_name_in_owner = true
 title = "关闭编辑器"
 visible = false
 window_text = "是否关闭当前编辑器？"
 
-[node name="Label" parent="WorkArea/MainSpilt/PanelContainer/PanelContainer/Tools/Rights/CloseButton/ConfirmClose/Control/MarginContainer2/VBoxContainer" index="0"]
+[node name="Label" parent="WorkArea/MainSpilt/EditArea/Toolbar/Tools/Rights/CloseButton/ConfirmClose/Control/MarginContainer2/VBoxContainer" parent_id_path=PackedInt32Array(688577729, 293426841) index="0" unique_id=1666603729]
 text = "是否关闭当前编辑器？"
 
-[node name="Title" parent="WorkArea/MainSpilt/PanelContainer/PanelContainer/Tools/Rights/CloseButton/ConfirmClose/Control/PanelContainer/TitlePanel" index="1"]
+[node name="Title" parent="WorkArea/MainSpilt/EditArea/Toolbar/Tools/Rights/CloseButton/ConfirmClose/Control/PanelContainer/TitlePanel" parent_id_path=PackedInt32Array(688577729, 1146131521) index="1" unique_id=391144446]
 text = "关闭编辑器"
 
-[node name="SetLoadEdit" parent="." instance=ExtResource("5_wkuwf")]
+[node name="SetLoadEdit" parent="." unique_id=987061477 instance=ExtResource("5_wkuwf")]
 unique_name_in_owner = true
 visible = false
 z_index = 100
@@ -908,62 +783,53 @@ offset_top = -59.0
 offset_right = 85.0
 offset_bottom = 59.0
 
-[node name="LoadConfirm" parent="." instance=ExtResource("6_yl2l4")]
+[node name="LoadConfirm" parent="." unique_id=753404587 instance=ExtResource("6_yl2l4")]
 unique_name_in_owner = true
 title = "合并逻辑"
 visible = false
 window_text = "请输入插入的行数，逻辑将从下一行插入。"
 ask = false
 
-[node name="Label" parent="LoadConfirm/Control/MarginContainer2/VBoxContainer" index="0"]
+[node name="Label" parent="LoadConfirm/Control/MarginContainer2/VBoxContainer" parent_id_path=PackedInt32Array(753404587, 293426841) index="0" unique_id=1666603729]
 text = "请输入插入的行数，逻辑将从下一行插入。"
 
-[node name="LineEdit" parent="LoadConfirm/Control/MarginContainer2/VBoxContainer" index="1"]
+[node name="LineEdit" parent="LoadConfirm/Control/MarginContainer2/VBoxContainer" parent_id_path=PackedInt32Array(753404587, 293426841) index="1" unique_id=804688111]
 visible = true
 
-[node name="CancelButton" parent="LoadConfirm/Control/MarginContainer/HBoxContainer" index="1"]
+[node name="CancelButton" parent="LoadConfirm/Control/MarginContainer/HBoxContainer" parent_id_path=PackedInt32Array(753404587, 2023820557) index="1" unique_id=656633363]
 visible = false
 
-[node name="Title" parent="LoadConfirm/Control/PanelContainer/TitlePanel" index="1"]
+[node name="Title" parent="LoadConfirm/Control/PanelContainer/TitlePanel" parent_id_path=PackedInt32Array(753404587, 1146131521) index="1" unique_id=391144446]
 text = "合并逻辑"
 
-[node name="LoadWarning" parent="." instance=ExtResource("6_yl2l4")]
+[node name="LoadWarning" parent="." unique_id=1624154998 instance=ExtResource("6_yl2l4")]
 unique_name_in_owner = true
 title = "错误"
 visible = false
 window_text = "输入栏仅可输入数字。"
 ask = false
 
-[node name="Label" parent="LoadWarning/Control/MarginContainer2/VBoxContainer" index="0"]
+[node name="Label" parent="LoadWarning/Control/MarginContainer2/VBoxContainer" parent_id_path=PackedInt32Array(1624154998, 293426841) index="0" unique_id=1666603729]
 text = "输入栏仅可输入数字。"
 
-[node name="CancelButton" parent="LoadWarning/Control/MarginContainer/HBoxContainer" index="1"]
+[node name="CancelButton" parent="LoadWarning/Control/MarginContainer/HBoxContainer" parent_id_path=PackedInt32Array(1624154998, 2023820557) index="1" unique_id=656633363]
 visible = false
 
-[node name="Title" parent="LoadWarning/Control/PanelContainer/TitlePanel" index="1"]
+[node name="Title" parent="LoadWarning/Control/PanelContainer/TitlePanel" parent_id_path=PackedInt32Array(1624154998, 1146131521) index="1" unique_id=391144446]
 text = "错误"
 
-[node name="CompileManager" type="Node" parent="."]
-unique_name_in_owner = true
-script = SubResource("GDScript_eo2o7")
-
-[node name="CompileWait" type="Timer" parent="CompileManager"]
-wait_time = 0.001
-one_shot = true
-
-[connection signal="sort_children" from="WorkArea/MainSpilt/PanelContainer/MarginContainer/UserBlockScroll/MarginContainer/UserBlocks" to="WorkArea/MainSpilt/PanelContainer/MarginContainer/UserBlockScroll/MarginContainer/UserBlocks" method="_on_block_moved"]
-[connection signal="editing_toggled" from="WorkArea/MainSpilt/PanelContainer/PanelContainer/Tools/Lefts/RenameEdit" to="." method="_on_rename_edit_editing_toggled"]
-[connection signal="text_submitted" from="WorkArea/MainSpilt/PanelContainer/PanelContainer/Tools/Lefts/RenameEdit" to="." method="_on_rename_edit_text_submitted"]
-[connection signal="pressed" from="WorkArea/MainSpilt/PanelContainer/PanelContainer/Tools/Rights/ImportButton" to="." method="_on_import_button_pressed"]
-[connection signal="pressed" from="WorkArea/MainSpilt/PanelContainer/PanelContainer/Tools/Rights/ClearButton" to="." method="_on_clear_pressed"]
-[connection signal="confirmed" from="WorkArea/MainSpilt/PanelContainer/PanelContainer/Tools/Rights/ClearButton/ConfirmClear" to="." method="_on_confirm_clear_confirmed"]
-[connection signal="pressed" from="WorkArea/MainSpilt/PanelContainer/PanelContainer/Tools/Rights/CloseButton" to="." method="_on_close_pressed"]
-[connection signal="confirmed" from="WorkArea/MainSpilt/PanelContainer/PanelContainer/Tools/Rights/CloseButton/ConfirmClose" to="." method="_on_confirm_close_confirmed"]
+[connection signal="sort_children" from="WorkArea/MainSpilt/EditArea/MarginContainer/UserBlockScroll/MarginContainer/UserBlocks" to="WorkArea/MainSpilt/EditArea/MarginContainer/UserBlockScroll/MarginContainer/UserBlocks" method="_on_block_moved"]
+[connection signal="editing_toggled" from="WorkArea/MainSpilt/EditArea/Toolbar/Tools/Lefts/RenameEdit" to="." method="_on_rename_edit_editing_toggled"]
+[connection signal="text_submitted" from="WorkArea/MainSpilt/EditArea/Toolbar/Tools/Lefts/RenameEdit" to="." method="_on_rename_edit_text_submitted"]
+[connection signal="pressed" from="WorkArea/MainSpilt/EditArea/Toolbar/Tools/Rights/ImportButton" to="." method="_on_import_button_pressed"]
+[connection signal="pressed" from="WorkArea/MainSpilt/EditArea/Toolbar/Tools/Rights/ClearButton" to="." method="_on_clear_pressed"]
+[connection signal="confirmed" from="WorkArea/MainSpilt/EditArea/Toolbar/Tools/Rights/ClearButton/ConfirmClear" to="." method="_on_confirm_clear_confirmed"]
+[connection signal="pressed" from="WorkArea/MainSpilt/EditArea/Toolbar/Tools/Rights/CloseButton" to="." method="_on_close_pressed"]
+[connection signal="confirmed" from="WorkArea/MainSpilt/EditArea/Toolbar/Tools/Rights/CloseButton/ConfirmClose" to="." method="_on_confirm_close_confirmed"]
 [connection signal="confirmed" from="SetLoadEdit" to="." method="_on_set_load_edit_confirmed"]
 [connection signal="confirmed" from="LoadConfirm" to="." method="_on_load_confirm_confirmed"]
-[connection signal="timeout" from="CompileManager/CompileWait" to="CompileManager" method="_on_timer_timeout"]
 
-[editable path="WorkArea/MainSpilt/PanelContainer/PanelContainer/Tools/Rights/ClearButton/ConfirmClear"]
-[editable path="WorkArea/MainSpilt/PanelContainer/PanelContainer/Tools/Rights/CloseButton/ConfirmClose"]
+[editable path="WorkArea/MainSpilt/EditArea/Toolbar/Tools/Rights/ClearButton/ConfirmClear"]
+[editable path="WorkArea/MainSpilt/EditArea/Toolbar/Tools/Rights/CloseButton/ConfirmClose"]
 [editable path="LoadConfirm"]
 [editable path="LoadWarning"]

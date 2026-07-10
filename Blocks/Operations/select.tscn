@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://cnmee43nx4056"]
+[gd_scene format=3 uid="uid://cnmee43nx4056"]
 
 [ext_resource type="Theme" uid="uid://bwqifwabah580" path="res://Themes/logic_block.tres" id="1_r7274"]
 [ext_resource type="StyleBox" uid="uid://bid1es6bkyxvw" path="res://LogicBlockStyles/operation.tres" id="2_d8kw7"]
@@ -9,6 +9,7 @@
 resource_name = "select"
 script/source = "extends LogicBlocks
 
+
 func load_value(value: Array):
 	%a.text = value[1]
 	option_get_item(%op1,value[2])
@@ -16,45 +17,38 @@ func load_value(value: Array):
 	%c.text = value[4]
 	%d.text = value[5]
 	%e.text = value[6]
-	
-	
-	pass
 
-func option_get_item(node: OptionButton, optext : String):
+
+func option_get_item(node: OptionButton, optext: String):
 	for i in range(node.get_popup().item_count):
 		if op_list[i] == optext:
 			node.select(i)
-			_on_op_1_item_selected(i)
 
 
-var op_list = {
-		0 : \"equal\" ,
-		1 : \"notEqual\" ,
-		2 : \"lessThan\" ,
-		3 : \"lessThanEq\" ,
-		4 : \"greaterThan\" ,
-		5 : \"greaterThanEq\" ,
-		6 : \"strictEqual\" ,
-		7 : \"always\" ,
-	}
+var op_list = [
+	\"equal\" ,
+	\"notEqual\" ,
+	\"lessThan\" ,
+	\"lessThanEq\" ,
+	\"greaterThan\" ,
+	\"greaterThanEq\" ,
+	\"strictEqual\" ,
+	\"always\" ,
+]
+
 
 func compile():
-	
-	return(\"select \" + %a.text + \" \" + op_list[%op1.selected] + \" \" + %b.text + \" \" + %c.text + \" \" + %d.text + \" \" + %e.text +\"\\n\" )
+	return \"select %s %s %s %s %s %s\\n\" % [%a.text, op_list[%op1.selected], %b.text, %c.text, %d.text, %e.text]
 
 
 func _on_op_1_item_selected(index: int) -> void:
-	if index == 7:
-		%b.visible = false
-	else:
-		%b.visible = true
-	pass # Replace with function body.
+	%b.visible = index != 7
 "
 
 [sub_resource type="LabelSettings" id="LabelSettings_nmdwr"]
 font = ExtResource("3_d6e2x")
 
-[node name="Select" type="PanelContainer"]
+[node name="Select" type="PanelContainer" unique_id=1739187881]
 offset_right = 40.0
 offset_bottom = 40.0
 size_flags_horizontal = 0
@@ -63,40 +57,40 @@ theme = ExtResource("1_r7274")
 theme_override_styles/panel = ExtResource("2_d8kw7")
 script = SubResource("GDScript_2bore")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1860674879]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Label" type="Label" parent="HBoxContainer"]
+[node name="Label" type="Label" parent="HBoxContainer" unique_id=420354968]
 layout_mode = 2
 text = "Select"
 label_settings = SubResource("LabelSettings_nmdwr")
 
-[node name="a" type="LineEdit" parent="HBoxContainer"]
+[node name="a" type="LineEdit" parent="HBoxContainer" unique_id=37151393]
 unique_name_in_owner = true
 layout_mode = 2
 text = "result"
 expand_to_text_length = true
 select_all_on_focus = true
 
-[node name="Label2" type="Label" parent="HBoxContainer"]
+[node name="Label2" type="Label" parent="HBoxContainer" unique_id=1387378695]
 layout_mode = 2
 text = "= if"
 
-[node name="b" type="LineEdit" parent="HBoxContainer"]
+[node name="b" type="LineEdit" parent="HBoxContainer" unique_id=1145356243]
 unique_name_in_owner = true
 layout_mode = 2
 text = "x"
 expand_to_text_length = true
 select_all_on_focus = true
 
-[node name="op1" type="OptionButton" parent="HBoxContainer"]
+[node name="op1" type="OptionButton" parent="HBoxContainer" unique_id=944899395]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_styles/hover_pressed = ExtResource("4_rv1dg")
-theme_override_styles/hover = ExtResource("4_rv1dg")
-theme_override_styles/pressed = ExtResource("4_rv1dg")
 theme_override_styles/normal = ExtResource("4_rv1dg")
+theme_override_styles/pressed = ExtResource("4_rv1dg")
+theme_override_styles/hover = ExtResource("4_rv1dg")
+theme_override_styles/hover_pressed = ExtResource("4_rv1dg")
 selected = 0
 fit_to_longest_item = false
 item_count = 8
@@ -117,29 +111,29 @@ popup/item_6/id = 6
 popup/item_7/text = "always"
 popup/item_7/id = 7
 
-[node name="c" type="LineEdit" parent="HBoxContainer"]
+[node name="c" type="LineEdit" parent="HBoxContainer" unique_id=386836622]
 unique_name_in_owner = true
 layout_mode = 2
 text = "false"
 expand_to_text_length = true
 select_all_on_focus = true
 
-[node name="Label3" type="Label" parent="HBoxContainer"]
+[node name="Label3" type="Label" parent="HBoxContainer" unique_id=484716937]
 layout_mode = 2
 text = "then"
 
-[node name="d" type="LineEdit" parent="HBoxContainer"]
+[node name="d" type="LineEdit" parent="HBoxContainer" unique_id=891914496]
 unique_name_in_owner = true
 layout_mode = 2
 text = "false"
 expand_to_text_length = true
 select_all_on_focus = true
 
-[node name="Label4" type="Label" parent="HBoxContainer"]
+[node name="Label4" type="Label" parent="HBoxContainer" unique_id=1757360174]
 layout_mode = 2
 text = "else"
 
-[node name="e" type="LineEdit" parent="HBoxContainer"]
+[node name="e" type="LineEdit" parent="HBoxContainer" unique_id=975908923]
 unique_name_in_owner = true
 layout_mode = 2
 text = "false"

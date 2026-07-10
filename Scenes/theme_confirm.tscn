@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://cvj60qdn0mft7"]
+[gd_scene format=3 uid="uid://cvj60qdn0mft7"]
 
 [ext_resource type="Texture2D" uid="uid://d28xe1g6hubit" path="res://Sprites/Previews/IconTextures/cancel.png" id="1_koiok"]
 [ext_resource type="Theme" uid="uid://dyco6ncgsxu3m" path="res://Themes/editor.tres" id="2_012ks"]
@@ -9,7 +9,6 @@
 [sub_resource type="GDScript" id="GDScript_vkra8"]
 resource_name = "theme_confirm"
 script/source = "@tool
-
 extends Window
 
 var tween
@@ -37,21 +36,20 @@ var moving = false
 
 signal confirmed(edit: String)
 
+
+func _ready() -> void:
+	%Title.text = title
+
+
 func _on_close_requested() -> void:
-	
 	self.visible = false
 
 func _on_confirm_button_pressed() -> void:
-	
 	emit_signal(\"confirmed\", %LineEdit.text)
 	self.visible = false
 
 func _on_cancel_button_pressed() -> void:
 	self.visible = false
-
-func _ready() -> void:
-	%Title.text = title
-
 
 func _on_close_button_pressed() -> void:
 	self.visible = false
@@ -71,9 +69,10 @@ corner_radius_top_right = 10
 font = ExtResource("5_loaou")
 outline_size = 1
 
-[node name="ThemeConfirm" type="Window"]
+[node name="ThemeConfirm" type="Window" unique_id=192146168]
 auto_translate_mode = 1
 transparent_bg = true
+oversampling_override = 1.0
 title = "窗口"
 initial_position = 1
 size = Vector2i(300, 150)
@@ -93,7 +92,7 @@ theme_override_icons/close_pressed = ExtResource("1_koiok")
 script = SubResource("GDScript_vkra8")
 ask = true
 
-[node name="Control" type="Control" parent="."]
+[node name="Control" type="Control" parent="." unique_id=1368774068]
 unique_name_in_owner = true
 layout_mode = 3
 anchors_preset = 15
@@ -104,7 +103,7 @@ grow_vertical = 2
 pivot_offset = Vector2(150, 75)
 theme = ExtResource("2_012ks")
 
-[node name="MarginContainer3" type="MarginContainer" parent="Control"]
+[node name="MarginContainer3" type="MarginContainer" parent="Control" unique_id=687966816]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -116,11 +115,11 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 5
 
-[node name="Panel" type="Panel" parent="Control/MarginContainer3"]
+[node name="Panel" type="Panel" parent="Control/MarginContainer3" unique_id=198684474]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_towqa")
 
-[node name="MarginContainer2" type="MarginContainer" parent="Control"]
+[node name="MarginContainer2" type="MarginContainer" parent="Control" unique_id=1180368475]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -132,11 +131,11 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 60
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer2"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer2" unique_id=293426841]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Label" type="Label" parent="Control/MarginContainer2/VBoxContainer"]
+[node name="Label" type="Label" parent="Control/MarginContainer2/VBoxContainer" unique_id=1666603729]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
@@ -145,13 +144,13 @@ size_flags_vertical = 0
 text = "窗口文本提示"
 autowrap_mode = 3
 
-[node name="LineEdit" type="LineEdit" parent="Control/MarginContainer2/VBoxContainer"]
+[node name="LineEdit" type="LineEdit" parent="Control/MarginContainer2/VBoxContainer" unique_id=804688111]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 draw_control_chars = true
 
-[node name="MarginContainer" type="MarginContainer" parent="Control"]
+[node name="MarginContainer" type="MarginContainer" parent="Control" unique_id=468158371]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -162,19 +161,19 @@ theme_override_constants/margin_left = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Control/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/MarginContainer" unique_id=2023820557]
 layout_mode = 2
 theme_override_constants/separation = 20
 alignment = 2
 
-[node name="ConfirmButton" type="Button" parent="Control/MarginContainer/HBoxContainer"]
+[node name="ConfirmButton" type="Button" parent="Control/MarginContainer/HBoxContainer" unique_id=195524710]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(80, 30)
 layout_mode = 2
 size_flags_vertical = 8
 text = "确认"
 
-[node name="CancelButton" type="Button" parent="Control/MarginContainer/HBoxContainer"]
+[node name="CancelButton" type="Button" parent="Control/MarginContainer/HBoxContainer" unique_id=656633363]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(80, 30)
 layout_mode = 2
@@ -182,7 +181,7 @@ size_flags_horizontal = 8
 size_flags_vertical = 8
 text = "取消"
 
-[node name="PanelContainer" type="PanelContainer" parent="Control"]
+[node name="PanelContainer" type="PanelContainer" parent="Control" unique_id=2130971279]
 visible = false
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 1
@@ -191,26 +190,26 @@ anchor_right = 1.0
 grow_horizontal = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_j83r3")
 
-[node name="TitlePanel" type="MarginContainer" parent="Control/PanelContainer"]
+[node name="TitlePanel" type="MarginContainer" parent="Control/PanelContainer" unique_id=1146131521]
 layout_mode = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 2
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="CloseButton" type="Button" parent="Control/PanelContainer/TitlePanel"]
+[node name="CloseButton" type="Button" parent="Control/PanelContainer/TitlePanel" unique_id=381633000]
 custom_minimum_size = Vector2(25, 25)
 layout_mode = 2
 size_flags_horizontal = 8
-theme_override_styles/hover_pressed = ExtResource("3_towqa")
-theme_override_styles/hover = ExtResource("4_tw2xv")
-theme_override_styles/pressed = ExtResource("3_towqa")
 theme_override_styles/normal = ExtResource("4_tw2xv")
+theme_override_styles/pressed = ExtResource("3_towqa")
+theme_override_styles/hover = ExtResource("4_tw2xv")
+theme_override_styles/hover_pressed = ExtResource("3_towqa")
 text = "X"
 icon_alignment = 1
 expand_icon = true
 
-[node name="Title" type="Label" parent="Control/PanelContainer/TitlePanel"]
+[node name="Title" type="Label" parent="Control/PanelContainer/TitlePanel" unique_id=391144446]
 unique_name_in_owner = true
 layout_mode = 2
 text = "窗口"

@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://ckwuioeregu55"]
+[gd_scene format=3 uid="uid://ckwuioeregu55"]
 
 [ext_resource type="Theme" uid="uid://bwqifwabah580" path="res://Themes/logic_block.tres" id="1_0gj08"]
 [ext_resource type="StyleBox" uid="uid://c45dgypyhoqva" path="res://LogicBlockStyles/control.tres" id="2_2oh3j"]
@@ -9,6 +9,7 @@
 resource_name = "radar"
 script/source = "extends LogicBlocks
 
+
 func load_value(value: Array):
 	option_get_item(%op1,value[1])
 	option_get_item(%op2,value[2])
@@ -17,41 +18,46 @@ func load_value(value: Array):
 	%a.text = value[5]
 	%b.text = value[6]
 	%c.text = value[7]
-	pass
 
-func option_get_item(node: OptionButton, optext : String):
+
+func option_get_item(node: OptionButton, optext: String):
 	for i in range(node.get_popup().item_count):
 		if node.get_item_text(i) == optext:
 			node.select(i)
 
-func compile():
-	var op_list1 = {
-		0 : \"any\" ,
-		1 : \"enemy\" ,
-		2 : \"ally\" ,
-		3 : \"player\" ,
-		4 : \"attacker\" ,
-		5 : \"flying\" ,
-		6 : \"boss\" ,
-		7 : \"ground\" ,
-	}
-	
-	var op_list2 = {
-		0 : \"distance\" ,
-		1 : \"health\" ,
-		2 : \"shield\" ,
-		3 : \"armor\" ,
-		4 : \"maxHealth\" ,
-	}
-	
-	return(\"radar \" + op_list1[%op1.selected] + \" \" + op_list1[%op2.selected] + \" \" + op_list1[%op3.selected] + \" \" + op_list2[%op4.selected] + \" \" + %a.text + \" \" + %b.text + \" \" + %c.text + \"\\n\" )
 
+func compile():
+	const op_list1 = [
+		\"any\",
+		\"enemy\",
+		\"ally\",
+		\"player\",
+		\"attacker\",
+		\"flying\",
+		\"boss\",
+		\"ground\",
+	]
+	const op_list2 = [
+		\"distance\",
+		\"health\",
+		\"shield\",
+		\"armor\",
+		\"maxHealth\",
+	]
+	
+	return \"radar %s %s %s %s %s %s %s\\n\" % [
+		op_list1[%op1.selected], 
+		op_list1[%op2.selected], 
+		op_list1[%op3.selected], 
+		op_list2[%op4.selected], 
+		%a.text, %b.text, %c.text
+	]
 "
 
 [sub_resource type="LabelSettings" id="LabelSettings_nmdwr"]
 font = ExtResource("3_lrvqk")
 
-[node name="Radar" type="PanelContainer"]
+[node name="Radar" type="PanelContainer" unique_id=1087674784]
 offset_right = 40.0
 offset_bottom = 40.0
 size_flags_horizontal = 0
@@ -60,33 +66,33 @@ theme = ExtResource("1_0gj08")
 theme_override_styles/panel = ExtResource("2_2oh3j")
 script = SubResource("GDScript_gtlx6")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=778400598]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Label" type="Label" parent="HBoxContainer"]
+[node name="Label" type="Label" parent="HBoxContainer" unique_id=1542511838]
 layout_mode = 2
 text = "Radar from"
 label_settings = SubResource("LabelSettings_nmdwr")
 
-[node name="a" type="LineEdit" parent="HBoxContainer"]
+[node name="a" type="LineEdit" parent="HBoxContainer" unique_id=235558098]
 unique_name_in_owner = true
 layout_mode = 2
 text = "turret1"
 expand_to_text_length = true
 select_all_on_focus = true
 
-[node name="Label2" type="Label" parent="HBoxContainer"]
+[node name="Label2" type="Label" parent="HBoxContainer" unique_id=1634065690]
 layout_mode = 2
 text = "target"
 
-[node name="op1" type="OptionButton" parent="HBoxContainer"]
+[node name="op1" type="OptionButton" parent="HBoxContainer" unique_id=1527533916]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_styles/hover_pressed = ExtResource("4_4bnmr")
-theme_override_styles/hover = ExtResource("4_4bnmr")
-theme_override_styles/pressed = ExtResource("4_4bnmr")
 theme_override_styles/normal = ExtResource("4_4bnmr")
+theme_override_styles/pressed = ExtResource("4_4bnmr")
+theme_override_styles/hover = ExtResource("4_4bnmr")
+theme_override_styles/hover_pressed = ExtResource("4_4bnmr")
 selected = 0
 fit_to_longest_item = false
 allow_reselect = true
@@ -108,13 +114,13 @@ popup/item_6/id = 6
 popup/item_7/text = "ground"
 popup/item_7/id = 7
 
-[node name="op2" type="OptionButton" parent="HBoxContainer"]
+[node name="op2" type="OptionButton" parent="HBoxContainer" unique_id=910945821]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_styles/hover_pressed = ExtResource("4_4bnmr")
-theme_override_styles/hover = ExtResource("4_4bnmr")
-theme_override_styles/pressed = ExtResource("4_4bnmr")
 theme_override_styles/normal = ExtResource("4_4bnmr")
+theme_override_styles/pressed = ExtResource("4_4bnmr")
+theme_override_styles/hover = ExtResource("4_4bnmr")
+theme_override_styles/hover_pressed = ExtResource("4_4bnmr")
 selected = 0
 fit_to_longest_item = false
 allow_reselect = true
@@ -136,13 +142,13 @@ popup/item_6/id = 6
 popup/item_7/text = "ground"
 popup/item_7/id = 7
 
-[node name="op3" type="OptionButton" parent="HBoxContainer"]
+[node name="op3" type="OptionButton" parent="HBoxContainer" unique_id=1712596782]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_styles/hover_pressed = ExtResource("4_4bnmr")
-theme_override_styles/hover = ExtResource("4_4bnmr")
-theme_override_styles/pressed = ExtResource("4_4bnmr")
 theme_override_styles/normal = ExtResource("4_4bnmr")
+theme_override_styles/pressed = ExtResource("4_4bnmr")
+theme_override_styles/hover = ExtResource("4_4bnmr")
+theme_override_styles/hover_pressed = ExtResource("4_4bnmr")
 selected = 0
 fit_to_longest_item = false
 allow_reselect = true
@@ -164,28 +170,28 @@ popup/item_6/id = 6
 popup/item_7/text = "ground"
 popup/item_7/id = 7
 
-[node name="Label3" type="Label" parent="HBoxContainer"]
+[node name="Label3" type="Label" parent="HBoxContainer" unique_id=685674957]
 layout_mode = 2
 text = "order"
 
-[node name="b" type="LineEdit" parent="HBoxContainer"]
+[node name="b" type="LineEdit" parent="HBoxContainer" unique_id=1631809026]
 unique_name_in_owner = true
 layout_mode = 2
 text = "1"
 expand_to_text_length = true
 select_all_on_focus = true
 
-[node name="Label4" type="Label" parent="HBoxContainer"]
+[node name="Label4" type="Label" parent="HBoxContainer" unique_id=1237958685]
 layout_mode = 2
 text = "sort"
 
-[node name="op4" type="OptionButton" parent="HBoxContainer"]
+[node name="op4" type="OptionButton" parent="HBoxContainer" unique_id=1495326235]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_styles/hover_pressed = ExtResource("4_4bnmr")
-theme_override_styles/hover = ExtResource("4_4bnmr")
-theme_override_styles/pressed = ExtResource("4_4bnmr")
 theme_override_styles/normal = ExtResource("4_4bnmr")
+theme_override_styles/pressed = ExtResource("4_4bnmr")
+theme_override_styles/hover = ExtResource("4_4bnmr")
+theme_override_styles/hover_pressed = ExtResource("4_4bnmr")
 selected = 0
 fit_to_longest_item = false
 item_count = 5
@@ -200,11 +206,11 @@ popup/item_3/id = 3
 popup/item_4/text = "maxHealth"
 popup/item_4/id = 4
 
-[node name="Label5" type="Label" parent="HBoxContainer"]
+[node name="Label5" type="Label" parent="HBoxContainer" unique_id=1836759566]
 layout_mode = 2
 text = "output"
 
-[node name="c" type="LineEdit" parent="HBoxContainer"]
+[node name="c" type="LineEdit" parent="HBoxContainer" unique_id=1120688781]
 unique_name_in_owner = true
 layout_mode = 2
 text = "result"

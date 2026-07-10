@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://b6pw3tf5i3jpw"]
+[gd_scene format=3 uid="uid://b6pw3tf5i3jpw"]
 
 [ext_resource type="Theme" uid="uid://bwqifwabah580" path="res://Themes/logic_block.tres" id="1_c52to"]
 [ext_resource type="StyleBox" uid="uid://obpmtyo5a0p" path="res://LogicBlockStyles/logic.tres" id="2_l235a"]
@@ -7,28 +7,27 @@
 resource_name = "jump_label"
 script/source = "extends LogicBlocks
 
-func pre_compile(method:= 0):
+
+func pre_compile(method: int = 0):
 	if method == 1:
 		queue_free()
+
 
 func load_value(value: Array):
 	%a.text = value[0]
 
-	pass
 
-
-func option_get_item(node: OptionButton, optext : String):
+func option_get_item(node: OptionButton, optext: String):
 	for i in range(node.get_popup().item_count):
 		if node.get_item_text(i) == optext:
 			node.select(i)
 
-func compile():
-	return( %a.text + \":\\n\")
 
-# Called when the node enters the scene tree for the first time.
+func compile():
+	return \"%s:\\n\" % %a.text
 "
 
-[node name="JumpLabel" type="PanelContainer"]
+[node name="JumpLabel" type="PanelContainer" unique_id=1753693567]
 offset_right = 40.0
 offset_bottom = 40.0
 size_flags_horizontal = 0
@@ -37,15 +36,15 @@ theme = ExtResource("1_c52to")
 theme_override_styles/panel = ExtResource("2_l235a")
 script = SubResource("GDScript_l1uld")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1608059837]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Label" type="Label" parent="HBoxContainer"]
+[node name="Label" type="Label" parent="HBoxContainer" unique_id=931180989]
 layout_mode = 2
 text = "Jump Label"
 
-[node name="a" type="LineEdit" parent="HBoxContainer"]
+[node name="a" type="LineEdit" parent="HBoxContainer" unique_id=1520145007]
 unique_name_in_owner = true
 layout_mode = 2
 text = "label"

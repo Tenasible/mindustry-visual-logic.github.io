@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://d13qpsh81jptp"]
+[gd_scene format=3 uid="uid://d13qpsh81jptp"]
 
 [ext_resource type="Theme" uid="uid://dyco6ncgsxu3m" path="res://Themes/editor.tres" id="1_ib7m8"]
 
@@ -8,19 +8,12 @@
 resource_name = "spilt_line"
 script/source = "extends PanelContainer
 
-var line_text : String = \"Spilt\"
+
+var line_text: String = \"Spilt\"
 
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	
 	%Label.text = line_text
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
 "
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ebdyo"]
@@ -29,7 +22,7 @@ bg_color = Color(1, 1, 1, 0.360784)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k3o2n"]
 bg_color = Color(1, 1, 1, 0.360784)
 
-[node name="SpiltLine" type="PanelContainer"]
+[node name="SpiltLine" type="PanelContainer" unique_id=147432195]
 custom_minimum_size = Vector2(0, 40)
 offset_right = 398.0
 offset_bottom = 40.0
@@ -39,22 +32,22 @@ theme = ExtResource("1_ib7m8")
 theme_override_styles/panel = SubResource("StyleBoxEmpty_1yg15")
 script = SubResource("GDScript_ib7m8")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1405403352]
 layout_mode = 2
 
-[node name="Panel" type="Panel" parent="HBoxContainer"]
+[node name="Panel" type="Panel" parent="HBoxContainer" unique_id=1083806979]
 custom_minimum_size = Vector2(20, 5)
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_ebdyo")
 
-[node name="Label" type="Label" parent="HBoxContainer"]
+[node name="Label" type="Label" parent="HBoxContainer" unique_id=1445800749]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 0.360784)
 text = "spilt"
 
-[node name="Panel2" type="Panel" parent="HBoxContainer"]
+[node name="Panel2" type="Panel" parent="HBoxContainer" unique_id=1907194990]
 custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
 size_flags_horizontal = 3

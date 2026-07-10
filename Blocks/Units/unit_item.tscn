@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://bhtymixtc28p7"]
+[gd_scene format=3 uid="uid://bhtymixtc28p7"]
 
 [ext_resource type="Theme" uid="uid://bwqifwabah580" path="res://Themes/logic_block.tres" id="1_0giv0"]
 [ext_resource type="StyleBox" uid="uid://cv24igfk83rly" path="res://LogicBlockStyles/unit.tres" id="2_26jrg"]
@@ -8,54 +8,46 @@
 resource_name = "unit_item"
 script/source = "extends LogicBlocks
 
+
 func load_value(value: Array):
 	option_get_item(%op1,value[1])
 	%a.text = value[2]
 	%b.text = value[3]
 	%c.text = value[4]
-	
-	pass
 
-func option_get_item(node: OptionButton, optext : String):
+
+func option_get_item(node: OptionButton, optext: String):
 	for i in range(node.get_popup().item_count):
 		if node.get_item_text(i) == optext:
 			node.select(i)
-			_on_op_1_item_selected(i)
 
 
 func compile():
+	const op_list = [
+		\"itemDrop\",
+		\"itemTake\",
+	]
 	
-	var op_list = {
-		0 : \"itemDrop\",
-		1 : \"itemTake\",
-	}
-	
-	return(\"ucontrol \" + op_list[%op1.selected] + \" \" + %a.text + \" \" + %b.text + \" \" + %c.text + \" 0 0\\n\")
+	return \"ucontrol %s %s %s %s 0 0\\n\" % [op_list[%op1.selected], %a.text, %b.text, %c.text]
 
 
 
 func _on_op_1_item_selected(index: int) -> void:
-	
 	if index == 0:
-		
 		%Label1.text = \"to\"
 		%Label2.text = \"amount\"
 		
 		%Label3.visible = false
 		%c.visible = false
-		
 	elif index == 1:
-		
 		%Label1.text = \"from\"
 		%Label2.text = \"item\"
 		
 		%Label3.visible = true
 		%c.visible = true
-	
-	pass # Replace with function body.
 "
 
-[node name="UnitItem" type="PanelContainer"]
+[node name="UnitItem" type="PanelContainer" unique_id=1411819059]
 offset_right = 40.0
 offset_bottom = 40.0
 size_flags_horizontal = 0
@@ -64,21 +56,21 @@ theme = ExtResource("1_0giv0")
 theme_override_styles/panel = ExtResource("2_26jrg")
 script = SubResource("GDScript_0giv0")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=235527014]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Label" type="Label" parent="HBoxContainer"]
+[node name="Label" type="Label" parent="HBoxContainer" unique_id=1410040021]
 layout_mode = 2
 text = "Unit CtrlItem"
 
-[node name="op1" type="OptionButton" parent="HBoxContainer"]
+[node name="op1" type="OptionButton" parent="HBoxContainer" unique_id=1441961263]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_styles/hover_pressed = ExtResource("3_6sa0x")
-theme_override_styles/hover = ExtResource("3_6sa0x")
-theme_override_styles/pressed = ExtResource("3_6sa0x")
 theme_override_styles/normal = ExtResource("3_6sa0x")
+theme_override_styles/pressed = ExtResource("3_6sa0x")
+theme_override_styles/hover = ExtResource("3_6sa0x")
+theme_override_styles/hover_pressed = ExtResource("3_6sa0x")
 selected = 0
 fit_to_longest_item = false
 allow_reselect = true
@@ -88,37 +80,37 @@ popup/item_0/id = 0
 popup/item_1/text = "itemTake"
 popup/item_1/id = 1
 
-[node name="Label1" type="Label" parent="HBoxContainer"]
+[node name="Label1" type="Label" parent="HBoxContainer" unique_id=792455843]
 unique_name_in_owner = true
 layout_mode = 2
 text = "to"
 
-[node name="a" type="LineEdit" parent="HBoxContainer"]
+[node name="a" type="LineEdit" parent="HBoxContainer" unique_id=240528033]
 unique_name_in_owner = true
 layout_mode = 2
 text = "0"
 expand_to_text_length = true
 select_all_on_focus = true
 
-[node name="Label2" type="Label" parent="HBoxContainer"]
+[node name="Label2" type="Label" parent="HBoxContainer" unique_id=1817936930]
 unique_name_in_owner = true
 layout_mode = 2
 text = "amount"
 
-[node name="b" type="LineEdit" parent="HBoxContainer"]
+[node name="b" type="LineEdit" parent="HBoxContainer" unique_id=418867257]
 unique_name_in_owner = true
 layout_mode = 2
 text = "999"
 expand_to_text_length = true
 select_all_on_focus = true
 
-[node name="Label3" type="Label" parent="HBoxContainer"]
+[node name="Label3" type="Label" parent="HBoxContainer" unique_id=1806776750]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 text = "amount"
 
-[node name="c" type="LineEdit" parent="HBoxContainer"]
+[node name="c" type="LineEdit" parent="HBoxContainer" unique_id=54798329]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2

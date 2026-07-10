@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://bjb3gp17nxsqr"]
+[gd_scene format=3 uid="uid://bjb3gp17nxsqr"]
 
 [ext_resource type="Theme" uid="uid://bwqifwabah580" path="res://Themes/logic_block.tres" id="1_0myeu"]
 [ext_resource type="StyleBox" uid="uid://cgdb26uq2loil" path="res://LogicBlockStyles/expression.tres" id="2_0myeu"]
@@ -7,28 +7,27 @@
 resource_name = "expression"
 script/source = "extends LogicBlocks
 
-func pre_compile(method:= 0):
+
+func pre_compile(method: int = 0):
 	if method == 1:
 		queue_free()
 
+
 func load_value(value: Array):
 	%a.text = value[0]
-	
-	pass
 
 
-func option_get_item(node: OptionButton, optext : String):
+func option_get_item(node: OptionButton, optext: String):
 	for i in range(node.get_popup().item_count):
 		if node.get_item_text(i) == optext:
 			node.select(i)
 
-func compile():
-	return(\"# \" + %a.text + \"\\n\")
 
-# Called when the node enters the scene tree for the first time.
+func compile():
+	return \"# %s\\n\" % %a.text
 "
 
-[node name="Expression" type="PanelContainer"]
+[node name="Expression" type="PanelContainer" unique_id=122031491]
 offset_right = 40.0
 offset_bottom = 40.0
 size_flags_horizontal = 0
@@ -37,15 +36,15 @@ theme = ExtResource("1_0myeu")
 theme_override_styles/panel = ExtResource("2_0myeu")
 script = SubResource("GDScript_bixme")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=820107377]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Label" type="Label" parent="HBoxContainer"]
+[node name="Label" type="Label" parent="HBoxContainer" unique_id=2050241356]
 layout_mode = 2
 text = "#"
 
-[node name="a" type="LineEdit" parent="HBoxContainer"]
+[node name="a" type="LineEdit" parent="HBoxContainer" unique_id=751254149]
 unique_name_in_owner = true
 layout_mode = 2
 expand_to_text_length = true

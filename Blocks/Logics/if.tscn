@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://d36nj4suscwt5"]
+[gd_scene format=3 uid="uid://d36nj4suscwt5"]
 
 [ext_resource type="Theme" uid="uid://bwqifwabah580" path="res://Themes/logic_block.tres" id="1_e4i35"]
 [ext_resource type="StyleBox" uid="uid://dd387wna6hgc7" path="res://LogicBlockStyles/ButtonSettings/option_button.tres" id="2_ve4um"]
@@ -10,23 +10,13 @@ resource_name = "if"
 script/source = "extends LogicBlocks
 
 
-
-
-
 func _on_op_1_item_selected(index: int) -> void:
-	
 	if index == 7:
-		
 		%a.visible = false
 		%b.visible = false
-	
 	else:
-		
 		%a.visible = true
 		%b.visible = true
-		
-	
-	pass # Replace with function body.
 "
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qa7kj"]
@@ -72,7 +62,7 @@ corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 expand_margin_bottom = 5.0
 
-[node name="If" type="PanelContainer"]
+[node name="If" type="PanelContainer" unique_id=1783908711]
 offset_right = 40.0
 offset_bottom = 40.0
 size_flags_horizontal = 0
@@ -81,37 +71,37 @@ theme = ExtResource("1_e4i35")
 theme_override_styles/panel = SubResource("StyleBoxEmpty_huk3d")
 script = SubResource("GDScript_2a8yw")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1300053489]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="Head" type="PanelContainer" parent="VBoxContainer"]
+[node name="Head" type="PanelContainer" parent="VBoxContainer" unique_id=53829354]
 layout_mode = 2
 size_flags_horizontal = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_qa7kj")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Head"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Head" unique_id=2145115598]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Label" type="Label" parent="VBoxContainer/Head/HBoxContainer"]
+[node name="Label" type="Label" parent="VBoxContainer/Head/HBoxContainer" unique_id=1465615028]
 layout_mode = 2
 text = "If"
 
-[node name="a" type="LineEdit" parent="VBoxContainer/Head/HBoxContainer"]
+[node name="a" type="LineEdit" parent="VBoxContainer/Head/HBoxContainer" unique_id=1538283391]
 unique_name_in_owner = true
 layout_mode = 2
 text = "x"
 expand_to_text_length = true
 select_all_on_focus = true
 
-[node name="op1" type="OptionButton" parent="VBoxContainer/Head/HBoxContainer"]
+[node name="op1" type="OptionButton" parent="VBoxContainer/Head/HBoxContainer" unique_id=919045560]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_styles/hover_pressed = ExtResource("2_ve4um")
-theme_override_styles/hover = ExtResource("2_ve4um")
-theme_override_styles/pressed = ExtResource("2_ve4um")
 theme_override_styles/normal = ExtResource("2_ve4um")
+theme_override_styles/pressed = ExtResource("2_ve4um")
+theme_override_styles/hover = ExtResource("2_ve4um")
+theme_override_styles/hover_pressed = ExtResource("2_ve4um")
 selected = 1
 fit_to_longest_item = false
 allow_reselect = true
@@ -133,32 +123,32 @@ popup/item_6/id = 6
 popup/item_7/text = "always"
 popup/item_7/id = 7
 
-[node name="b" type="LineEdit" parent="VBoxContainer/Head/HBoxContainer"]
+[node name="b" type="LineEdit" parent="VBoxContainer/Head/HBoxContainer" unique_id=1470295155]
 unique_name_in_owner = true
 layout_mode = 2
 text = "false"
 expand_to_text_length = true
 select_all_on_focus = true
 
-[node name="Body" type="PanelContainer" parent="VBoxContainer"]
+[node name="Body" type="PanelContainer" parent="VBoxContainer" unique_id=2139658225]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_4eru0")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Body"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Body" unique_id=46492403]
 layout_mode = 2
 theme_override_constants/separation = 3
 
-[node name="BodyShow" type="PanelContainer" parent="VBoxContainer/Body/HBoxContainer"]
+[node name="BodyShow" type="PanelContainer" parent="VBoxContainer/Body/HBoxContainer" unique_id=1460527433]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_e1ccb")
 
-[node name="UserBLocks" type="VBoxContainer" parent="VBoxContainer/Body/HBoxContainer"]
+[node name="UserBLocks" type="VBoxContainer" parent="VBoxContainer/Body/HBoxContainer" unique_id=1833081752]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Tail" type="PanelContainer" parent="VBoxContainer"]
+[node name="Tail" type="PanelContainer" parent="VBoxContainer" unique_id=1989373894]
 custom_minimum_size = Vector2(100, 20)
 layout_mode = 2
 size_flags_horizontal = 0

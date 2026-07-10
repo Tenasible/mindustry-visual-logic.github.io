@@ -1,7 +1,8 @@
 extends Object
 class_name SaveLoadUtils
 
-# 将对象中的所有导出变量保存到字典中
+
+## 将对象中的所有导出变量保存到字典中
 static func save_export_vars_to_dict(obj: Object) -> Dictionary:
 	var result := {}
 	var properties := obj.get_property_list()
@@ -19,7 +20,7 @@ static func save_export_vars_to_dict(obj: Object) -> Dictionary:
 	
 	return result
 
-# 从字典加载值到对象的导出变量
+## 从字典加载值到对象的导出变量
 static func load_export_vars_from_dict(obj: Object, data: Dictionary) -> void:
 	var properties := obj.get_property_list()
 	

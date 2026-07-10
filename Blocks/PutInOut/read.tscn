@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://cwkjplcoq5sxo"]
+[gd_scene format=3 uid="uid://cwkjplcoq5sxo"]
 
 [ext_resource type="Theme" uid="uid://bwqifwabah580" path="res://Themes/logic_block.tres" id="1_igh2i"]
 [ext_resource type="StyleBox" uid="uid://d4hc2s0f7vavr" path="res://LogicBlockStyles/put_in_out.tres" id="2_ouvl3"]
@@ -7,28 +7,24 @@
 resource_name = "read"
 script/source = "extends LogicBlocks
 
+
 func load_value(value: Array):
 	%a.text = value[1]
 	%b.text = value[2]
 	%c.text = value[3]
-	
-	
-	pass
 
-func option_get_item(node: OptionButton, optext : String):
+
+func option_get_item(node: OptionButton, optext: String):
 	for i in range(node.get_popup().item_count):
 		if node.get_item_text(i) == optext:
 			node.select(i)
 
 
 func compile():
-	return(\"read \" + %a.text + \" \" + %b.text + \" \" + %c.text + \"\\n\")
-
-
-
+	return \"read %s %s %s\\n\" % [%a.text, %b.text, %c.text]
 "
 
-[node name="Read" type="PanelContainer"]
+[node name="Read" type="PanelContainer" unique_id=1527282837]
 offset_right = 40.0
 offset_bottom = 40.0
 size_flags_horizontal = 0
@@ -37,26 +33,26 @@ theme = ExtResource("1_igh2i")
 theme_override_styles/panel = ExtResource("2_ouvl3")
 script = SubResource("GDScript_msour")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1912577167]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Label" type="Label" parent="HBoxContainer"]
+[node name="Label" type="Label" parent="HBoxContainer" unique_id=1592237196]
 layout_mode = 2
 text = "Read"
 
-[node name="a" type="LineEdit" parent="HBoxContainer"]
+[node name="a" type="LineEdit" parent="HBoxContainer" unique_id=2014593293]
 unique_name_in_owner = true
 layout_mode = 2
 text = "result"
 expand_to_text_length = true
 select_all_on_focus = true
 
-[node name="Label2" type="Label" parent="HBoxContainer"]
+[node name="Label2" type="Label" parent="HBoxContainer" unique_id=1283973325]
 layout_mode = 2
 text = "="
 
-[node name="b" type="LineEdit" parent="HBoxContainer"]
+[node name="b" type="LineEdit" parent="HBoxContainer" unique_id=503181193]
 unique_name_in_owner = true
 layout_mode = 2
 text = "cell1"
@@ -64,11 +60,11 @@ placeholder_text = "内存"
 expand_to_text_length = true
 select_all_on_focus = true
 
-[node name="Label3" type="Label" parent="HBoxContainer"]
+[node name="Label3" type="Label" parent="HBoxContainer" unique_id=1969374887]
 layout_mode = 2
 text = "at"
 
-[node name="c" type="LineEdit" parent="HBoxContainer"]
+[node name="c" type="LineEdit" parent="HBoxContainer" unique_id=256935754]
 unique_name_in_owner = true
 layout_mode = 2
 text = "0"

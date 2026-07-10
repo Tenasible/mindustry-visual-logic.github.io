@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://ls1vidl5bpbr"]
+[gd_scene format=3 uid="uid://ls1vidl5bpbr"]
 
 [ext_resource type="Theme" uid="uid://bwqifwabah580" path="res://Themes/logic_block.tres" id="1_tx23r"]
 [ext_resource type="StyleBox" uid="uid://obpmtyo5a0p" path="res://LogicBlockStyles/logic.tres" id="2_kgnm4"]
@@ -9,28 +9,55 @@
 resource_name = "jump"
 script/source = "extends LogicBlocks
 
+
+@export var lock_jump: String
+@export var jump_to: PanelContainer
+@export var jump_index: int = -1
+
+var asynchronous_reset = false ## 是否完成异步初始化
+var jumping = false
+
+var original_material: Material
+var line_color: Color = Color(1, 1, 1)
+var jump_lines
+
+var current_height: float = self.global_position.x
+
+const op_list = [
+	\"equal\",
+	\"notEqual\",
+	\"lessThan\",
+	\"lessThanEq\",
+	\"greaterThan\",
+	\"greaterThanEq\",
+	\"strictEqual\",
+	\"always\",
+]
+
+signal jumped(jump_index: int)
+signal jump_start()
+
+
 func _ready():
 	spawn_index_node()
 	get_nodes()
 	
 	original_material = material
 
+
 func load_value(value: Array):
-	
 	%c.text = value[1]
-		
+	
 	option_get_item(%op1,value[2])
 	%a.text = value[3]
 	%b.text = value[4]
 	
 	emit_signal(\"jumped\", %c.text)
 	if value[1].is_valid_int():
-		
 		if origin_node.get_child(int(value[1])) != null:
 			jump_to = origin_node.get_child(int(value[1]))
 			set_jump_dictionary( jump_to.get_index() )
-	
-	
+
 
 func option_get_item(node: OptionButton, optext : String):
 	for i in range(node.get_popup().item_count):
@@ -38,48 +65,17 @@ func option_get_item(node: OptionButton, optext : String):
 			node.select(i)
 			_on_op_1_item_selected(i)
 
-var asynchronous_reset = false # 是否完成异步初始化
-
-var jumping = false
-
-@export var lock_jump : String
-@export var jump_to : PanelContainer
-@export var jump_index := -1
-
-var original_material: Material
-var line_color : Color = Color(1, 1, 1)
-var jump_lines
-
-var current_height : float = self.global_position.x
-var op_list = {
-		0 : \"equal\" ,
-		1 : \"notEqual\" ,
-		2 : \"lessThan\" ,
-		3 : \"lessThanEq\" ,
-		4 : \"greaterThan\" ,
-		5 : \"greaterThanEq\" ,
-		6 : \"strictEqual\" ,
-		7 : \"always\" ,
-	}
-
-signal jumped(jump_index: int)
-signal jump_start()
 
 func compile():
-	
-	if %c.text == null:
-		return(\"jump \" + \"-1\" + \" \" + op_list[%op1.selected] + \" \" + %a.text + \" \" + %b.text + \"\\n\")
-	
-	elif %c.text.is_valid_int() and jump_to:
-		return(\"jump \" + str(jump_to.get_index()) + \" \" + op_list[%op1.selected] + \" \" + %a.text + \" \" + %b.text + \"\\n\")
-		
-	else:
-		return(\"jump \" + %c.text + \" \" + op_list[%op1.selected] + \" \" + %a.text + \" \" + %b.text + \"\\n\")
-	
+	return \"jump %s %s %s %s\\n\" % [
+		\"-1\" if %c.text == null else 
+		str(jump_to.get_index()) if %c.text.is_valid_int() and jump_to else 
+		%c.texts,
+		op_list[%op1.selected], %a.text, %b.text
+	]
 
 
 func _process(delta: float) -> void:
-	
 	logic_process()
 	
 	# 调整jump跳线颜色
@@ -87,142 +83,46 @@ func _process(delta: float) -> void:
 		%ArrowLeft.self_modulate = line_color
 		%JumpLine.self_modulate = line_color
 		%ArrowRight.self_modulate = line_color
-		
+	
 	if jump_to:
 		jump_index = jump_to.get_index()
 	$Node.global_position = Vector2(0 , 0)
 	
-	
 	if not asynchronous_reset:
 		if origin_node:
 			origin_node.sort_children.connect(_on_any_block_moved)
-			
-			
-				
 			asynchronous_reset = true
-			
 	
 	# jump拖拽
 	if jumping:
-	
 		if origin_node != null:
-			
 			var min_dis = INF
 			var min_block = origin_node.get_child(0)
 			
 			for i in origin_node.get_children():
-		
 				if abs(i.global_position.y + i.size.y * 0.5 - get_global_mouse_position().y) < min_dis:
-			
 					min_block = i
 					min_dis = abs(i.global_position.y + i.size.y * 0.5 - get_global_mouse_position().y)
 
 			# 若jump目标是自己则不锁定
-
 			if min_block == self:
 				%c.text = \"-1\"
 				jump_to = null
-			
 			else:
 				%c.text = str(min_block.get_index())
 				jump_to = min_block
-				set_jump_dictionary( jump_to.get_index() )
-		
-		
+				set_jump_dictionary(jump_to.get_index())
+
 		# 松鼠标左键后消失
 		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) == false:
-			
 			jumping = false
 			if jump_to:
-				
-				set_jump_dictionary( jump_to.get_index() )
-				
+				set_jump_dictionary(jump_to.get_index())
 			else:
-				
-				set_jump_dictionary( -1 )
-
-		
-		
-		pass
-		
+				set_jump_dictionary(-1)
 	
-	
-	
-	## jump自我排名
-	#if jump_to != null:
-		#jump_index = jump_to.get_index()
-	#
-	#var jump_origin = get_index()
-	#
-	## 剔除与自己完全不相干的跳线。
-	#var jump_not_related : Dictionary
-	#var jump_not_related_true : Dictionary
-	#var jump_related : Dictionary
-	#var jump_lines = origin_node.jump_lines.duplicate(true)
-	#
-	#for i in jump_lines:
-		#if i != null:
-			#if is_related(jump_lines[i][0], jump_lines[i][1], jump_origin, jump_index):
-				#jump_related[i] = jump_lines[i]
-			#else:
-				#jump_not_related[i] = jump_lines[i]
-	#
-	#jump_not_related_true = jump_not_related.duplicate(true)
-	#
-	#for i in jump_not_related:
-		#for j in jump_related:
-			#
-			#if is_related(jump_not_related[i][0], jump_not_related[i][1], jump_related[j][0], jump_related[j][1]):
-				#jump_not_related_true.erase(i)
-	#
-	#for i in jump_not_related_true:
-		#jump_lines.erase(i)
-	#
-	## 给所有跳线按照目标点分组
-	#var jump_line_groups : Dictionary
-	#
-	#for i in jump_lines:
-		#if jump_line_groups.has( jump_lines[i][1] ):
-			#jump_line_groups[ jump_lines[i][1] ].append( jump_lines[i][0] )
-		#else:
-			#jump_line_groups[ jump_lines[i][1] ] = [ jump_lines[i][0] ]
-	#
-	## 整理所有跳线，只保留上点、下点和点距。
-	#var jump_line_organized : Dictionary
-	#
-	#for i in jump_line_groups:
-		#jump_line_organized[i] = {
-			#\"max\" : array_max(jump_line_groups[i], i),
-			#\"min\" : array_min(jump_line_groups[i], i),
-			#\"dis\" : array_max(jump_line_groups[i], i) - array_min(jump_line_groups[i], i)
-		#}
-		#
-	#
-	## 对所有目标点按照点距进行排名。越靠前点距越小。
-	#var jump_line_dis_rank : Array
-	#
-	#var min_name
-	#
-	#for j in range(jump_line_organized.size() ):
-		#var min_dis = INF
-		#
-		#for i in jump_line_organized:
-			## 找出dis值最小的键名
-			#
-			#if jump_line_organized[i][\"dis\"] < min_dis:
-				#min_dis = jump_line_organized[i][\"dis\"]
-				#min_name = i
-		#
-		#jump_line_dis_rank.append(min_name)
-		#jump_line_organized.erase(min_name)
-	#
-	
-	#
 	# jump线计算
 	if jump_to != null:
-		
-		
-		
 		var rank = 0
 		var jump_line_dis_rank = origin_node.jump_line_rank
 		# 获取自己的排名
@@ -232,156 +132,84 @@ func _process(delta: float) -> void:
 			rank = 0
 		
 		# jump线绘制
-		
 		%JumpLine.visible = true
 		%ArrowRight.visible = true
 		
+		var start = self.global_position + Vector2(20, self.size.y * 0.5)
+		var end: Vector2
 		
-		var start = self.global_position + Vector2( 20 , self.size.y * 0.5)
-		var end : Vector2
+		end = jump_to.global_position + Vector2(10, jump_to.size.y * 0.5)
 		
-		
-
-		end = jump_to.global_position + Vector2( 10 , jump_to.size.y * 0.5)
-			
 		%ArrowRight.global_position = end
 		
-		var jump_height = end.x - ( rank * 6 + 10 + float(rank >= 4) * 22)
+		var jump_height = end.x - (rank * 6 + 10 + float(rank >= 4) * 22)
 		current_height += (jump_height - current_height) * 0.2
 		
 		if jump_to == self:
 			%JumpLine.points = PackedVector2Array([
-				start,
-				
-				start + Vector2(-25, 0),
-				
-				end,
+				start, start + Vector2(-25, 0), end
 			])
-		
 		else:
 			%JumpLine.points = PackedVector2Array([
 				Vector2(start),
 				Vector2(current_height, start.y + (float(start.y < end.y) * 2 - 1) * 12),
-				
 				Vector2(current_height, end.y + (float(start.y > end.y) * 2 - 1) * 12),
 				Vector2(end),
 			])
-		
-		
-		
-		
-	
 	else:
 		%JumpLine.visible = false
 		%ArrowRight.visible = false
-	
-	pass
-
-
 
 
 func _on_op_1_item_selected(index: int) -> void:
-	
 	if index == 7:
-		
 		%a.visible = false
 		%b.visible = false
-	
 	else:
-		
 		%a.visible = true
 		%b.visible = true
-		
-	
-	pass # Replace with function body.
-
-
 
 
 func _on_c_text_changed(new_text: String) -> void:
-	
 	if new_text.is_valid_int():
-		
 		if int(new_text) == -1:
 			jump_to = null
 		else:
-			jump_to = origin_node.get_child( int(new_text) )
-		
+			jump_to = origin_node.get_child(int(new_text))
 		if jump_to:
 			jump_index = jump_to.get_index()
-	
 	else:
 		jump_to = null
-	
-	pass # Replace with function body.
-
-
 
 
 func _on_arrow_left_button_down():
 	if is_given_block:
 		return false
-	
-	
 	emit_signal(\"jump_start\")
-	
 	jumping = true
-	
-	pass # Replace with function body.
-
-
-
-func array_max(array: Array, n):
-	var max = INF * -1
-	var array_true = array.duplicate(true)
-	array_true.append(n)
-	for i in array_true:
-		max = max(i , max)
-	return max
-	
-func array_min(array: Array, n):
-	var min = INF
-	var array_true = array.duplicate(true)
-	array_true.append(n)
-	for i in array_true:
-		min = min(i , min)
-	return min
-
-func is_related(var1, var2, var3, var4) -> bool:
-	return(not(
-		(var1 > var3 and var2 > var3 and var1 > var4 and var2 > var4) or 
-		(var1 < var3 and var2 < var3 and var1 < var4 and var2 < var4)
-	))
-
 
 
 # 向UserBlocks声明自己的jump信息。
-func set_jump_dictionary(index : int):
-	
+func set_jump_dictionary(index: int):
 	# 顺带生成自己的跳线颜色。
 	line_color = generate_vibrant_color_from_seed(index, 0.9)
 	
 	if \"jump_lines\" in origin_node:
 		if self:
-			
 			origin_node.jump_lines[self] = [index, self.get_index()]
 			origin_node._on_block_moved()
 
 # 任何积木移动时，更新jump值
 func _on_any_block_moved():
-	
-	
-	
 	if jump_to:
 		jump_index = jump_to.get_index()
-		set_jump_dictionary( jump_index )
-		%c.text = str( jump_index )
-	pass
+		set_jump_dictionary(jump_index)
+		%c.text = str(jump_index)
 
-func pre_compile(method:= 0):
+
+func pre_compile(method: int = 0):
 	if method == 0:
 		if jump_to:
-			
 			lock_jump = jump_to.label_value
 			
 			# 搜寻自己的目标积木
@@ -391,8 +219,8 @@ func pre_compile(method:= 0):
 					return false
 			
 			push_error(\"错误：Jump积木（ \", self, \" ）未能找到副本中对应的跳转目标：\", jump_to)
-		
-			
+
+
 ## 根据给定int值生成随机颜色。
 func generate_vibrant_color_from_seed(seed_value: int, whiteness: float = 0.0) -> Color:
 	# 使用种子初始化随机数生成器
@@ -406,20 +234,19 @@ func generate_vibrant_color_from_seed(seed_value: int, whiteness: float = 0.0) -
 	
 	# 转换为RGB
 	var color = Color.from_hsv(h, s, v)
-	
 	return color
 "
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kgnm4"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_k572q"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_n6hg6"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8jirg"]
 bg_color = Color(1, 1, 1, 0.231373)
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_n6hg6"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kgnm4"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_k572q"]
-
-[node name="Jump" type="PanelContainer"]
+[node name="Jump" type="PanelContainer" unique_id=430788646]
 offset_right = 40.0
 offset_bottom = 40.0
 size_flags_horizontal = 0
@@ -428,15 +255,15 @@ theme = ExtResource("1_tx23r")
 theme_override_styles/panel = ExtResource("2_kgnm4")
 script = SubResource("GDScript_kgnm4")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=830952180]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Label" type="Label" parent="HBoxContainer"]
+[node name="Label" type="Label" parent="HBoxContainer" unique_id=1169360143]
 layout_mode = 2
 text = "     Jump"
 
-[node name="c" type="LineEdit" parent="HBoxContainer"]
+[node name="c" type="LineEdit" parent="HBoxContainer" unique_id=223880756]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/minimum_character_width = 1
@@ -445,24 +272,24 @@ placeholder_text = "to"
 expand_to_text_length = true
 select_all_on_focus = true
 
-[node name="Label2" type="Label" parent="HBoxContainer"]
+[node name="Label2" type="Label" parent="HBoxContainer" unique_id=417167746]
 layout_mode = 2
 text = "if"
 
-[node name="a" type="LineEdit" parent="HBoxContainer"]
+[node name="a" type="LineEdit" parent="HBoxContainer" unique_id=1680295485]
 unique_name_in_owner = true
 layout_mode = 2
 text = "x"
 expand_to_text_length = true
 select_all_on_focus = true
 
-[node name="op1" type="OptionButton" parent="HBoxContainer"]
+[node name="op1" type="OptionButton" parent="HBoxContainer" unique_id=1153820676]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_styles/hover_pressed = ExtResource("3_8jirg")
-theme_override_styles/hover = ExtResource("3_8jirg")
-theme_override_styles/pressed = ExtResource("3_8jirg")
 theme_override_styles/normal = ExtResource("3_8jirg")
+theme_override_styles/pressed = ExtResource("3_8jirg")
+theme_override_styles/hover = ExtResource("3_8jirg")
+theme_override_styles/hover_pressed = ExtResource("3_8jirg")
 selected = 1
 fit_to_longest_item = false
 allow_reselect = true
@@ -484,26 +311,26 @@ popup/item_6/id = 6
 popup/item_7/text = "always"
 popup/item_7/id = 7
 
-[node name="b" type="LineEdit" parent="HBoxContainer"]
+[node name="b" type="LineEdit" parent="HBoxContainer" unique_id=1581149799]
 unique_name_in_owner = true
 layout_mode = 2
 text = "false"
 expand_to_text_length = true
 select_all_on_focus = true
 
-[node name="ArrowLeft" type="Button" parent="."]
+[node name="ArrowLeft" type="Button" parent="." unique_id=1219649599]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
-theme_override_styles/focus = SubResource("StyleBoxEmpty_kgnm4")
-theme_override_styles/hover = SubResource("StyleBoxFlat_8jirg")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_n6hg6")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_k572q")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_n6hg6")
+theme_override_styles/hover = SubResource("StyleBoxFlat_8jirg")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_kgnm4")
 icon = ExtResource("4_tx23r")
 
-[node name="Node" type="Node2D" parent="."]
+[node name="Node" type="Node2D" parent="." unique_id=1101572849]
 
-[node name="JumpLine" type="Line2D" parent="Node"]
+[node name="JumpLine" type="Line2D" parent="Node" unique_id=1705654334]
 unique_name_in_owner = true
 visible = false
 z_index = 1
@@ -511,7 +338,7 @@ z_as_relative = false
 width = 3.0
 texture_mode = 2
 
-[node name="ArrowRight" type="Sprite2D" parent="Node"]
+[node name="ArrowRight" type="Sprite2D" parent="Node" unique_id=2030283244]
 unique_name_in_owner = true
 visible = false
 z_index = 1

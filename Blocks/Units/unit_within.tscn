@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://3jxg5phdii1y"]
+[gd_scene format=3 uid="uid://3jxg5phdii1y"]
 
 [ext_resource type="Theme" uid="uid://bwqifwabah580" path="res://Themes/logic_block.tres" id="1_rneji"]
 [ext_resource type="StyleBox" uid="uid://cv24igfk83rly" path="res://LogicBlockStyles/unit.tres" id="2_wop13"]
@@ -7,25 +7,25 @@
 resource_name = "unit_within"
 script/source = "extends LogicBlocks
 
+
 func load_value(value: Array):
 	%a.text = value[2]
 	%b.text = value[3]
 	%c.text = value[4]
 	%d.text = value[5]
-	pass
 
-func option_get_item(node: OptionButton, optext : String):
+
+func option_get_item(node: OptionButton, optext: String):
 	for i in range(node.get_popup().item_count):
 		if node.get_item_text(i) == optext:
 			node.select(i)
 
 
 func compile():
-	return(\"ucontrol within \" + %a.text + \" \" + %b.text + \" \" + %c.text + \" \" + %d.text + \" 0\\n\")
-
+	return \"ucontrol within %s %s %s %s 0\\n\" % [%a.text, %b.text, %c.text, %d.text]
 "
 
-[node name="UnitWithin" type="PanelContainer"]
+[node name="UnitWithin" type="PanelContainer" unique_id=1031850574]
 offset_right = 40.0
 offset_bottom = 40.0
 size_flags_horizontal = 0
@@ -34,48 +34,48 @@ theme = ExtResource("1_rneji")
 theme_override_styles/panel = ExtResource("2_wop13")
 script = SubResource("GDScript_tvo7y")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=195409726]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Label" type="Label" parent="HBoxContainer"]
+[node name="Label" type="Label" parent="HBoxContainer" unique_id=2042809973]
 layout_mode = 2
 text = "Unit CtrlWithin x"
 
-[node name="a" type="LineEdit" parent="HBoxContainer"]
+[node name="a" type="LineEdit" parent="HBoxContainer" unique_id=756706671]
 unique_name_in_owner = true
 layout_mode = 2
 text = "0"
 expand_to_text_length = true
 select_all_on_focus = true
 
-[node name="Label2" type="Label" parent="HBoxContainer"]
+[node name="Label2" type="Label" parent="HBoxContainer" unique_id=141588629]
 layout_mode = 2
 text = "y"
 
-[node name="b" type="LineEdit" parent="HBoxContainer"]
+[node name="b" type="LineEdit" parent="HBoxContainer" unique_id=809889819]
 unique_name_in_owner = true
 layout_mode = 2
 text = "0"
 expand_to_text_length = true
 select_all_on_focus = true
 
-[node name="Label3" type="Label" parent="HBoxContainer"]
+[node name="Label3" type="Label" parent="HBoxContainer" unique_id=461121216]
 layout_mode = 2
 text = "radius"
 
-[node name="c" type="LineEdit" parent="HBoxContainer"]
+[node name="c" type="LineEdit" parent="HBoxContainer" unique_id=602684525]
 unique_name_in_owner = true
 layout_mode = 2
 text = "0"
 expand_to_text_length = true
 select_all_on_focus = true
 
-[node name="Label4" type="Label" parent="HBoxContainer"]
+[node name="Label4" type="Label" parent="HBoxContainer" unique_id=241458840]
 layout_mode = 2
 text = "result"
 
-[node name="d" type="LineEdit" parent="HBoxContainer"]
+[node name="d" type="LineEdit" parent="HBoxContainer" unique_id=404146195]
 unique_name_in_owner = true
 layout_mode = 2
 text = "0"

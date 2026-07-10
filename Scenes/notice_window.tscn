@@ -1,0 +1,117 @@
+[gd_scene format=3 uid="uid://cg03q3055q3ee"]
+
+[ext_resource type="Theme" uid="uid://dyco6ncgsxu3m" path="res://Themes/editor.tres" id="1_1ixhk"]
+
+[sub_resource type="GDScript" id="GDScript_1ixhk"]
+resource_name = "manage_window"
+script/source = "extends Window
+
+var message_bar_scene = preload(\"res://Scenes/message_bar.tscn\") 
+var current_version: int
+
+signal new_message(version: int)
+
+
+func _ready():
+	%HTTPRequest.request(\"https://textdb.online/MindVisualLogic\")
+
+
+func _on_http_request_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray):
+	var json = JSON.parse_string(body.get_string_from_utf8())
+	current_version = get_tree().root.get_child(0).editor_configs.current_version
+	
+	if json.has(\"version\"):
+		if json[\"version\"] > current_version:
+			emit_signal(\"new_message\", json[\"version\"])
+	
+	if json.has(\"title\"):
+		title = json[\"title\"]
+	
+	if json.has(\"messages\"):
+		json[\"messages\"].reverse()
+		for i in json[\"messages\"]:
+			var message_bar = message_bar_scene.instantiate()
+			%NoticeList.add_child(message_bar)
+			message_bar.time = i.get(\"time\")
+			message_bar.content = i.get(\"message\")
+
+
+func _on_close_requested() -> void:
+	self.visible = false
+
+func _on_close_button_pressed() -> void:
+	self.visible = false
+"
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a50fk"]
+bg_color = Color(0.207843, 0.180392, 0.25098, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1ixhk"]
+content_margin_top = 10.0
+content_margin_bottom = 5.0
+bg_color = Color(0.258824, 0.223529, 0.309804, 1)
+border_width_top = 5
+border_color = Color(0, 0, 0, 0.419608)
+
+[node name="MessageWindow" type="Window" unique_id=708320155]
+transparent_bg = true
+oversampling_override = 1.0
+title = "公告"
+initial_position = 1
+size = Vector2i(360, 480)
+transparent = true
+theme = ExtResource("1_1ixhk")
+script = SubResource("GDScript_1ixhk")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=2102809211]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_1ixhk")
+theme_override_styles/panel = SubResource("StyleBoxFlat_a50fk")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer" unique_id=226150338]
+layout_mode = 2
+follow_focus = true
+horizontal_scroll_mode = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/ScrollContainer" unique_id=288843391]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="NoticeList" type="VBoxContainer" parent="PanelContainer/ScrollContainer/MarginContainer" unique_id=787255391]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="PanelContainer" type="PanelContainer" parent="PanelContainer" unique_id=213829850]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_styles/panel = SubResource("StyleBoxFlat_1ixhk")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/PanelContainer" unique_id=909851750]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 100
+
+[node name="CloseButton" type="Button" parent="PanelContainer/PanelContainer/HBoxContainer" unique_id=1432316611]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "关闭
+"
+
+[node name="HTTPRequest" type="HTTPRequest" parent="." unique_id=1041946570]
+unique_name_in_owner = true
+use_threads = true
+
+[connection signal="close_requested" from="." to="." method="_on_close_requested"]
+[connection signal="pressed" from="PanelContainer/PanelContainer/HBoxContainer/CloseButton" to="." method="_on_close_button_pressed"]
+[connection signal="request_completed" from="HTTPRequest" to="." method="_on_http_request_request_completed"]

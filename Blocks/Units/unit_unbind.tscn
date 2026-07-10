@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://dsh25ejnhg8xl"]
+[gd_scene format=3 uid="uid://dsh25ejnhg8xl"]
 
 [ext_resource type="Theme" uid="uid://bwqifwabah580" path="res://Themes/logic_block.tres" id="1_e6hhp"]
 [ext_resource type="StyleBox" uid="uid://cv24igfk83rly" path="res://LogicBlockStyles/unit.tres" id="2_iie0j"]
@@ -7,23 +7,22 @@
 resource_name = "unit_unbind"
 script/source = "extends LogicBlocks
 
+
 func load_value(value: Array):
 	pass
 
-func option_get_item(node: OptionButton, optext : String):
+
+func option_get_item(node: OptionButton, optext: String):
 	for i in range(node.get_popup().item_count):
 		if node.get_item_text(i) == optext:
 			node.select(i)
 
 
 func compile():
-	
-	return(\"ucontrol unbind 0 0 0 0 0\\n\")
-
-
+	return \"ucontrol unbind 0 0 0 0 0\\n\" 
 "
 
-[node name="UnitUnbind" type="PanelContainer"]
+[node name="UnitUnbind" type="PanelContainer" unique_id=2032752746]
 offset_right = 40.0
 offset_bottom = 40.0
 size_flags_horizontal = 0
@@ -32,10 +31,10 @@ theme = ExtResource("1_e6hhp")
 theme_override_styles/panel = ExtResource("2_iie0j")
 script = SubResource("GDScript_wmwpx")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=126872840]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Label" type="Label" parent="HBoxContainer"]
+[node name="Label" type="Label" parent="HBoxContainer" unique_id=586975734]
 layout_mode = 2
 text = "Unit unbind"
