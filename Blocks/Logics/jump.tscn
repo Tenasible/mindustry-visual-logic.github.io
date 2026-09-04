@@ -7,7 +7,7 @@
 
 [sub_resource type="GDScript" id="GDScript_kgnm4"]
 resource_name = "jump"
-script/source = "extends LogicBlocks
+script/source = "extends \"res://Scripts/logic_blocks.gd\"
 
 
 @export var lock_jump: String
@@ -67,6 +67,13 @@ func option_get_item(node: OptionButton, optext : String):
 
 
 func compile():
+	# 扁平化导出（C 形积木嵌套）时由 BlockExport 注入全局行号映射
+	var mapped := _mapped_destination()
+	if mapped != \"\":
+		return \"jump %s %s %s %s\\n\" % [
+			mapped,
+			op_list[%op1.selected], %a.text, %b.text
+		]
 	return \"jump %s %s %s %s\\n\" % [
 		\"-1\" if %c.text == null else 
 		str(jump_to.get_index()) if %c.text.is_valid_int() and jump_to else 
@@ -75,7 +82,19 @@ func compile():
 	]
 
 
-func _process(delta: float) -> void:
+## 若存在 BlockExport 注入的行号映射且目标积木在映射中，返回其绝对行号；否则返回空串。
+func _mapped_destination() -> String:
+	if jump_to == null or not is_instance_valid(jump_to):
+		return \"\"
+	var map = get(\"export_line_map\")
+	if map == null or not (map is Dictionary):
+		return \"\"
+	if (map as Dictionary).has(jump_to):
+		return str(int((map as Dictionary)[jump_to]))
+	return \"\"
+
+
+func _process(_delta: float) -> void:
 	logic_process()
 	
 	# 调整jump跳线颜色
@@ -93,25 +112,20 @@ func _process(delta: float) -> void:
 			origin_node.sort_children.connect(_on_any_block_moved)
 			asynchronous_reset = true
 	
-	# jump拖拽
+	# jump拖拽（目标选择与 logic_blocks/block_shell 共用 BlockDrag）
 	if jumping:
 		if origin_node != null:
-			var min_dis = INF
-			var min_block = origin_node.get_child(0)
-			
-			for i in origin_node.get_children():
-				if abs(i.global_position.y + i.size.y * 0.5 - get_global_mouse_position().y) < min_dis:
-					min_block = i
-					min_dis = abs(i.global_position.y + i.size.y * 0.5 - get_global_mouse_position().y)
-
-			# 若jump目标是自己则不锁定
-			if min_block == self:
-				%c.text = \"-1\"
-				jump_to = null
-			else:
-				%c.text = str(min_block.get_index())
-				jump_to = min_block
-				set_jump_dictionary(jump_to.get_index())
+			var target: Node = BlockDrag.find_nearest_block(origin_node, get_global_mouse_position().y, self)
+			if target == null:
+				# 没有可指向的积木（悬停在自己/列表为空）-> 清除目标
+				if jump_to != null:
+					%c.text = \"-1\"
+					jump_to = null
+					set_jump_dictionary(-1)
+			elif jump_to != target:
+				%c.text = str(target.get_index())
+				jump_to = target
+				set_jump_dictionary(target.get_index())
 
 		# 松鼠标左键后消失
 		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) == false:
@@ -121,8 +135,9 @@ func _process(delta: float) -> void:
 			else:
 				set_jump_dictionary(-1)
 	
-	# jump线计算
-	if jump_to != null:
+	# jump线计算（需要所在容器提供跳线基础设施；嵌套于 C 形身体等无该能力时只隐藏线条）
+	var can_draw_line := origin_node != null and origin_node.has_method(\"_on_block_moved\")
+	if jump_to != null and can_draw_line:
 		var rank = 0
 		var jump_line_dis_rank = origin_node.jump_line_rank
 		# 获取自己的排名

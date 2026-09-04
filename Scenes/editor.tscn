@@ -10,10 +10,14 @@
 [ext_resource type="Texture2D" uid="uid://d28xe1g6hubit" path="res://Sprites/Previews/IconTextures/cancel.png" id="6_7fkqn"]
 [ext_resource type="Texture2D" uid="uid://uuy2g1sd7ho6" path="res://Sprites/Previews/IconTextures/load.png" id="6_eo2o7"]
 [ext_resource type="PackedScene" uid="uid://cvj60qdn0mft7" path="res://Scenes/theme_confirm.tscn" id="6_yl2l4"]
+[ext_resource type="Script" uid="uid://d0xb72incwvvu" path="res://Scripts/editor_selection.gd" id="7_sel"]
 
 [sub_resource type="GDScript" id="GDScript_q0a35"]
 resource_name = "editor"
 script/source = "extends Control
+
+const BlockExportScn := preload(\"res://Scripts/block_export.gd\")
+const ProjectIOScn := preload(\"res://Scripts/project_io.gd\")
 
 @export var timer: Timer
 
@@ -21,9 +25,16 @@ script/source = "extends Control
 @export var user_blocks: VBoxContainer
 @export var machine := 0
 
+var project_path := \"\"  ## 当前工程文件的路径（未保存过则为空）
+
 
 func reset_nodes(dragging):
 	dragging_node = dragging
+	# 注册为“可落位宿主”，使 C 形积木身体之外的拖拽目标判定可用
+	%UserBlocks.add_to_group(\"mvl_block_hosts\")
+	var host = get_node_or_null(\"SelectionHost\")
+	if host != null and host.has_method(\"setup\"):
+		host.setup(self, dragging)
 
 
 func _ready():
@@ -35,7 +46,7 @@ func _ready():
 	self.place_blocks()
 
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if %UpButton.button_pressed:
 		%UserBlockScroll.scroll_vertical -= 5
 	
@@ -49,32 +60,47 @@ func compile():
 	blocks_dup.visible = false
 	self.add_child(blocks_dup)
 	
-	# 确保所有积木的内置变量不出错
-	for i in blocks_dup.get_children():
-		i.origin_node = blocks_dup
+	# 确保所有积木的内置变量不出错（含 C 形积木身体内的子积木）
+	var all_nodes = _collect_all_blocks(blocks_dup)
+	for i in all_nodes:
+		i.origin_node = i.get_parent()
 	
-	# 第一步，jump锁定目标
-	for i in blocks_dup.get_children():
+	# 第一步，jump锁定目标（递归进 C 形身体）
+	for i in all_nodes:
 		i.pre_compile(0)
 	
 	# 第二步，删除需要忽略的积木
-	for i in blocks_dup.get_children():
+	for i in all_nodes:
 		i.pre_compile(1)
 	# 刷新
-	for i in blocks_dup.get_children():
-		i._on_any_block_moved()
+	for i in all_nodes:
+		if i.has_method(\"_on_any_block_moved\"):
+			i._on_any_block_moved()
 	await get_tree().create_timer(0).timeout
 	
-	# 最后一步，导出到剪贴板
-	var compile_text: String
-	# 所有积木进行二级导出
-	for i in blocks_dup.get_children():
-		compile_text += i.compile()
+	# C 形嵌套需要“绝对行号”扁平导出（jump 数值统一换算）
+	var compile_text := BlockExportScn.export_text(blocks_dup)
 	
 	# 删除临时积木列表
 	blocks_dup.queue_free()
 	DisplayServer.clipboard_set(compile_text)
-	
+
+
+## 收集容器内全部积木（含 C 形积木身体内的子积木），便于递归 pre_compile。
+func _collect_all_blocks(container) -> Array:
+	var out := []
+	for c in container.get_children():
+		if c is Control:
+			_collect_one(c, out)
+	return out
+
+
+func _collect_one(block, out: Array) -> void:
+	out.append(block)
+	if block.has_method(\"cshape_body_children\"):
+		for gc in block.cshape_body_children():
+			if gc is Control:
+				_collect_one(gc, out)
 
 func add_block_shell(instance, index = -1):
 	var block = load(instance)
@@ -155,6 +181,7 @@ func place_blocks():
 	add_given_block(\"res://Blocks/Logics/stop.tscn\")
 	add_given_block(\"res://Blocks/Logics/end.tscn\")
 	add_given_block(\"res://Blocks/Logics/jump.tscn\")
+	add_given_block(\"res://Blocks/Logics/if.tscn\")
 	#add_given_block(\"res://Blocks/Logics/jump_label.tscn\")
 	
 	spilt = spilt_pack.instantiate()
@@ -349,16 +376,16 @@ func _on_rename_edit_editing_toggled(toggled_on: bool) -> void:
 	%RenameEdit.flat = toggled_on == false
 
 
-func _on_rename_edit_text_submitted(new_text: String) -> void:
+func _on_rename_edit_text_submitted(_new_text: String) -> void:
 	self.name = %RenameEdit.text
 
 
-func _on_confirm_clear_confirmed(edit) -> void:
+func _on_confirm_clear_confirmed(_edit) -> void:
 	for i in %UserBlocks.get_children():
 		i.queue_free()
 
 
-func _on_confirm_close_confirmed(edit) -> void:
+func _on_confirm_close_confirmed(_edit) -> void:
 	queue_free()
 
 
@@ -379,6 +406,41 @@ func _on_load_confirm_confirmed(edit: String) -> void:
 		read_from_clipboard(true , min(int(edit), %UserBlocks.get_child_count()))
 	else:
 		%LoadWarning.visible = true
+
+
+func save_project_file(path: String) -> bool:
+	var data := ProjectIOScn.capture_project(%UserBlocks)
+	var err := ProjectIOScn.save_to_file(path, data)
+	if err != OK:
+		push_error(\"保存工程失败: \" + path)
+		return false
+	project_path = path
+	print(\"已保存工程到: \", path)
+	return true
+
+
+func load_project_file(path: String) -> bool:
+	var data := ProjectIOScn.load_from_file(path)
+	if data.is_empty():
+		return false
+	# 清空当前工作区积木（立即释放，避免与新块共存）
+	for child in %UserBlocks.get_children():
+		%UserBlocks.remove_child(child)
+		child.free()
+	var errors := ProjectIOScn.apply_project(%UserBlocks, data, %EasyInput)
+	for e in errors:
+		push_warning(\"加载工程: \" + str(e))
+	project_path = path
+	print(\"已加载工程: \", path)
+	return errors.is_empty()
+
+
+## 供 LogicBlocks 基类查询的选择入口：转发给 SelectionHost（EditorSelection）。
+func editor_on_block_press(block) -> bool:
+	var host = get_node_or_null(\"SelectionHost\")
+	if host != null and host.has_method(\"editor_on_block_press\"):
+		return host.editor_on_block_press(block)
+	return false
 "
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a7iym"]
@@ -817,6 +879,9 @@ visible = false
 
 [node name="Title" parent="LoadWarning/Control/PanelContainer/TitlePanel" parent_id_path=PackedInt32Array(1624154998, 1146131521) index="1" unique_id=391144446]
 text = "错误"
+
+[node name="SelectionHost" type="Node" parent="." unique_id=369799583]
+script = ExtResource("7_sel")
 
 [connection signal="sort_children" from="WorkArea/MainSpilt/EditArea/MarginContainer/UserBlockScroll/MarginContainer/UserBlocks" to="WorkArea/MainSpilt/EditArea/MarginContainer/UserBlockScroll/MarginContainer/UserBlocks" method="_on_block_moved"]
 [connection signal="editing_toggled" from="WorkArea/MainSpilt/EditArea/Toolbar/Tools/Lefts/RenameEdit" to="." method="_on_rename_edit_editing_toggled"]

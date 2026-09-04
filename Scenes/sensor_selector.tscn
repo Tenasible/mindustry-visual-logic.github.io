@@ -381,7 +381,7 @@ var select_owner
 
 signal unit_selected(unit : String)
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	self.global_position = select_owner.global_position
 
 func _ready():

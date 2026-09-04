@@ -7,16 +7,44 @@
 
 [sub_resource type="GDScript" id="GDScript_2a8yw"]
 resource_name = "if"
-script/source = "extends LogicBlocks
+script/source = "extends \"res://Scripts/cshape_blocks.gd\"
+# if 积木：a <op> b 成立时执行身体内的积木，否则跳过。
+# 导出为一行“jump <跳过点> <取反后的比较> a b”（由 BlockExport 提供绝对行号），
+# 因此无需标签；取反映射保证“条件为真才进入身体”。
+
+const op_list := [\"equal\", \"notEqual\", \"lessThan\", \"lessThanEq\", \"greaterThan\", \"greaterThanEq\", \"strictEqual\", \"always\"]
+
+## 有身体子积木且条件不是 always 时输出 1 行（否则 0 行，保持无语义输出）。
+func cshape_header_count() -> int:
+	if cshape_body_count() <= 0:
+		return 0
+	return 0 if _selected_op() == \"always\" else 1
+
+
+func cshape_header_line(skip_line: int) -> String:
+	return \"jump %d %s %s %s\\n\" % [skip_line, _negated_op(_selected_op()), %a.text, %b.text]
+
+
+func _selected_op() -> String:
+	return op_list[%op1.selected]
+
+
+func _negated_op(op: String) -> String:
+	match op:
+		\"equal\": return \"notEqual\"
+		\"notEqual\": return \"equal\"
+		\"lessThan\": return \"greaterThanEq\"
+		\"lessThanEq\": return \"greaterThan\"
+		\"greaterThan\": return \"lessThanEq\"
+		\"greaterThanEq\": return \"lessThan\"
+		\"strictEqual\": return \"notEqual\"
+	return op
 
 
 func _on_op_1_item_selected(index: int) -> void:
-	if index == 7:
-		%a.visible = false
-		%b.visible = false
-	else:
-		%a.visible = true
-		%b.visible = true
+	var hide: bool = op_list[index] == \"always\"
+	%a.visible = not hide
+	%b.visible = not hide
 "
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qa7kj"]
@@ -62,22 +90,24 @@ corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 expand_margin_bottom = 5.0
 
-[node name="If" type="PanelContainer" unique_id=1783908711]
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="If" type="PanelContainer" unique_id=852561957]
+offset_right = 278.0
+offset_bottom = 85.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
 theme = ExtResource("1_e4i35")
 theme_override_styles/panel = SubResource("StyleBoxEmpty_huk3d")
 script = SubResource("GDScript_2a8yw")
+metadata/_custom_type_script = "uid://b7wjtbtw1q10s"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1300053489]
 layout_mode = 2
-theme_override_constants/separation = 0
+theme_override_constants/separation = -2
 
 [node name="Head" type="PanelContainer" parent="VBoxContainer" unique_id=53829354]
 layout_mode = 2
 size_flags_horizontal = 0
+mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_qa7kj")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Head" unique_id=2145115598]
@@ -132,6 +162,7 @@ select_all_on_focus = true
 
 [node name="Body" type="PanelContainer" parent="VBoxContainer" unique_id=2139658225]
 layout_mode = 2
+mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_4eru0")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Body" unique_id=46492403]
@@ -140,6 +171,7 @@ theme_override_constants/separation = 3
 
 [node name="BodyShow" type="PanelContainer" parent="VBoxContainer/Body/HBoxContainer" unique_id=1460527433]
 layout_mode = 2
+mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_e1ccb")
 
 [node name="UserBLocks" type="VBoxContainer" parent="VBoxContainer/Body/HBoxContainer" unique_id=1833081752]
@@ -152,6 +184,7 @@ size_flags_horizontal = 3
 custom_minimum_size = Vector2(100, 20)
 layout_mode = 2
 size_flags_horizontal = 0
+mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_pb0h5")
 
 [connection signal="item_selected" from="VBoxContainer/Head/HBoxContainer/op1" to="." method="_on_op_1_item_selected"]

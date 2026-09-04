@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://tests/dragtest.gd" id="1_dt"]
+
+[node name="DragTest" type="Node"]
+script = ExtResource("1_dt")

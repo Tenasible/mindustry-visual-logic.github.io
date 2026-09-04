@@ -8,6 +8,8 @@
 resource_name = "block_shell"
 script/source = "extends PanelContainer
 
+const BlockDrag := preload(\"res://Scripts/block_drag.gd\")
+
 @export var dragging_node: Node2D
 @export var origin_node: VBoxContainer
 @export var is_given_block := false
@@ -55,59 +57,45 @@ func _ready() -> void:
 		node = %BlockContainer.get_child(0)
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	%Index.text = str(get_index())
 	
 	# jump_drag 处理
 	if jump_drag != null:
 		jump_drag.global_position.x = get_global_mouse_position().x
 		
-		# 计算目标位置
+		# 计算目标位置（与 logic_blocks/jump 共用 BlockDrag；find_nearest_block 已排除自身）
 		if origin_node != null:
-			var min_dis = INF
-			var min_block = origin_node.get_child(0)
-			
-			for i in origin_node.get_children():
-				if abs(i.global_position.y + i.size.y * 0.5 - get_global_mouse_position().y) < min_dis:
-					min_block = i
-					min_dis = abs(i.global_position.y + i.size.y * 0.5 - get_global_mouse_position().y)
-			
-			if get_global_mouse_position().x < origin_node.global_position.x:
-				jump_drag.global_position.x = get_global_mouse_position().x
-			else:
-				jump_drag.global_position.x = min_block.global_position.x
-			
-			# 若jump目标是自己则不锁定
-			jump_drag.global_position.y = min_block.global_position.y
-			if min_block == self:
+			var target: Node = BlockDrag.find_nearest_block(origin_node, get_global_mouse_position().y, self)
+			if target == null:
 				node.c.value = -1
 				node.jump_to = null
 				set_jump_dictionary(self.get_index())
 			else:
-				node.c.value = min_block.get_index()
-				node.jump_to = min_block
-				set_jump_dictionary(min_block.get_index())
+				node.c.value = target.get_index()
+				node.jump_to = target
+				set_jump_dictionary(target.get_index())
+				if get_global_mouse_position().x < origin_node.global_position.x:
+					jump_drag.global_position.x = get_global_mouse_position().x
+				else:
+					jump_drag.global_position.x = target.global_position.x
+				jump_drag.global_position.y = target.global_position.y
 		
 		# 松鼠标左键后消失
 		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) == false:
-			jump_drag.queue_free()
+			if is_instance_valid(jump_drag):
+				jump_drag.queue_free()
+			jump_drag = null
 	# 积木拖动处理
 	if moving == true:
 		%Index.visible = false
 		global_position = get_global_mouse_position() + to_mouse_position
 		
-		# 计算阴影位置
-		if shadow_block != null:
-			if origin_node != null:
-				var min_dis = INF
-				var min_block = origin_node.get_child(0)
-				
-				for i in origin_node.get_children():
-					if abs(i.global_position.y + i.size.y - get_global_mouse_position().y) < min_dis:
-						min_block = i
-						min_dis = abs(i.global_position.y + i.size.y - get_global_mouse_position().y)
-
-				origin_node.move_child(shadow_block, min_block.get_index() )
+		# 计算占位预览（槽位变化才移动占位符，避免每帧整列重排）
+		if shadow_block != null and origin_node != null:
+			var slot := BlockDrag.find_insert_slot(origin_node, get_global_mouse_position().y, shadow_block)
+			if slot != shadow_block.get_index():
+				origin_node.move_child(shadow_block, slot)
 				
 		# 基于 shadow_block 进行预放置位置移动判定
 		if self.global_position.x < origin_node.global_position.x - 100:
@@ -123,24 +111,37 @@ func _process(delta: float) -> void:
 		#	origin_node.move_child(shadow_block , min(shadow_block.get_index() + 1 , origin_node.get_child_count()))
 		
 		
-		# 当自身被松开
+		# 当自身被松开（拖到删除区则取消，否则按预览槽位落位）
 		if (Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) == false and 
 			Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT) == false):
-			if self.global_position.x < origin_node.global_position.x - 100:
-				if shadow_block != null:
-					shadow_block.queue_free()
-				self.queue_free()
-			
 			moving = false
 			%Index.visible = not is_given_block
-			reparent(origin_node)
 			
-			origin_node.move_child(self , shadow_block.get_index())
-			emit_signal(\"moved\", shadow_block.get_index())
-				
-			shadow_block.queue_free()
-				
-			origin_node.emit_signal(\"block_move\")
+			# 删除区判定
+			if self.global_position.x < origin_node.global_position.x - 100:
+				if shadow_block != null and is_instance_valid(shadow_block):
+					shadow_block.queue_free()
+				shadow_block = null
+				queue_free()
+				return
+			
+			# 落位：占位符当前索引即预览槽位
+			var drop_slot := 0
+			if shadow_block != null and is_instance_valid(shadow_block):
+				drop_slot = shadow_block.get_index()
+				origin_node.remove_child(shadow_block)
+				shadow_block.queue_free()
+			shadow_block = null
+			
+			reparent(origin_node)
+			origin_node.move_child(self , drop_slot)
+			emit_signal(\"moved\", drop_slot)
+			
+			# 显式通知容器刷新行号/跳线（UserBlocks 优先走 _on_block_moved）
+			if origin_node.has_method(\"_on_block_moved\"):
+				origin_node._on_block_moved()
+			elif origin_node.has_signal(\"block_move\"):
+				origin_node.emit_signal(\"block_move\")
 	else:
 		%Index.visible = not is_given_block
 	

@@ -8,7 +8,9 @@
 resource_name = "main"
 script/source = "extends Node
 
-@export var editor_configs: EditorConfig
+const EditorConfigScn := preload(\"res://Scripts/config.gd\")
+
+@export var editor_configs: Resource
 
 var new_version : int
 var machine = 0
@@ -30,7 +32,7 @@ func _ready() -> void:
 	get_tree().root.focus_exited.connect(_on_window_focus_exited)
 	
 	# 从文件读取配置
-	self.editor_configs = EditorConfig.new()
+	self.editor_configs = EditorConfigScn.new()
 	self.apply_config()
 	
 	# 重写关闭窗口按钮
@@ -135,11 +137,17 @@ func _on_files_pressed(index):
 	match index:
 		0:
 			new_editor()
-		1, 2:
-			%FileDialog.file_mode = 4
-			%FileDialog.visible = true
+		1:
+			var tab = %Editors.get_current_tab_control()
+			if tab.has_method(\"save_project_file\") and tab.project_path != \"\":
+				tab.save_project_file(tab.project_path)
+			else:
+				_open_save_dialog()
+		2:
+			_open_save_dialog()
 		3:
 			%FileDialog.file_mode = 0
+			%FileDialog.title = \"打开工程文件\"
 			%FileDialog.visible = true
 		4:
 			new_editor()
@@ -151,6 +159,12 @@ func _on_files_pressed(index):
 			get_tree().quit()
 
 
+func _open_save_dialog():
+	%FileDialog.file_mode = 4
+	%FileDialog.title = \"保存工程\"
+	%FileDialog.visible = true
+
+
 func _on_compile_button_pressed() -> void:
 	%Editors.get_current_tab_control().compile()
 
@@ -159,18 +173,27 @@ func _on_document_pressed() -> void:
 	self.new_page(\"Document\", self.file_scn)
 
 
-func _on_confirm_close_app_confirmed(edit) -> void:
+func _on_confirm_close_app_confirmed(_edit) -> void:
 	get_tree().quit()
 
 
 func _on_file_dialog_file_selected(path: String) -> void:
-	if not path.ends_with(\".tscn\"):
-		path += \".tscn\"
-	
+	# 保存工程文件（.mvlp）
 	if %FileDialog.file_mode == 4:
-		save_editor(%Editors.get_current_tab_control(), path)
-		
+		if not path.ends_with(\".mvlp\"):
+			path += \".mvlp\"
+		var tab = %Editors.get_current_tab_control()
+		if tab.has_method(\"save_project_file\"):
+			tab.save_project_file(path)
+		return
+	
+	# 打开工程文件
 	if %FileDialog.file_mode == 0:
+		var tab = %Editors.get_current_tab_control()
+		if path.ends_with(\".mvlp\") and tab.has_method(\"load_project_file\"):
+			tab.load_project_file(path)
+			return
+		# 兼容旧版：.tscn 场景作为新标签页打开
 		var scene = load_editor(path)
 		if scene:
 			%Editors.add_child(scene)
@@ -235,11 +258,9 @@ popup/item_0/text = "新建项目"
 popup/item_0/id = 0
 popup/item_1/text = "保存"
 popup/item_1/id = 1
-popup/item_1/disabled = true
 popup/item_2/text = "另存为"
 popup/item_2/id = 2
-popup/item_2/disabled = true
-popup/item_3/text = "从电脑中读取"
+popup/item_3/text = "打开工程文件"
 popup/item_3/id = 3
 popup/item_4/id = 6
 popup/item_4/disabled = true

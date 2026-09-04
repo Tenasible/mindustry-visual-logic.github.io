@@ -6,7 +6,7 @@
 
 [sub_resource type="GDScript" id="GDScript_hnl2r"]
 resource_name = "unit_shoot"
-script/source = "extends LogicBlocks
+script/source = "extends \"res://Scripts/logic_blocks.gd\"
 
 
 func load_value(value: Array):

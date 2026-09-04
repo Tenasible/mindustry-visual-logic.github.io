@@ -5,10 +5,10 @@
 
 [sub_resource type="GDScript" id="GDScript_j11fp"]
 resource_name = "stop"
-script/source = "extends LogicBlocks
+script/source = "extends \"res://Scripts/logic_blocks.gd\"
 
 
-func load_value(value: Array):
+func load_value(_value: Array):
 	pass
 
 

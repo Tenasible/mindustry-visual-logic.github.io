@@ -5,7 +5,7 @@
 
 [sub_resource type="GDScript" id="GDScript_wpmu1"]
 resource_name = "get_link"
-script/source = "extends LogicBlocks
+script/source = "extends \"res://Scripts/logic_blocks.gd\"
 
 
 func load_value(value: Array):

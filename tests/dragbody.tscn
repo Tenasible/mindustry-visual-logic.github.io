@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://tests/dragbody.gd" id="1_db"]
+
+[node name="DragBody" type="Node"]
+script = ExtResource("1_db")
+
+[node name="Dragging" type="Node2D" parent="."]

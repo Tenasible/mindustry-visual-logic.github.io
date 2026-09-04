@@ -66,7 +66,7 @@ func _on_line_edit_text_changed(new_text: String) -> void:
 	compile = int($HBoxContainer/LineEdit.text)
 
 
-func _on_h_slider_drag_ended(value_changed: bool) -> void:
+func _on_h_slider_drag_ended(_value_changed: bool) -> void:
 	$HBoxContainer/LineEdit.text = str(int($HBoxContainer/HSlider.value))
 	compile = int($HBoxContainer/LineEdit.text)
 "
@@ -106,14 +106,14 @@ func _on_line_edit_text_changed(new_text: String) -> void:
 		
 	compile = int($HBoxContainer/LineEdit.text)
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if changing:
 		$HBoxContainer/LineEdit.text = str(float($HBoxContainer/HSlider.value))
 		compile = float($HBoxContainer/LineEdit.text)
 
 
 
-func _on_h_slider_drag_ended(value_changed: bool) -> void:
+func _on_h_slider_drag_ended(_value_changed: bool) -> void:
 	var count = 0
 	while not compile:
 		count += 1

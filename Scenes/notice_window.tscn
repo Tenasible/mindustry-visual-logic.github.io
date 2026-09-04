@@ -16,8 +16,12 @@ func _ready():
 	%HTTPRequest.request(\"https://textdb.online/MindVisualLogic\")
 
 
-func _on_http_request_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray):
-	var json = JSON.parse_string(body.get_string_from_utf8())
+func _on_http_request_request_completed(_result: int, _response_code: int, _headers: PackedStringArray, body: PackedByteArray):
+	var parser := JSON.new()
+	if parser.parse(body.get_string_from_utf8()) != OK or not (parser.data is Dictionary):
+		return
+	
+	var json: Dictionary = parser.data
 	current_version = get_tree().root.get_child(0).editor_configs.current_version
 	
 	if json.has(\"version\"):

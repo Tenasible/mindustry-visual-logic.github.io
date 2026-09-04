@@ -21,7 +21,7 @@ config/name_localized={
 config/version="0.2.0"
 run/main_scene="uid://d0ibbb4m6d486"
 config/auto_accept_quit=false
-config/features=PackedStringArray("4.6", "GL Compatibility")
+config/features=PackedStringArray("4.7", "GL Compatibility")
 run/max_fps=60
 boot_splash/show_image=false
 boot_splash/stretch_mode=0
@@ -38,7 +38,7 @@ window/per_pixel_transparency/allowed=true
 
 [editor_plugins]
 
-enabled=PackedStringArray()
+enabled=PackedStringArray("res://addons/deepseek_harness/plugin.cfg")
 
 [file_customization]
 
