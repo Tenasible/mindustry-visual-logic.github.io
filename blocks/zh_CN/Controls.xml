@@ -1,0 +1,136 @@
+<Kind name="控制" color="#a15800">
+	<Block name="Drawflush">
+		<Literal>drawflush</Literal>
+		<Field id="display" />
+		<Row>
+			<Text id="T1">打印绘图</Text>
+			<Text id="T2">到</Text>
+			<LineBox id="display" placeholder="display1" />
+		</Row>
+	</Block>
+	<Block name="Printflush">
+		<Literal>printflush</Literal>
+		<Field id="message" />
+		<Row>
+			<Text id="T1">打印文本</Text>
+			<Text id="T2">到</Text>
+			<LineBox id="message" placeholder="message1" />
+		</Row>
+	</Block>
+	<Block name="GetLink">
+		<Literal>getlink</Literal>
+		<Field id="result" />
+		<Field id="link" />
+		<Row>
+			<Text id="T1">获取连接</Text>
+			<LineBox id="result" placeholder="result" />
+			<Text id="T2">=</Text>
+			<Text id="T3">link#</Text>
+			<LineBox id="link" placeholder="0" />
+		</Row>
+	</Block>
+	<Block name="Control">
+		<Literal>control</Literal>
+		<Field id="mode" />
+		<Field id="block" />
+		<FirstOf ids="index x unit" />
+		<FirstOf ids="y shootp" />
+		<Field id="shoot" />
+		<Literal>0</Literal>
+		<Row>
+			<Text id="T1">控制建筑</Text>
+			<Option id="mode">
+			<Item value="enabled">启用</Item>
+			<Item value="shoot">射击</Item>
+			<Item value="shootp">预先射击</Item>
+			<Item value="config">配置</Item>
+			<Item value="color">颜色</Item>
+		</Option>
+			<Text id="T2">的</Text>
+			<LineBox id="block" placeholder="block1" />
+			<Text id="T3" when="mode=enabled | mode=config | mode=color">为</Text>
+			<LineBox id="index" placeholder="index1" when="mode=enabled | mode=config | mode=color" />
+			<Text id="T4" when="mode=shoot">x</Text>
+			<LineBox id="x" placeholder="x1" when="mode=shoot" />
+			<Text id="T5" when="mode=shoot">y</Text>
+			<LineBox id="y" placeholder="y1" when="mode=shoot" />
+			<Text id="T6" when="mode=shootp">单位</Text>
+			<LineBox id="unit" placeholder="unit1" when="mode=shootp" />
+			<Text id="T7" when="mode=shoot | mode=shootp">射击</Text>
+			<LineBox id="shootp" placeholder="shoot1" when="mode=shootp" />
+			<LineBox id="shoot" placeholder="shoot1" when="mode=shoot" />
+		</Row>
+	</Block>
+	<Block name="Radar">
+		<Literal>radar</Literal>
+		<Field id="s1" />
+		<Field id="s2" />
+		<Field id="s3" />
+		<Field id="radar" />
+		<Field id="turret" />
+		<Field id="num" />
+		<Field id="result" />
+		<Row>
+			<Text id="T1">雷达</Text>
+			<Text id="T2">来自</Text>
+			<LineBox id="turret" placeholder="turret1" />
+			<Option id="s1">
+			<Item value="any">任意单位</Item>
+			<Item value="enemy">敌方单位</Item>
+			<Item value="ally">己方单位</Item>
+			<Item value="player">玩家控制的单位</Item>
+			<Item value="attacker">有武器的单位</Item>
+			<Item value="flying">空中单位</Item>
+			<Item value="boss">Boss 单位</Item>
+			<Item value="ground">地面单位</Item>
+		</Option>
+			<Option id="s2">
+			<Item value="any">任意单位</Item>
+			<Item value="enemy">敌方单位</Item>
+			<Item value="ally">己方单位</Item>
+			<Item value="player">玩家控制的单位</Item>
+			<Item value="attacker">有武器的单位</Item>
+			<Item value="flying">空中单位</Item>
+			<Item value="boss">Boss 单位</Item>
+			<Item value="ground">地面单位</Item>
+		</Option>
+			<Option id="s3">
+			<Item value="any">任意单位</Item>
+			<Item value="enemy">敌方单位</Item>
+			<Item value="ally">己方单位</Item>
+			<Item value="player">玩家控制的单位</Item>
+			<Item value="attacker">有武器的单位</Item>
+			<Item value="flying">空中单位</Item>
+			<Item value="boss">Boss 单位</Item>
+			<Item value="ground">地面单位</Item>
+		</Option>
+		</Row>
+		<Row>
+			<Text id="T3">顺序</Text>
+			<LineBox id="num" placeholder="1" />
+			<Text id="T4">排序</Text>
+			<Option id="radar">
+			<Item value="distance">距离</Item>
+			<Item value="health">生命值</Item>
+			<Item value="shield">护盾</Item>
+			<Item value="armor">护甲</Item>
+			<Item value="maxHealth">最大生命值</Item>
+		</Option>
+			<LineBox id="result" placeholder="result" />
+		</Row>
+	</Block>
+	<Block name="Sensor">
+		<Literal>sensor</Literal>
+		<Field id="result" />
+		<Field id="block" />
+		<Field id="prop" />
+		<Row>
+			<Text id="T1">获取数据</Text>
+			<LineBox id="result" placeholder="result" />
+			<Text id="T2">=</Text>
+			<Selector id="prop" kind="sensors" placeholder="@copper" />
+			<Text id="T3">中</Text>
+			<LineBox id="block" placeholder="block1" />
+		</Row>
+	</Block>
+</Kind>

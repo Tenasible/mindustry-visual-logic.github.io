@@ -1,0 +1,173 @@
+<Kind name="Operations" color="#644da3">
+	<Block name="Set">
+		<Literal>set</Literal>
+		<Field id="result" />
+		<Field id="value" />
+		<Row>
+			<Text id="T1">Set</Text>
+			<LineBox id="result" placeholder="result" />
+			<Text id="T2">=</Text>
+			<LineBox id="value" placeholder="0" />
+		</Row>
+	</Block>
+	<Block name="Operation">
+		<Literal>op</Literal>
+		<Field id="ops" />
+		<Field id="result" />
+		<Field id="a" />
+		<Field id="b" />
+		<Row>
+			<Text id="T1">Operation</Text>
+			<LineBox id="result" placeholder="result" />
+			<Text id="T2">=</Text>
+			<!-- 显示顺序按官方 OperationStatement.rebuild：一元（not/abs/…）与函数型（max/len/…）
+				 是 `result = op a [b]`（运算符在前），其余是 `result = a op b`。
+				 元素只写一次，靠 <Place> 条件化挪位 —— 不再需要把一个字段写两遍。 -->
+			<LineBox id="a" placeholder="a">
+				<Place when="ops=not|abs|sign|log|log10|floor|ceil|round|sqrt|rand|sin|cos|tan|asin|acos|atan|max|min|angle|angleDiff|len|noise" after="ops" />
+			</LineBox>
+			<Option id="ops">
+			<Item>add</Item>
+			<Item>sub</Item>
+			<Item>mul</Item>
+			<Item>div</Item>
+			<Item>idiv</Item>
+			<Item>mod</Item>
+			<!-- emod：向负无穷取整的取模（`%%`），150 版加的；mod 其实是取余 -->
+			<Item>emod</Item>
+			<Item>pow</Item>
+			<Item>equal</Item>
+			<Item>notEqual</Item>
+			<Item>land</Item>
+			<Item>lessThan</Item>
+			<Item>lessThanEq</Item>
+			<Item>greaterThan</Item>
+			<Item>greaterThanEq</Item>
+			<Item>strictEqual</Item>
+			<Item>shl</Item>
+			<Item>shr</Item>
+			<Item>ushr</Item>
+			<Item>or</Item>
+			<Item>and</Item>
+			<Item>xor</Item>
+			<Item>not</Item>
+			<Item>max</Item>
+			<Item>min</Item>
+			<!-- 旧名字（Mindustry 把 atan2 改名叫 angle、dst 改名叫 len）：导入认、导出用新名 -->
+			<Item alias="atan2">angle</Item>
+			<Item>angleDiff</Item>
+			<Item alias="dst">len</Item>
+			<Item>noise</Item>
+			<Item>abs</Item>
+			<Item>sign</Item>
+			<Item>log</Item>
+			<Item>logn</Item>
+			<Item>log10</Item>
+			<Item>floor</Item>
+			<Item>ceil</Item>
+			<Item>round</Item>
+			<Item>sqrt</Item>
+			<Item>rand</Item>
+			<Item>sin</Item>
+			<Item>cos</Item>
+			<Item>tan</Item>
+			<Item>asin</Item>
+			<Item>acos</Item>
+			<Item>atan</Item>
+		</Option>
+			<!-- 一元运算（官方 LogicOp.unary）不显示第二个操作数：not/abs/sign/log/log10/
+				 floor/ceil/round/sqrt/rand/sin/cos/tan/asin/acos/atan -->
+			<LineBox id="b" placeholder="b" when="~(ops=not | ops=abs | ops=sign | ops=log | ops=log10 | ops=floor | ops=ceil | ops=round | ops=sqrt | ops=rand | ops=sin | ops=cos | ops=tan | ops=asin | ops=acos | ops=atan)" />
+		</Row>
+	</Block>
+	<Block name="Select">
+		<Literal>select</Literal>
+		<Field id="result" />
+		<Field id="cmp" />
+		<Field id="x" />
+		<Field id="value" />
+		<Field id="t" />
+		<Field id="f" />
+		<Row>
+			<Text id="T1">Select</Text>
+			<LineBox id="result" placeholder="result" />
+			<Text id="T2">=</Text>
+			<Text id="T3">if</Text>
+			<LineBox id="x" placeholder="x" when="cmp!=always" />
+			<Option id="cmp">
+			<Item>equal</Item>
+			<Item>notEqual</Item>
+			<Item>lessThan</Item>
+			<Item>lessThanEq</Item>
+			<Item>greaterThan</Item>
+			<Item>greaterThanEq</Item>
+			<Item>strictEqual</Item>
+			<Item>always</Item>
+		</Option>
+			<LineBox id="value" placeholder="false" when="cmp!=always" />
+		</Row>
+		<Row>
+			<Text id="T4">then</Text>
+			<LineBox id="t" placeholder="false" />
+			<Text id="T5">else</Text>
+			<LineBox id="f" placeholder="false" />
+		</Row>
+	</Block>
+	<Block name="Lookup">
+		<Literal>lookup</Literal>
+		<Field id="type" />
+		<Field id="result" />
+		<Field id="id" />
+		<Row>
+			<Text id="T1">Lookup</Text>
+			<LineBox id="result" placeholder="result" />
+			<Text id="T2">=</Text>
+			<Text id="T3">lookup</Text>
+			<Option id="type">
+			<Item>block</Item>
+			<Item>unit</Item>
+			<Item>item</Item>
+			<Item>liquid</Item>
+			<Item>team</Item>
+		</Option>
+			<Text id="T4">#</Text>
+			<LineBox id="id" placeholder="0" />
+		</Row>
+	</Block>
+	<Block name="PackColor">
+		<Literal>packcolor</Literal>
+		<Field id="result" />
+		<Field id="r" />
+		<Field id="g" />
+		<Field id="b" />
+		<Field id="a" />
+		<Row>
+			<Text id="T1">PackColor</Text>
+			<LineBox id="result" placeholder="result" />
+			<Text id="T2">=</Text>
+			<Text id="T3">pack</Text>
+			<LineBox id="r" placeholder="1" />
+			<LineBox id="g" placeholder="0" />
+			<LineBox id="b" placeholder="0" />
+			<LineBox id="a" placeholder="1" />
+		</Row>
+	</Block>
+	<Block name="UnpackColor">
+		<Literal>unpackcolor</Literal>
+		<Field id="r" />
+		<Field id="g" />
+		<Field id="b" />
+		<Field id="a" />
+		<Field id="result" />
+		<Row>
+			<Text id="T1">UnpackColor</Text>
+			<LineBox id="r" placeholder="r" />
+			<LineBox id="g" placeholder="g" />
+			<LineBox id="b" placeholder="b" />
+			<LineBox id="a" placeholder="a" />
+			<Text id="T2">=</Text>
+			<Text id="T3">unpack</Text>
+			<LineBox id="result" placeholder="result" />
+		</Row>
+	</Block>
+</Kind>

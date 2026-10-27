@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://mn7j5dd475ta"]
+
+[ext_resource type="FontFile" uid="uid://i8tur3ohx1u2" path="res://assets/fonts/font.woff" id="1_ghewx"]
+[ext_resource type="FontFile" uid="uid://bhll3agi3g24y" path="res://assets/fonts/tech.ttf" id="2_0tpui"]
+[ext_resource type="Script" path="res://srcs/windows/notice_item.gd" id="3_script"]
+
+[node name="NoticeItem" type="PanelContainer" unique_id=1257117258]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_script")
+
+[node name="Box" type="VBoxContainer" parent="." unique_id=1419070842]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Time" type="Label" parent="Box" unique_id=475368417]
+layout_mode = 2
+
+[node name="Content" type="RichTextLabel" parent="Box" unique_id=1958970355]
+layout_mode = 2
+focus_mode = 2
+theme_override_fonts/normal_font = ExtResource("1_ghewx")
+theme_override_fonts/bold_font = ExtResource("2_0tpui")
+text = "消息文本"
+fit_content = true
+context_menu_enabled = true
+selection_enabled = true

@@ -1,0 +1,1040 @@
+{
+	"values": [
+		{
+			"value": "@additive-reconstructor",
+			"icon": "assets/sprites/previews/blocks/block-additive-reconstructor-ui.png"
+		},
+		{
+			"value": "@advanced-launch-pad",
+			"icon": "assets/sprites/previews/blocks/block-advanced-launch-pad-ui.png"
+		},
+		{
+			"value": "@afflict",
+			"icon": "assets/sprites/previews/blocks/block-afflict-ui.png"
+		},
+		{
+			"value": "@air-factory",
+			"icon": "assets/sprites/previews/blocks/block-air-factory-ui.png"
+		},
+		{
+			"value": "@arc",
+			"icon": "assets/sprites/previews/blocks/block-arc-ui.png"
+		},
+		{
+			"value": "@armored-conveyor",
+			"icon": "assets/sprites/previews/blocks/block-armored-conveyor-ui.png"
+		},
+		{
+			"value": "@armored-duct",
+			"icon": "assets/sprites/previews/blocks/block-armored-duct-ui.png"
+		},
+		{
+			"value": "@atmospheric-concentrator",
+			"icon": "assets/sprites/previews/blocks/block-atmospheric-concentrator-ui.png"
+		},
+		{
+			"value": "@basic-assembler-module",
+			"icon": "assets/sprites/previews/blocks/block-basic-assembler-module-ui.png"
+		},
+		{
+			"value": "@battery",
+			"icon": "assets/sprites/previews/blocks/block-battery-ui.png"
+		},
+		{
+			"value": "@battery-large",
+			"icon": "assets/sprites/previews/blocks/block-battery-large-ui.png"
+		},
+		{
+			"value": "@beam-link",
+			"icon": "assets/sprites/previews/blocks/block-beam-link-ui.png"
+		},
+		{
+			"value": "@beam-node",
+			"icon": "assets/sprites/previews/blocks/block-beam-node-ui.png"
+		},
+		{
+			"value": "@beam-tower",
+			"icon": "assets/sprites/previews/blocks/block-beam-tower-ui.png"
+		},
+		{
+			"value": "@beryllium-wall",
+			"icon": "assets/sprites/previews/blocks/block-beryllium-wall-ui.png"
+		},
+		{
+			"value": "@beryllium-wall-large",
+			"icon": "assets/sprites/previews/blocks/block-beryllium-wall-large-ui.png"
+		},
+		{
+			"value": "@blast-door",
+			"icon": "assets/sprites/previews/blocks/block-blast-door-ui.png"
+		},
+		{
+			"value": "@blast-drill",
+			"icon": "assets/sprites/previews/blocks/block-blast-drill-ui.png"
+		},
+		{
+			"value": "@blast-mixer",
+			"icon": "assets/sprites/previews/blocks/block-blast-mixer-ui.png"
+		},
+		{
+			"value": "@breach",
+			"icon": "assets/sprites/previews/blocks/block-breach-ui.png"
+		},
+		{
+			"value": "@bridge-conduit",
+			"icon": "assets/sprites/previews/blocks/block-bridge-conduit-ui.png"
+		},
+		{
+			"value": "@bridge-conveyor",
+			"icon": "assets/sprites/previews/blocks/block-bridge-conveyor-ui.png"
+		},
+		{
+			"value": "@build-tower",
+			"icon": "assets/sprites/previews/blocks/block-build-tower-ui.png"
+		},
+		{
+			"value": "@canvas",
+			"icon": "assets/sprites/previews/blocks/block-canvas-ui.png"
+		},
+		{
+			"value": "@carbide-crucible",
+			"icon": "assets/sprites/previews/blocks/block-carbide-crucible-ui.png"
+		},
+		{
+			"value": "@carbide-wall",
+			"icon": "assets/sprites/previews/blocks/block-carbide-wall-ui.png"
+		},
+		{
+			"value": "@carbide-wall-large",
+			"icon": "assets/sprites/previews/blocks/block-carbide-wall-large-ui.png"
+		},
+		{
+			"value": "@chemical-combustion-chamber",
+			"icon": "assets/sprites/previews/blocks/block-chemical-combustion-chamber-ui.png"
+		},
+		{
+			"value": "@cliff-crusher",
+			"icon": "assets/sprites/previews/blocks/block-cliff-crusher-ui.png"
+		},
+		{
+			"value": "@coal-centrifuge",
+			"icon": "assets/sprites/previews/blocks/block-coal-centrifuge-ui.png"
+		},
+		{
+			"value": "@combustion-generator",
+			"icon": "assets/sprites/previews/blocks/block-combustion-generator-ui.png"
+		},
+		{
+			"value": "@conduit",
+			"icon": "assets/sprites/previews/blocks/block-conduit-ui.png"
+		},
+		{
+			"value": "@constructor",
+			"icon": "assets/sprites/previews/blocks/block-constructor-ui.png"
+		},
+		{
+			"value": "@container",
+			"icon": "assets/sprites/previews/blocks/block-container-ui.png"
+		},
+		{
+			"value": "@conveyor",
+			"icon": "assets/sprites/previews/blocks/block-conveyor-ui.png"
+		},
+		{
+			"value": "@copper-wall",
+			"icon": "assets/sprites/previews/blocks/block-copper-wall-ui.png"
+		},
+		{
+			"value": "@copper-wall-large",
+			"icon": "assets/sprites/previews/blocks/block-copper-wall-large-ui.png"
+		},
+		{
+			"value": "@core-acropolis",
+			"icon": "assets/sprites/previews/blocks/block-core-acropolis-ui.png"
+		},
+		{
+			"value": "@core-bastion",
+			"icon": "assets/sprites/previews/blocks/block-core-bastion-ui.png"
+		},
+		{
+			"value": "@core-citadel",
+			"icon": "assets/sprites/previews/blocks/block-core-citadel-ui.png"
+		},
+		{
+			"value": "@core-foundation",
+			"icon": "assets/sprites/previews/blocks/block-core-foundation-ui.png"
+		},
+		{
+			"value": "@core-nucleus",
+			"icon": "assets/sprites/previews/blocks/block-core-nucleus-ui.png"
+		},
+		{
+			"value": "@core-shard",
+			"icon": "assets/sprites/previews/blocks/block-core-shard-ui.png"
+		},
+		{
+			"value": "@cryofluid-mixer",
+			"icon": "assets/sprites/previews/blocks/block-cryofluid-mixer-ui.png"
+		},
+		{
+			"value": "@cultivator",
+			"icon": "assets/sprites/previews/blocks/block-cultivator-ui.png"
+		},
+		{
+			"value": "@cyanogen-synthesizer",
+			"icon": "assets/sprites/previews/blocks/block-cyanogen-synthesizer-ui.png"
+		},
+		{
+			"value": "@cyclone",
+			"icon": "assets/sprites/previews/blocks/block-cyclone-ui.png"
+		},
+		{
+			"value": "@deconstructor",
+			"icon": "assets/sprites/previews/blocks/block-deconstructor-ui.png"
+		},
+		{
+			"value": "@differential-generator",
+			"icon": "assets/sprites/previews/blocks/block-differential-generator-ui.png"
+		},
+		{
+			"value": "@diffuse",
+			"icon": "assets/sprites/previews/blocks/block-diffuse-ui.png"
+		},
+		{
+			"value": "@diode",
+			"icon": "assets/sprites/previews/blocks/block-diode-ui.png"
+		},
+		{
+			"value": "@disassembler",
+			"icon": "assets/sprites/previews/blocks/block-disassembler-ui.png"
+		},
+		{
+			"value": "@disperse",
+			"icon": "assets/sprites/previews/blocks/block-disperse-ui.png"
+		},
+		{
+			"value": "@distributor",
+			"icon": "assets/sprites/previews/blocks/block-distributor-ui.png"
+		},
+		{
+			"value": "@door",
+			"icon": "assets/sprites/previews/blocks/block-door-ui.png"
+		},
+		{
+			"value": "@door-large",
+			"icon": "assets/sprites/previews/blocks/block-door-large-ui.png"
+		},
+		{
+			"value": "@duct",
+			"icon": "assets/sprites/previews/blocks/block-duct-ui.png"
+		},
+		{
+			"value": "@duct-bridge",
+			"icon": "assets/sprites/previews/blocks/block-duct-bridge-ui.png"
+		},
+		{
+			"value": "@duct-router",
+			"icon": "assets/sprites/previews/blocks/block-duct-router-ui.png"
+		},
+		{
+			"value": "@duct-unloader",
+			"icon": "assets/sprites/previews/blocks/block-duct-unloader-ui.png"
+		},
+		{
+			"value": "@duo",
+			"icon": "assets/sprites/previews/blocks/block-duo-ui.png"
+		},
+		{
+			"value": "@electric-heater",
+			"icon": "assets/sprites/previews/blocks/block-electric-heater-ui.png"
+		},
+		{
+			"value": "@electrolyzer",
+			"icon": "assets/sprites/previews/blocks/block-electrolyzer-ui.png"
+		},
+		{
+			"value": "@eruption-drill",
+			"icon": "assets/sprites/previews/blocks/block-eruption-drill-ui.png"
+		},
+		{
+			"value": "@exponential-reconstructor",
+			"icon": "assets/sprites/previews/blocks/block-exponential-reconstructor-ui.png"
+		},
+		{
+			"value": "@flux-reactor",
+			"icon": "assets/sprites/previews/blocks/block-flux-reactor-ui.png"
+		},
+		{
+			"value": "@force-projector",
+			"icon": "assets/sprites/previews/blocks/block-force-projector-ui.png"
+		},
+		{
+			"value": "@foreshadow",
+			"icon": "assets/sprites/previews/blocks/block-foreshadow-ui.png"
+		},
+		{
+			"value": "@fuse",
+			"icon": "assets/sprites/previews/blocks/block-fuse-ui.png"
+		},
+		{
+			"value": "@graphite-press",
+			"icon": "assets/sprites/previews/blocks/block-graphite-press-ui.png"
+		},
+		{
+			"value": "@ground-factory",
+			"icon": "assets/sprites/previews/blocks/block-ground-factory-ui.png"
+		},
+		{
+			"value": "@hail",
+			"icon": "assets/sprites/previews/blocks/block-hail-ui.png"
+		},
+		{
+			"value": "@heat-reactor",
+			"icon": "assets/sprites/previews/blocks/block-heat-reactor-ui.png"
+		},
+		{
+			"value": "@heat-redirector",
+			"icon": "assets/sprites/previews/blocks/block-heat-redirector-ui.png"
+		},
+		{
+			"value": "@heat-router",
+			"icon": "assets/sprites/previews/blocks/block-heat-router-ui.png"
+		},
+		{
+			"value": "@heat-source",
+			"icon": "assets/sprites/previews/blocks/block-heat-source-ui.png"
+		},
+		{
+			"value": "@hyper-processor",
+			"icon": "assets/sprites/previews/blocks/block-hyper-processor-ui.png"
+		},
+		{
+			"value": "@illuminator",
+			"icon": "assets/sprites/previews/blocks/block-illuminator-ui.png"
+		},
+		{
+			"value": "@impact-drill",
+			"icon": "assets/sprites/previews/blocks/block-impact-drill-ui.png"
+		},
+		{
+			"value": "@impact-reactor",
+			"icon": "assets/sprites/previews/blocks/block-impact-reactor-ui.png"
+		},
+		{
+			"value": "@impulse-pump",
+			"icon": "assets/sprites/previews/blocks/block-impulse-pump-ui.png"
+		},
+		{
+			"value": "@incinerator",
+			"icon": "assets/sprites/previews/blocks/block-incinerator-ui.png"
+		},
+		{
+			"value": "@interplanetary-accelerator",
+			"icon": "assets/sprites/previews/blocks/block-interplanetary-accelerator-ui.png"
+		},
+		{
+			"value": "@inverted-sorter",
+			"icon": "assets/sprites/previews/blocks/block-inverted-sorter-ui.png"
+		},
+		{
+			"value": "@item-source",
+			"icon": "assets/sprites/previews/blocks/block-item-source-ui.png"
+		},
+		{
+			"value": "@item-void",
+			"icon": "assets/sprites/previews/blocks/block-item-void-ui.png"
+		},
+		{
+			"value": "@junction",
+			"icon": "assets/sprites/previews/blocks/block-junction-ui.png"
+		},
+		{
+			"value": "@kiln",
+			"icon": "assets/sprites/previews/blocks/block-kiln-ui.png"
+		},
+		{
+			"value": "@lancer",
+			"icon": "assets/sprites/previews/blocks/block-lancer-ui.png"
+		},
+		{
+			"value": "@landing-pad",
+			"icon": "assets/sprites/previews/blocks/block-landing-pad-ui.png"
+		},
+		{
+			"value": "@large-cliff-crusher",
+			"icon": "assets/sprites/previews/blocks/block-large-cliff-crusher-ui.png"
+		},
+		{
+			"value": "@large-constructor",
+			"icon": "assets/sprites/previews/blocks/block-large-constructor-ui.png"
+		},
+		{
+			"value": "@large-logic-display",
+			"icon": "assets/sprites/previews/blocks/block-large-logic-display-ui.png"
+		},
+		{
+			"value": "@large-payload-mass-driver",
+			"icon": "assets/sprites/previews/blocks/block-large-payload-mass-driver-ui.png"
+		},
+		{
+			"value": "@large-plasma-bore",
+			"icon": "assets/sprites/previews/blocks/block-large-plasma-bore-ui.png"
+		},
+		{
+			"value": "@large-shield-projector",
+			"icon": "assets/sprites/previews/blocks/block-large-shield-projector-ui.png"
+		},
+		{
+			"value": "@laser-drill",
+			"icon": "assets/sprites/previews/blocks/block-laser-drill-ui.png"
+		},
+		{
+			"value": "@launch-pad",
+			"icon": "assets/sprites/previews/blocks/block-launch-pad-ui.png"
+		},
+		{
+			"value": "@liquid-container",
+			"icon": "assets/sprites/previews/blocks/block-liquid-container-ui.png"
+		},
+		{
+			"value": "@liquid-junction",
+			"icon": "assets/sprites/previews/blocks/block-liquid-junction-ui.png"
+		},
+		{
+			"value": "@liquid-router",
+			"icon": "assets/sprites/previews/blocks/block-liquid-router-ui.png"
+		},
+		{
+			"value": "@liquid-source",
+			"icon": "assets/sprites/previews/blocks/block-liquid-source-ui.png"
+		},
+		{
+			"value": "@liquid-tank",
+			"icon": "assets/sprites/previews/blocks/block-liquid-tank-ui.png"
+		},
+		{
+			"value": "@liquid-void",
+			"icon": "assets/sprites/previews/blocks/block-liquid-void-ui.png"
+		},
+		{
+			"value": "@logic-display",
+			"icon": "assets/sprites/previews/blocks/block-logic-display-ui.png"
+		},
+		{
+			"value": "@logic-processor",
+			"icon": "assets/sprites/previews/blocks/block-logic-processor-ui.png"
+		},
+		{
+			"value": "@lustre",
+			"icon": "assets/sprites/previews/blocks/block-lustre-ui.png"
+		},
+		{
+			"value": "@malign",
+			"icon": "assets/sprites/previews/blocks/block-malign-ui.png"
+		},
+		{
+			"value": "@mass-driver",
+			"icon": "assets/sprites/previews/blocks/block-mass-driver-ui.png"
+		},
+		{
+			"value": "@mech-assembler",
+			"icon": "assets/sprites/previews/blocks/block-mech-assembler-ui.png"
+		},
+		{
+			"value": "@mech-fabricator",
+			"icon": "assets/sprites/previews/blocks/block-mech-fabricator-ui.png"
+		},
+		{
+			"value": "@mech-refabricator",
+			"icon": "assets/sprites/previews/blocks/block-mech-refabricator-ui.png"
+		},
+		{
+			"value": "@mechanical-drill",
+			"icon": "assets/sprites/previews/blocks/block-mechanical-drill-ui.png"
+		},
+		{
+			"value": "@mechanical-pump",
+			"icon": "assets/sprites/previews/blocks/block-mechanical-pump-ui.png"
+		},
+		{
+			"value": "@meltdown",
+			"icon": "assets/sprites/previews/blocks/block-meltdown-ui.png"
+		},
+		{
+			"value": "@melter",
+			"icon": "assets/sprites/previews/blocks/block-melter-ui.png"
+		},
+		{
+			"value": "@memory-bank",
+			"icon": "assets/sprites/previews/blocks/block-memory-bank-ui.png"
+		},
+		{
+			"value": "@memory-cell",
+			"icon": "assets/sprites/previews/blocks/block-memory-cell-ui.png"
+		},
+		{
+			"value": "@mend-projector",
+			"icon": "assets/sprites/previews/blocks/block-mend-projector-ui.png"
+		},
+		{
+			"value": "@mender",
+			"icon": "assets/sprites/previews/blocks/block-mender-ui.png"
+		},
+		{
+			"value": "@message",
+			"icon": "assets/sprites/previews/blocks/block-message-ui.png"
+		},
+		{
+			"value": "@micro-processor",
+			"icon": "assets/sprites/previews/blocks/block-micro-processor-ui.png"
+		},
+		{
+			"value": "@multi-press",
+			"icon": "assets/sprites/previews/blocks/block-multi-press-ui.png"
+		},
+		{
+			"value": "@multiplicative-reconstructor",
+			"icon": "assets/sprites/previews/blocks/block-multiplicative-reconstructor-ui.png"
+		},
+		{
+			"value": "@naval-factory",
+			"icon": "assets/sprites/previews/blocks/block-naval-factory-ui.png"
+		},
+		{
+			"value": "@neoplasia-reactor",
+			"icon": "assets/sprites/previews/blocks/block-neoplasia-reactor-ui.png"
+		},
+		{
+			"value": "@oil-extractor",
+			"icon": "assets/sprites/previews/blocks/block-oil-extractor-ui.png"
+		},
+		{
+			"value": "@overdrive-dome",
+			"icon": "assets/sprites/previews/blocks/block-overdrive-dome-ui.png"
+		},
+		{
+			"value": "@overdrive-projector",
+			"icon": "assets/sprites/previews/blocks/block-overdrive-projector-ui.png"
+		},
+		{
+			"value": "@overflow-duct",
+			"icon": "assets/sprites/previews/blocks/block-overflow-duct-ui.png"
+		},
+		{
+			"value": "@overflow-gate",
+			"icon": "assets/sprites/previews/blocks/block-overflow-gate-ui.png"
+		},
+		{
+			"value": "@oxidation-chamber",
+			"icon": "assets/sprites/previews/blocks/block-oxidation-chamber-ui.png"
+		},
+		{
+			"value": "@parallax",
+			"icon": "assets/sprites/previews/blocks/block-parallax-ui.png"
+		},
+		{
+			"value": "@payload-conveyor",
+			"icon": "assets/sprites/previews/blocks/block-payload-conveyor-ui.png"
+		},
+		{
+			"value": "@payload-loader",
+			"icon": "assets/sprites/previews/blocks/block-payload-loader-ui.png"
+		},
+		{
+			"value": "@payload-mass-driver",
+			"icon": "assets/sprites/previews/blocks/block-payload-mass-driver-ui.png"
+		},
+		{
+			"value": "@payload-router",
+			"icon": "assets/sprites/previews/blocks/block-payload-router-ui.png"
+		},
+		{
+			"value": "@payload-source",
+			"icon": "assets/sprites/previews/blocks/block-payload-source-ui.png"
+		},
+		{
+			"value": "@payload-unloader",
+			"icon": "assets/sprites/previews/blocks/block-payload-unloader-ui.png"
+		},
+		{
+			"value": "@payload-void",
+			"icon": "assets/sprites/previews/blocks/block-payload-void-ui.png"
+		},
+		{
+			"value": "@phase-conduit",
+			"icon": "assets/sprites/previews/blocks/block-phase-conduit-ui.png"
+		},
+		{
+			"value": "@phase-conveyor",
+			"icon": "assets/sprites/previews/blocks/block-phase-conveyor-ui.png"
+		},
+		{
+			"value": "@phase-heater",
+			"icon": "assets/sprites/previews/blocks/block-phase-heater-ui.png"
+		},
+		{
+			"value": "@phase-synthesizer",
+			"icon": "assets/sprites/previews/blocks/block-phase-synthesizer-ui.png"
+		},
+		{
+			"value": "@phase-wall",
+			"icon": "assets/sprites/previews/blocks/block-phase-wall-ui.png"
+		},
+		{
+			"value": "@phase-wall-large",
+			"icon": "assets/sprites/previews/blocks/block-phase-wall-large-ui.png"
+		},
+		{
+			"value": "@phase-weaver",
+			"icon": "assets/sprites/previews/blocks/block-phase-weaver-ui.png"
+		},
+		{
+			"value": "@plasma-bore",
+			"icon": "assets/sprites/previews/blocks/block-plasma-bore-ui.png"
+		},
+		{
+			"value": "@plastanium-compressor",
+			"icon": "assets/sprites/previews/blocks/block-plastanium-compressor-ui.png"
+		},
+		{
+			"value": "@plastanium-conveyor",
+			"icon": "assets/sprites/previews/blocks/block-plastanium-conveyor-ui.png"
+		},
+		{
+			"value": "@plastanium-wall",
+			"icon": "assets/sprites/previews/blocks/block-plastanium-wall-ui.png"
+		},
+		{
+			"value": "@plastanium-wall-large",
+			"icon": "assets/sprites/previews/blocks/block-plastanium-wall-large-ui.png"
+		},
+		{
+			"value": "@plated-conduit",
+			"icon": "assets/sprites/previews/blocks/block-plated-conduit-ui.png"
+		},
+		{
+			"value": "@pneumatic-drill",
+			"icon": "assets/sprites/previews/blocks/block-pneumatic-drill-ui.png"
+		},
+		{
+			"value": "@power-node",
+			"icon": "assets/sprites/previews/blocks/block-power-node-ui.png"
+		},
+		{
+			"value": "@power-node-large",
+			"icon": "assets/sprites/previews/blocks/block-power-node-large-ui.png"
+		},
+		{
+			"value": "@power-source",
+			"icon": "assets/sprites/previews/blocks/block-power-source-ui.png"
+		},
+		{
+			"value": "@power-void",
+			"icon": "assets/sprites/previews/blocks/block-power-void-ui.png"
+		},
+		{
+			"value": "@prime-refabricator",
+			"icon": "assets/sprites/previews/blocks/block-prime-refabricator-ui.png"
+		},
+		{
+			"value": "@pulse-conduit",
+			"icon": "assets/sprites/previews/blocks/block-pulse-conduit-ui.png"
+		},
+		{
+			"value": "@pulverizer",
+			"icon": "assets/sprites/previews/blocks/block-pulverizer-ui.png"
+		},
+		{
+			"value": "@pyratite-mixer",
+			"icon": "assets/sprites/previews/blocks/block-pyratite-mixer-ui.png"
+		},
+		{
+			"value": "@pyrolysis-generator",
+			"icon": "assets/sprites/previews/blocks/block-pyrolysis-generator-ui.png"
+		},
+		{
+			"value": "@radar",
+			"icon": "assets/sprites/previews/blocks/block-radar-ui.png"
+		},
+		{
+			"value": "@regen-projector",
+			"icon": "assets/sprites/previews/blocks/block-regen-projector-ui.png"
+		},
+		{
+			"value": "@reinforced-bridge-conduit",
+			"icon": "assets/sprites/previews/blocks/block-reinforced-bridge-conduit-ui.png"
+		},
+		{
+			"value": "@reinforced-conduit",
+			"icon": "assets/sprites/previews/blocks/block-reinforced-conduit-ui.png"
+		},
+		{
+			"value": "@reinforced-container",
+			"icon": "assets/sprites/previews/blocks/block-reinforced-container-ui.png"
+		},
+		{
+			"value": "@reinforced-liquid-container",
+			"icon": "assets/sprites/previews/blocks/block-reinforced-liquid-container-ui.png"
+		},
+		{
+			"value": "@reinforced-liquid-junction",
+			"icon": "assets/sprites/previews/blocks/block-reinforced-liquid-junction-ui.png"
+		},
+		{
+			"value": "@reinforced-liquid-router",
+			"icon": "assets/sprites/previews/blocks/block-reinforced-liquid-router-ui.png"
+		},
+		{
+			"value": "@reinforced-liquid-tank",
+			"icon": "assets/sprites/previews/blocks/block-reinforced-liquid-tank-ui.png"
+		},
+		{
+			"value": "@reinforced-message",
+			"icon": "assets/sprites/previews/blocks/block-reinforced-message-ui.png"
+		},
+		{
+			"value": "@reinforced-payload-conveyor",
+			"icon": "assets/sprites/previews/blocks/block-reinforced-payload-conveyor-ui.png"
+		},
+		{
+			"value": "@reinforced-payload-router",
+			"icon": "assets/sprites/previews/blocks/block-reinforced-payload-router-ui.png"
+		},
+		{
+			"value": "@reinforced-pump",
+			"icon": "assets/sprites/previews/blocks/block-reinforced-pump-ui.png"
+		},
+		{
+			"value": "@reinforced-surge-wall",
+			"icon": "assets/sprites/previews/blocks/block-reinforced-surge-wall-ui.png"
+		},
+		{
+			"value": "@reinforced-surge-wall-large",
+			"icon": "assets/sprites/previews/blocks/block-reinforced-surge-wall-large-ui.png"
+		},
+		{
+			"value": "@reinforced-vault",
+			"icon": "assets/sprites/previews/blocks/block-reinforced-vault-ui.png"
+		},
+		{
+			"value": "@repair-point",
+			"icon": "assets/sprites/previews/blocks/block-repair-point-ui.png"
+		},
+		{
+			"value": "@repair-turret",
+			"icon": "assets/sprites/previews/blocks/block-repair-turret-ui.png"
+		},
+		{
+			"value": "@ripple",
+			"icon": "assets/sprites/previews/blocks/block-ripple-ui.png"
+		},
+		{
+			"value": "@rotary-pump",
+			"icon": "assets/sprites/previews/blocks/block-rotary-pump-ui.png"
+		},
+		{
+			"value": "@router",
+			"icon": "assets/sprites/previews/blocks/block-router-ui.png"
+		},
+		{
+			"value": "@rtg-generator",
+			"icon": "assets/sprites/previews/blocks/block-rtg-generator-ui.png"
+		},
+		{
+			"value": "@salvo",
+			"icon": "assets/sprites/previews/blocks/block-salvo-ui.png"
+		},
+		{
+			"value": "@scathe",
+			"icon": "assets/sprites/previews/blocks/block-scathe-ui.png"
+		},
+		{
+			"value": "@scatter",
+			"icon": "assets/sprites/previews/blocks/block-scatter-ui.png"
+		},
+		{
+			"value": "@scorch",
+			"icon": "assets/sprites/previews/blocks/block-scorch-ui.png"
+		},
+		{
+			"value": "@scrap-wall",
+			"icon": "assets/sprites/previews/blocks/block-scrap-wall-ui.png"
+		},
+		{
+			"value": "@scrap-wall-gigantic",
+			"icon": "assets/sprites/previews/blocks/block-scrap-wall-gigantic-ui.png"
+		},
+		{
+			"value": "@scrap-wall-huge",
+			"icon": "assets/sprites/previews/blocks/block-scrap-wall-huge-ui.png"
+		},
+		{
+			"value": "@scrap-wall-large",
+			"icon": "assets/sprites/previews/blocks/block-scrap-wall-large-ui.png"
+		},
+		{
+			"value": "@segment",
+			"icon": "assets/sprites/previews/blocks/block-segment-ui.png"
+		},
+		{
+			"value": "@separator",
+			"icon": "assets/sprites/previews/blocks/block-separator-ui.png"
+		},
+		{
+			"value": "@shield-projector",
+			"icon": "assets/sprites/previews/blocks/block-shield-projector-ui.png"
+		},
+		{
+			"value": "@shielded-wall",
+			"icon": "assets/sprites/previews/blocks/block-shielded-wall-ui.png"
+		},
+		{
+			"value": "@ship-assembler",
+			"icon": "assets/sprites/previews/blocks/block-ship-assembler-ui.png"
+		},
+		{
+			"value": "@ship-fabricator",
+			"icon": "assets/sprites/previews/blocks/block-ship-fabricator-ui.png"
+		},
+		{
+			"value": "@ship-refabricator",
+			"icon": "assets/sprites/previews/blocks/block-ship-refabricator-ui.png"
+		},
+		{
+			"value": "@shock-mine",
+			"icon": "assets/sprites/previews/blocks/block-shock-mine-ui.png"
+		},
+		{
+			"value": "@shockwave-tower",
+			"icon": "assets/sprites/previews/blocks/block-shockwave-tower-ui.png"
+		},
+		{
+			"value": "@silicon-arc-furnace",
+			"icon": "assets/sprites/previews/blocks/block-silicon-arc-furnace-ui.png"
+		},
+		{
+			"value": "@silicon-crucible",
+			"icon": "assets/sprites/previews/blocks/block-silicon-crucible-ui.png"
+		},
+		{
+			"value": "@silicon-smelter",
+			"icon": "assets/sprites/previews/blocks/block-silicon-smelter-ui.png"
+		},
+		{
+			"value": "@slag-centrifuge",
+			"icon": "assets/sprites/previews/blocks/block-slag-centrifuge-ui.png"
+		},
+		{
+			"value": "@slag-heater",
+			"icon": "assets/sprites/previews/blocks/block-slag-heater-ui.png"
+		},
+		{
+			"value": "@slag-incinerator",
+			"icon": "assets/sprites/previews/blocks/block-slag-incinerator-ui.png"
+		},
+		{
+			"value": "@small-deconstructor",
+			"icon": "assets/sprites/previews/blocks/block-small-deconstructor-ui.png"
+		},
+		{
+			"value": "@small-heat-redirector",
+			"icon": "assets/sprites/previews/blocks/block-small-heat-redirector-ui.png"
+		},
+		{
+			"value": "@smite",
+			"icon": "assets/sprites/previews/blocks/block-smite-ui.png"
+		},
+		{
+			"value": "@solar-panel",
+			"icon": "assets/sprites/previews/blocks/block-solar-panel-ui.png"
+		},
+		{
+			"value": "@solar-panel-large",
+			"icon": "assets/sprites/previews/blocks/block-solar-panel-large-ui.png"
+		},
+		{
+			"value": "@sorter",
+			"icon": "assets/sprites/previews/blocks/block-sorter-ui.png"
+		},
+		{
+			"value": "@spectre",
+			"icon": "assets/sprites/previews/blocks/block-spectre-ui.png"
+		},
+		{
+			"value": "@spore-press",
+			"icon": "assets/sprites/previews/blocks/block-spore-press-ui.png"
+		},
+		{
+			"value": "@steam-generator",
+			"icon": "assets/sprites/previews/blocks/block-steam-generator-ui.png"
+		},
+		{
+			"value": "@sublimate",
+			"icon": "assets/sprites/previews/blocks/block-sublimate-ui.png"
+		},
+		{
+			"value": "@surge-conveyor",
+			"icon": "assets/sprites/previews/blocks/block-surge-conveyor-ui.png"
+		},
+		{
+			"value": "@surge-crucible",
+			"icon": "assets/sprites/previews/blocks/block-surge-crucible-ui.png"
+		},
+		{
+			"value": "@surge-router",
+			"icon": "assets/sprites/previews/blocks/block-surge-router-ui.png"
+		},
+		{
+			"value": "@surge-smelter",
+			"icon": "assets/sprites/previews/blocks/block-surge-smelter-ui.png"
+		},
+		{
+			"value": "@surge-tower",
+			"icon": "assets/sprites/previews/blocks/block-surge-tower-ui.png"
+		},
+		{
+			"value": "@surge-wall",
+			"icon": "assets/sprites/previews/blocks/block-surge-wall-ui.png"
+		},
+		{
+			"value": "@surge-wall-large",
+			"icon": "assets/sprites/previews/blocks/block-surge-wall-large-ui.png"
+		},
+		{
+			"value": "@swarmer",
+			"icon": "assets/sprites/previews/blocks/block-swarmer-ui.png"
+		},
+		{
+			"value": "@switch",
+			"icon": "assets/sprites/previews/blocks/block-switch-ui.png"
+		},
+		{
+			"value": "@tank-assembler",
+			"icon": "assets/sprites/previews/blocks/block-tank-assembler-ui.png"
+		},
+		{
+			"value": "@tank-fabricator",
+			"icon": "assets/sprites/previews/blocks/block-tank-fabricator-ui.png"
+		},
+		{
+			"value": "@tank-refabricator",
+			"icon": "assets/sprites/previews/blocks/block-tank-refabricator-ui.png"
+		},
+		{
+			"value": "@tetrative-reconstructor",
+			"icon": "assets/sprites/previews/blocks/block-tetrative-reconstructor-ui.png"
+		},
+		{
+			"value": "@thermal-generator",
+			"icon": "assets/sprites/previews/blocks/block-thermal-generator-ui.png"
+		},
+		{
+			"value": "@thorium-reactor",
+			"icon": "assets/sprites/previews/blocks/block-thorium-reactor-ui.png"
+		},
+		{
+			"value": "@thorium-wall",
+			"icon": "assets/sprites/previews/blocks/block-thorium-wall-ui.png"
+		},
+		{
+			"value": "@thorium-wall-large",
+			"icon": "assets/sprites/previews/blocks/block-thorium-wall-large-ui.png"
+		},
+		{
+			"value": "@thruster",
+			"icon": "assets/sprites/previews/blocks/block-thruster-ui.png"
+		},
+		{
+			"value": "@tile-logic-display",
+			"icon": "assets/sprites/previews/blocks/block-tile-logic-display-ui.png"
+		},
+		{
+			"value": "@titan",
+			"icon": "assets/sprites/previews/blocks/block-titan-ui.png"
+		},
+		{
+			"value": "@titanium-conveyor",
+			"icon": "assets/sprites/previews/blocks/block-titanium-conveyor-ui.png"
+		},
+		{
+			"value": "@titanium-wall",
+			"icon": "assets/sprites/previews/blocks/block-titanium-wall-ui.png"
+		},
+		{
+			"value": "@titanium-wall-large",
+			"icon": "assets/sprites/previews/blocks/block-titanium-wall-large-ui.png"
+		},
+		{
+			"value": "@tsunami",
+			"icon": "assets/sprites/previews/blocks/block-tsunami-ui.png"
+		},
+		{
+			"value": "@tungsten-wall",
+			"icon": "assets/sprites/previews/blocks/block-tungsten-wall-ui.png"
+		},
+		{
+			"value": "@tungsten-wall-large",
+			"icon": "assets/sprites/previews/blocks/block-tungsten-wall-large-ui.png"
+		},
+		{
+			"value": "@turbine-condenser",
+			"icon": "assets/sprites/previews/blocks/block-turbine-condenser-ui.png"
+		},
+		{
+			"value": "@underflow-duct",
+			"icon": "assets/sprites/previews/blocks/block-underflow-duct-ui.png"
+		},
+		{
+			"value": "@underflow-gate",
+			"icon": "assets/sprites/previews/blocks/block-underflow-gate-ui.png"
+		},
+		{
+			"value": "@unit-cargo-loader",
+			"icon": "assets/sprites/previews/blocks/block-unit-cargo-loader-ui.png"
+		},
+		{
+			"value": "@unit-cargo-unload-point",
+			"icon": "assets/sprites/previews/blocks/block-unit-cargo-unload-point-ui.png"
+		},
+		{
+			"value": "@unit-repair-tower",
+			"icon": "assets/sprites/previews/blocks/block-unit-repair-tower-ui.png"
+		},
+		{
+			"value": "@unloader",
+			"icon": "assets/sprites/previews/blocks/block-unloader-ui.png"
+		},
+		{
+			"value": "@vault",
+			"icon": "assets/sprites/previews/blocks/block-vault-ui.png"
+		},
+		{
+			"value": "@vent-condenser",
+			"icon": "assets/sprites/previews/blocks/block-vent-condenser-ui.png"
+		},
+		{
+			"value": "@water-extractor",
+			"icon": "assets/sprites/previews/blocks/block-water-extractor-ui.png"
+		},
+		{
+			"value": "@wave",
+			"icon": "assets/sprites/previews/blocks/block-wave-ui.png"
+		},
+		{
+			"value": "@world-cell",
+			"icon": "assets/sprites/previews/blocks/block-world-cell-ui.png"
+		},
+		{
+			"value": "@world-message",
+			"icon": "assets/sprites/previews/blocks/block-world-message-ui.png"
+		},
+		{
+			"value": "@world-processor",
+			"icon": "assets/sprites/previews/blocks/block-world-processor-ui.png"
+		},
+		{
+			"value": "@world-switch",
+			"icon": "assets/sprites/previews/blocks/block-world-switch-ui.png"
+		}
+	]
+}

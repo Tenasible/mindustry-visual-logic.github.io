@@ -1,0 +1,166 @@
+<Kind name="逻辑" color="#4199a8">
+	<Block name="Wait">
+		<Literal>wait</Literal>
+		<Field id="time" />
+		<Row>
+			<Text id="T1">等待</Text>
+			<LineBox id="time" placeholder="0.5" />
+			<Text id="T2">秒</Text>
+		</Row>
+	</Block>
+	<Block name="Stop">
+		<Literal>stop</Literal>
+		<Row>
+			<Text id="T">停止</Text>
+		</Row>
+	</Block>
+	<Block name="End">
+		<Literal>end</Literal>
+		<Row>
+			<Text id="T">结尾</Text>
+		</Row>
+	</Block>
+	<Block name="Expression">
+		<Literal>#</Literal>
+		<!-- 注释就是 `#` 加文本：空文本时不要被补成 `# 0`（那样导回来内容就变了） -->
+		<Field id="text" allow_empty="true" />
+		<Row>
+			<Text id="T1">注释</Text>
+			<LineBox id="text" />
+		</Row>
+	</Block>
+	<Block name="Jump">
+		<Literal>jump</Literal>
+		<Field id="target" link="true" />
+		<Field id="cmp" />
+		<Field id="value1" />
+		<Field id="value2" />
+		<Row>
+			<Text id="T1">跳转</Text>
+			<JumpTarget id="target" />
+			<Text id="T2">如果</Text>
+			<!-- cmp=always 时官方隐藏两个比较值（`addOp` 里的 `if(op != always)`）：
+				 文本上依旧占位（写 0），但界面上不给两个没用的输入框 -->
+			<LineBox id="value1" placeholder="x" when="cmp!=always" />
+			<Option id="cmp">
+			<Item value="equal">相等</Item>
+			<Item value="notEqual">不相等</Item>
+			<Item value="lessThan">小于</Item>
+			<Item value="lessThanEq">小于等于</Item>
+			<Item value="greaterThan">大于</Item>
+			<Item value="greaterThanEq">大于等于</Item>
+			<Item value="strictEqual">严格相等</Item>
+			<Item value="always">无条件</Item>
+		</Option>
+			<LineBox id="value2" placeholder="false" when="cmp!=always" />
+		</Row>
+	</Block>
+	<Block name="If" marker="if">
+		<!-- 条件执行 = 一条 jump 跳过整段嵌套：条件不成立才跳，所以模板里的比较都是「反过来的」。
+			 marker="if" 让导出行尾带上 `#if 字段=值…`，导入靠它把这一行认回 If（否则只是普通 Jump）。
+			 AfterSubtree 是导出器算出的「本块（含嵌套）之后」那条指令的行号；没写 when 的那条是兜底。
+			 没有严格相等：一条 jump 取反不了它（真要就自己用 Jump 搭）。 -->
+		<Export>
+			<Literal>jump</Literal><AfterSubtree/><Literal>notEqual</Literal>
+			<Field id="a" /><Field id="b" />
+		</Export>
+		<Export when="cmp=notEqual">
+			<Literal>jump</Literal><AfterSubtree/><Literal>equal</Literal>
+			<Field id="a" /><Field id="b" />
+		</Export>
+		<Export when="cmp=lessThan">
+			<Literal>jump</Literal><AfterSubtree/><Literal>greaterThanEq</Literal>
+			<Field id="a" /><Field id="b" />
+		</Export>
+		<Export when="cmp=lessThanEq">
+			<Literal>jump</Literal><AfterSubtree/><Literal>greaterThan</Literal>
+			<Field id="a" /><Field id="b" />
+		</Export>
+		<Export when="cmp=greaterThan">
+			<Literal>jump</Literal><AfterSubtree/><Literal>lessThanEq</Literal>
+			<Field id="a" /><Field id="b" />
+		</Export>
+		<Export when="cmp=greaterThanEq">
+			<Literal>jump</Literal><AfterSubtree/><Literal>lessThan</Literal>
+			<Field id="a" /><Field id="b" />
+		</Export>
+		<Row>
+			<Text id="T1">如果</Text>
+			<LineBox id="a" placeholder="a" />
+			<Option id="cmp">
+			<Item value="equal">相等</Item>
+			<Item value="notEqual">不相等</Item>
+			<Item value="lessThan">小于</Item>
+			<Item value="lessThanEq">小于等于</Item>
+			<Item value="greaterThan">大于</Item>
+			<Item value="greaterThanEq">大于等于</Item>
+		</Option>
+			<LineBox id="b" placeholder="b" />
+			<Nest id="nest" />
+		</Row>
+	</Block>
+	<Block name="While" marker="while" loop="true">
+		<!-- 条件循环 = 头部一条「条件不成立就跳过整段巢」的 jump + 尾部一条回跳（<Tail>，<SelfLine/> 就是头部那一行）。
+			 比较取反，行尾带 `#while 字段=值…` 供导入还原。 -->
+		<Export>
+			<Literal>jump</Literal><AfterSubtree/><Literal>notEqual</Literal>
+			<Field id="a" /><Field id="b" />
+		</Export>
+		<Export when="cmp=notEqual">
+			<Literal>jump</Literal><AfterSubtree/><Literal>equal</Literal>
+			<Field id="a" /><Field id="b" />
+		</Export>
+		<Export when="cmp=lessThan">
+			<Literal>jump</Literal><AfterSubtree/><Literal>greaterThanEq</Literal>
+			<Field id="a" /><Field id="b" />
+		</Export>
+		<Export when="cmp=lessThanEq">
+			<Literal>jump</Literal><AfterSubtree/><Literal>greaterThan</Literal>
+			<Field id="a" /><Field id="b" />
+		</Export>
+		<Export when="cmp=greaterThan">
+			<Literal>jump</Literal><AfterSubtree/><Literal>lessThanEq</Literal>
+			<Field id="a" /><Field id="b" />
+		</Export>
+		<Export when="cmp=greaterThanEq">
+			<Literal>jump</Literal><AfterSubtree/><Literal>lessThan</Literal>
+			<Field id="a" /><Field id="b" />
+		</Export>
+		<Tail>
+			<Literal>jump</Literal><SelfLine/><Literal>always</Literal><Literal>0</Literal><Literal>0</Literal>
+		</Tail>
+		<Row>
+			<Text id="T1">当</Text>
+			<LineBox id="a" placeholder="a" />
+			<Option id="cmp">
+			<Item value="equal">相等</Item>
+			<Item value="notEqual">不相等</Item>
+			<Item value="lessThan">小于</Item>
+			<Item value="lessThanEq">小于等于</Item>
+			<Item value="greaterThan">大于</Item>
+			<Item value="greaterThanEq">大于等于</Item>
+		</Option>
+			<LineBox id="b" placeholder="b" />
+			<Text id="T2">时循环</Text>
+			<Nest id="nest" />
+		</Row>
+	</Block>
+	<Block name="Break" marker="break" loop_jump="break">
+		<!-- 跳出最内层循环 = 一条无条件 jump；目标行号由导出器换成循环之后的第一条指令。 -->
+		<Export>
+			<Literal>jump</Literal><AfterSubtree/><Literal>always</Literal><Literal>0</Literal><Literal>0</Literal>
+		</Export>
+		<Row>
+			<Text id="T">跳出</Text>
+		</Row>
+	</Block>
+	<Block name="Continue" marker="continue" loop_jump="continue">
+		<!-- 回到循环的条件判断 = 一条无条件 jump，目标行号由导出器换成循环的回跳那一行。 -->
+		<Export>
+			<Literal>jump</Literal><AfterSubtree/><Literal>always</Literal><Literal>0</Literal><Literal>0</Literal>
+		</Export>
+		<Row>
+			<Text id="T">继续</Text>
+		</Row>
+	</Block>
+</Kind>

@@ -1,0 +1,173 @@
+<Kind name="运算" color="#644da3">
+	<Block name="Set">
+		<Literal>set</Literal>
+		<Field id="result" />
+		<Field id="value" />
+		<Row>
+			<Text id="T1">赋值</Text>
+			<LineBox id="result" placeholder="result" />
+			<Text id="T2">=</Text>
+			<LineBox id="value" placeholder="0" />
+		</Row>
+	</Block>
+	<Block name="Operation">
+		<Literal>op</Literal>
+		<Field id="ops" />
+		<Field id="result" />
+		<Field id="a" />
+		<Field id="b" />
+		<Row>
+			<Text id="T1">运算</Text>
+			<LineBox id="result" placeholder="result" />
+			<Text id="T2">=</Text>
+			<!-- 显示顺序按官方 OperationStatement.rebuild：一元（not/abs/…）与函数型（max/len/…）
+				 是 `result = op a [b]`（运算符在前），其余是 `result = a op b`。
+				 元素只写一次，靠 <Place> 条件化挪位 —— 不再需要把一个字段写两遍。 -->
+			<LineBox id="a" placeholder="a">
+				<Place when="ops=not|abs|sign|log|log10|floor|ceil|round|sqrt|rand|sin|cos|tan|asin|acos|atan|max|min|angle|angleDiff|len|noise" after="ops" />
+			</LineBox>
+			<Option id="ops">
+			<Item value="add">加</Item>
+			<Item value="sub">减</Item>
+			<Item value="mul">乘</Item>
+			<Item value="div">除</Item>
+			<Item value="idiv">整除</Item>
+			<Item value="mod">取余</Item>
+			<!-- emod：向负无穷取整的取模（`%%`），150 版加的；mod 其实是取余 -->
+			<Item value="emod">取模</Item>
+			<Item value="pow">幂</Item>
+			<Item value="equal">相等</Item>
+			<Item value="notEqual">不相等</Item>
+			<Item value="land">逻辑与</Item>
+			<Item value="lessThan">小于</Item>
+			<Item value="lessThanEq">小于等于</Item>
+			<Item value="greaterThan">大于</Item>
+			<Item value="greaterThanEq">大于等于</Item>
+			<Item value="strictEqual">严格相等</Item>
+			<Item value="shl">左移</Item>
+			<Item value="shr">右移</Item>
+			<Item value="ushr">无符号右移</Item>
+			<Item value="or">按位或</Item>
+			<Item value="and">按位与</Item>
+			<Item value="xor">按位异或</Item>
+			<Item value="not">取反</Item>
+			<Item value="max">最大</Item>
+			<Item value="min">最小</Item>
+			<!-- 旧名字（Mindustry 把 atan2 改名叫 angle、dst 改名叫 len）：导入认、导出用新名 -->
+			<Item alias="atan2" value="angle">角度</Item>
+			<Item value="angleDiff">角度差</Item>
+			<Item alias="dst" value="len">长度</Item>
+			<Item value="noise">噪声</Item>
+			<Item value="abs">绝对值</Item>
+			<Item value="sign">符号</Item>
+			<Item value="log">log</Item>
+			<Item value="logn">logn</Item>
+			<Item value="log10">log10</Item>
+			<Item value="floor">向下取整</Item>
+			<Item value="ceil">向上取整</Item>
+			<Item value="round">四舍五入</Item>
+			<Item value="sqrt">平方根</Item>
+			<Item value="rand">随机</Item>
+			<Item value="sin">sin</Item>
+			<Item value="cos">cos</Item>
+			<Item value="tan">tan</Item>
+			<Item value="asin">asin</Item>
+			<Item value="acos">acos</Item>
+			<Item value="atan">atan</Item>
+		</Option>
+			<!-- 一元运算（官方 LogicOp.unary）不显示第二个操作数：not/abs/sign/log/log10/
+				 floor/ceil/round/sqrt/rand/sin/cos/tan/asin/acos/atan -->
+			<LineBox id="b" placeholder="b" when="~(ops=not | ops=abs | ops=sign | ops=log | ops=log10 | ops=floor | ops=ceil | ops=round | ops=sqrt | ops=rand | ops=sin | ops=cos | ops=tan | ops=asin | ops=acos | ops=atan)" />
+		</Row>
+	</Block>
+	<Block name="Select">
+		<Literal>select</Literal>
+		<Field id="result" />
+		<Field id="cmp" />
+		<Field id="x" />
+		<Field id="value" />
+		<Field id="t" />
+		<Field id="f" />
+		<Row>
+			<Text id="T1">判断</Text>
+			<LineBox id="result" placeholder="result" />
+			<Text id="T2">=</Text>
+			<Text id="T3">如果</Text>
+			<LineBox id="x" placeholder="x" when="cmp!=always" />
+			<Option id="cmp">
+			<Item value="equal">相等</Item>
+			<Item value="notEqual">不相等</Item>
+			<Item value="lessThan">小于</Item>
+			<Item value="lessThanEq">小于等于</Item>
+			<Item value="greaterThan">大于</Item>
+			<Item value="greaterThanEq">大于等于</Item>
+			<Item value="strictEqual">严格相等</Item>
+			<Item value="always">无条件</Item>
+		</Option>
+			<LineBox id="value" placeholder="false" when="cmp!=always" />
+		</Row>
+		<Row>
+			<Text id="T4">则</Text>
+			<LineBox id="t" placeholder="false" />
+			<Text id="T5">否则</Text>
+			<LineBox id="f" placeholder="false" />
+		</Row>
+	</Block>
+	<Block name="Lookup">
+		<Literal>lookup</Literal>
+		<Field id="type" />
+		<Field id="result" />
+		<Field id="id" />
+		<Row>
+			<Text id="T1">查询</Text>
+			<LineBox id="result" placeholder="result" />
+			<Text id="T2">=</Text>
+			<Text id="T3">查询</Text>
+			<Option id="type">
+			<Item value="block">方块</Item>
+			<Item value="unit">单位</Item>
+			<Item value="item">物品</Item>
+			<Item value="liquid">液体</Item>
+			<Item value="team">队伍</Item>
+		</Option>
+			<Text id="T4">#</Text>
+			<LineBox id="id" placeholder="0" />
+		</Row>
+	</Block>
+	<Block name="PackColor">
+		<Literal>packcolor</Literal>
+		<Field id="result" />
+		<Field id="r" />
+		<Field id="g" />
+		<Field id="b" />
+		<Field id="a" />
+		<Row>
+			<Text id="T1">打包颜色</Text>
+			<LineBox id="result" placeholder="result" />
+			<Text id="T2">=</Text>
+			<Text id="T3">打包</Text>
+			<LineBox id="r" placeholder="1" />
+			<LineBox id="g" placeholder="0" />
+			<LineBox id="b" placeholder="0" />
+			<LineBox id="a" placeholder="1" />
+		</Row>
+	</Block>
+	<Block name="UnpackColor">
+		<Literal>unpackcolor</Literal>
+		<Field id="r" />
+		<Field id="g" />
+		<Field id="b" />
+		<Field id="a" />
+		<Field id="result" />
+		<Row>
+			<Text id="T1">解包颜色</Text>
+			<LineBox id="r" placeholder="r" />
+			<LineBox id="g" placeholder="g" />
+			<LineBox id="b" placeholder="b" />
+			<LineBox id="a" placeholder="a" />
+			<Text id="T2">=</Text>
+			<Text id="T3">解包</Text>
+			<LineBox id="result" placeholder="result" />
+		</Row>
+	</Block>
+</Kind>

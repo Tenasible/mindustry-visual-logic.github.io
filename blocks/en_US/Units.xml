@@ -1,0 +1,378 @@
+<Kind name="Units" color="#b8a269">
+	<Block name="UnitBind">
+		<Literal>ubind</Literal>
+		<Field id="type" />
+		<Row>
+			<Text id="T1">UnitBind</Text>
+			<Selector id="type" kind="units" placeholder="@unit" />
+		</Row>
+	</Block>
+	<Block name="UnitIdle">
+		<Literal>ucontrol</Literal>
+		<Literal>idle</Literal>
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Row>
+			<Text id="T1">UnitIdle</Text>
+		</Row>
+	</Block>
+	<Block name="UnitStop">
+		<Literal>ucontrol</Literal>
+		<Literal>stop</Literal>
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Row>
+			<Text id="T1">UnitStop</Text>
+		</Row>
+	</Block>
+	<Block name="UnitMove">
+		<Literal>ucontrol</Literal>
+		<Field id="mode" />
+		<Field id="x" />
+		<Field id="y" />
+		<Field id="t" />
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Row>
+			<Text id="T1">UnitMove</Text>
+			<Option id="mode">
+			<Item>move</Item>
+			<Item>approach</Item>
+			<Item>pathfind</Item>
+			<Item>autoPathfind</Item>
+		</Option>
+			<!-- 官方 LUnitControl 的参数表：move(x,y) / approach(x,y,radius) /
+			     pathfind(x,y) / autoPathfind(无参数) —— 不用的输入框不显示 -->
+			<Text id="T2" when="mode!=autoPathfind">x</Text>
+			<LineBox id="x" placeholder="0" when="mode!=autoPathfind" />
+			<Text id="T3" when="mode!=autoPathfind">y</Text>
+			<LineBox id="y" placeholder="0" when="mode!=autoPathfind" />
+			<Text id="Tt" when="mode=approach">radius</Text>
+			<LineBox id="t" placeholder="0" when="mode=approach" />
+		</Row>
+	</Block>
+	<Block name="UnitBoost">
+		<Literal>ucontrol</Literal>
+		<Literal>boost</Literal>
+		<Field id="id" />
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Row>
+			<Text id="T1">UnitBoost</Text>
+			<LineBox id="id" placeholder="0" />
+		</Row>
+	</Block>
+	<Block name="UnitShoot">
+		<Literal>ucontrol</Literal>
+		<Field id="mode" />
+		<!-- target(x, y, shoot) / targetp(unit, shoot)：p1、p2 是两套不同的含义，
+		    所以 p1 是 x|unit、p2 是 y|shoot（按模式只显示其中一套） -->
+		<FirstOf ids="x unit" />
+		<FirstOf ids="y sp" />
+		<FirstOf ids="s" />
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Row>
+			<Text id="T1">UnitShoot</Text>
+			<Option id="mode">
+			<Item>target</Item>
+			<Item>targetp</Item>
+		</Option>
+			<Text id="T2" when="mode=target">x</Text>
+			<LineBox id="x" placeholder="0" when="mode=target" />
+			<Text id="T3" when="mode=target">y</Text>
+			<LineBox id="y" placeholder="0" when="mode=target" />
+			<Text id="Tu" when="mode=targetp">unit</Text>
+			<LineBox id="unit" placeholder="@unit" when="mode=targetp" />
+			<Text id="T4">shoot</Text>
+			<LineBox id="s" placeholder="0" when="mode=target" />
+			<LineBox id="sp" placeholder="0" when="mode=targetp" />
+		</Row>
+	</Block>
+	<Block name="UnitItem">
+		<Literal>ucontrol</Literal>
+		<!-- ucontrol 的 p1..p5。itemDrop 与 itemTake 的参数不一样（官方：
+		     itemDrop = 目标, 数量；itemTake = 目标, 物品, 数量）—— 先前两者共用一个
+		     模板，itemTake 的数量与物品写到了错的位置。 -->
+		<Field id="mode" />
+		<Field id="to" />
+		<FirstOf ids="amount item" />
+		<FirstOf ids="ext" />
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Row>
+			<Text id="T1">UnitItem</Text>
+			<Option id="mode">
+			<Item>itemDrop</Item>
+			<Item>itemTake</Item>
+		</Option>
+			<Text id="T2">to</Text>
+			<LineBox id="to" placeholder="0" />
+			<Text id="T3" when="mode=itemDrop">amount</Text>
+			<LineBox id="amount" placeholder="999" when="mode=itemDrop" />
+			<Text id="Ti" when="mode=itemTake">item</Text>
+			<Selector id="item" kind="items" placeholder="@copper" when="mode=itemTake" />
+			<Text id="Te" when="mode=itemTake">amount</Text>
+			<LineBox id="ext" placeholder="999" when="mode=itemTake" />
+		</Row>
+	</Block>
+	<Block name="UnitPay">
+		<Literal>ucontrol</Literal>
+		<Field id="mode" />
+		<Field id="unit" />
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Row>
+			<Text id="T1">UnitPay</Text>
+			<Option id="mode">
+			<Item>payTake</Item>
+			<Item>payDrop</Item>
+			<Item>payEnter</Item>
+		</Option>
+			<!-- 官方 payTake(takeUnits) 才有一个参数；payDrop / payEnter 无参数 -->
+			<Text id="T2" when="mode=payTake">takeUnits</Text>
+			<LineBox id="unit" placeholder="0" when="mode=payTake" />
+		</Row>
+	</Block>
+	<Block name="UnitMine">
+		<Literal>ucontrol</Literal>
+		<Literal>mine</Literal>
+		<Field id="x" />
+		<Field id="y" />
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Row>
+			<Text id="T1">UnitMine</Text>
+			<Text id="T2">x</Text>
+			<LineBox id="x" placeholder="0" />
+			<Text id="T3">y</Text>
+			<LineBox id="y" placeholder="0" />
+		</Row>
+	</Block>
+	<Block name="UnitFlag">
+		<Literal>ucontrol</Literal>
+		<Literal>flag</Literal>
+		<Field id="id" />
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Row>
+			<Text id="T1">UnitFlag</Text>
+			<LineBox id="id" placeholder="0" />
+		</Row>
+	</Block>
+	<Block name="UnitBuild">
+		<Literal>ucontrol</Literal>
+		<Literal>build</Literal>
+		<Field id="x" />
+		<Field id="y" />
+		<Field id="block" />
+		<Field id="rot" />
+		<Field id="cfg" />
+		<Row>
+			<Text id="T1">UnitBuild</Text>
+			<Text id="T2">x</Text>
+			<LineBox id="x" placeholder="0" />
+			<Text id="T3">y</Text>
+			<LineBox id="y" placeholder="0" />
+		</Row>
+		<Row>
+			<Text id="T4">block</Text>
+			<!-- placeholder 只是提示，default 保留官方的默认值 0（placeholder 兼作默认值，所以必须显式写） -->
+			<Selector id="block" kind="blocks" placeholder="@router" default="0" />
+			<Text id="T5">rotation</Text>
+			<LineBox id="rot" placeholder="0" />
+			<Text id="T6">config</Text>
+			<LineBox id="cfg" placeholder="0" />
+		</Row>
+	</Block>
+	<Block name="UnitGetblock">
+		<Literal>ucontrol</Literal>
+		<Literal>getBlock</Literal>
+		<Field id="x" />
+		<Field id="y" />
+		<Field id="type" />
+		<Field id="bld" />
+		<Field id="flr" />
+		<Row>
+			<Text id="T1">UnitGetBlock</Text>
+			<Text id="T2">x</Text>
+			<LineBox id="x" placeholder="0" />
+			<Text id="T3">y</Text>
+			<LineBox id="y" placeholder="0" />
+		</Row>
+		<Row>
+			<Text id="T4">type</Text>
+			<LineBox id="type" placeholder="0" />
+			<Text id="T5">building</Text>
+			<LineBox id="bld" placeholder="0" />
+			<Text id="T6">floor</Text>
+			<LineBox id="flr" placeholder="0" />
+		</Row>
+	</Block>
+	<Block name="UnitWithin">
+		<Literal>ucontrol</Literal>
+		<Literal>within</Literal>
+		<Field id="x" />
+		<Field id="y" />
+		<Field id="radius" />
+		<Field id="result" />
+		<Literal>0</Literal>
+		<Row>
+			<Text id="T1">UnitWithin</Text>
+			<Text id="T2">x</Text>
+			<LineBox id="x" placeholder="0" />
+			<Text id="T3">y</Text>
+			<LineBox id="y" placeholder="0" />
+			<Text id="T4">radius</Text>
+			<LineBox id="radius" placeholder="0" />
+			<Text id="T5">result</Text>
+			<LineBox id="result" placeholder="0" />
+		</Row>
+	</Block>
+	<Block name="UnitUnbind">
+		<Literal>ucontrol</Literal>
+		<Literal>unbind</Literal>
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Row>
+			<Text id="T1">UnitUnbind</Text>
+		</Row>
+	</Block>
+	<Block name="UnitRadar">
+		<Literal>uradar</Literal>
+		<Field id="s1" />
+		<Field id="s2" />
+		<Field id="s3" />
+		<Field id="radar" />
+		<Literal>0</Literal>
+		<Field id="num" />
+		<Field id="result" />
+		<Row>
+			<Text id="T1">UnitRadar</Text>
+			<Text id="T2">target</Text>
+			<Option id="s1">
+			<Item>any</Item>
+			<Item>enemy</Item>
+			<Item>ally</Item>
+			<Item>player</Item>
+			<Item>attacker</Item>
+			<Item>flying</Item>
+			<Item>boss</Item>
+			<Item>ground</Item>
+		</Option>
+			<Option id="s2">
+			<Item>any</Item>
+			<Item>enemy</Item>
+			<Item>ally</Item>
+			<Item>player</Item>
+			<Item>attacker</Item>
+			<Item>flying</Item>
+			<Item>boss</Item>
+			<Item>ground</Item>
+		</Option>
+			<Option id="s3">
+			<Item>any</Item>
+			<Item>enemy</Item>
+			<Item>ally</Item>
+			<Item>player</Item>
+			<Item>attacker</Item>
+			<Item>flying</Item>
+			<Item>boss</Item>
+			<Item>ground</Item>
+		</Option>
+		</Row>
+		<Row>
+			<Text id="T3">order</Text>
+			<LineBox id="num" placeholder="1" />
+			<Text id="T4">sort</Text>
+			<Option id="radar">
+			<Item>distance</Item>
+			<Item>health</Item>
+			<Item>shield</Item>
+			<Item>armor</Item>
+			<Item>maxHealth</Item>
+		</Option>
+			<LineBox id="result" placeholder="result" />
+		</Row>
+	</Block>
+	<Block name="UnitLocate">
+		<Literal>ulocate</Literal>
+		<Field id="find" />
+		<Field id="group" />
+		<Field id="enemy" />
+		<Field id="ore" />
+		<Field id="outX" />
+		<Field id="outY" />
+		<Field id="found" />
+		<Field id="building" />
+		<Row>
+			<Text id="T1">UnitLocate</Text>
+			<Option id="find">
+			<Item>ore</Item>
+			<Item>building</Item>
+			<Item>spawn</Item>
+			<Item>damaged</Item>
+		</Option>
+			<Text id="Tore" when="find=ore">ore</Text>
+			<Selector id="ore" kind="items" placeholder="@copper" when="find=ore" />
+			<Text id="T2" when="find=building">group</Text>
+			<Option id="group" when="find=building">
+			<Item>core</Item>
+			<Item>storage</Item>
+			<Item>generator</Item>
+			<Item>turret</Item>
+			<Item>factory</Item>
+			<Item>repair</Item>
+			<Item>battery</Item>
+			<Item>reactor</Item>
+			<Item>drill</Item>
+			<Item>shield</Item>
+		</Option>
+			<Text id="T3" when="find=building">enemy</Text>
+			<LineBox id="enemy" placeholder="true" when="find=building" />
+		</Row>
+		<Row>
+			<Text id="T4">outX</Text>
+			<LineBox id="outX" placeholder="outx" />
+			<Text id="T5">outY</Text>
+			<LineBox id="outY" placeholder="outy" />
+			<Text id="T6">found</Text>
+			<LineBox id="found" placeholder="found" />
+			<!-- 官方：building 这个输出在 ore 以外的三种查找下都有（`if(locate != ore)`） -->
+			<Text id="T7" when="find!=ore">building</Text>
+			<LineBox id="building" placeholder="building" when="find!=ore" />
+		</Row>
+	</Block>
+	<Block name="UnitDeconstruct">
+		<Literal>ucontrol</Literal>
+		<Literal>deconstruct</Literal>
+		<Field id="x" />
+		<Field id="y" />
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Row>
+			<Text id="T1">UnitDeconstruct</Text>
+			<Text id="T2">x</Text>
+			<LineBox id="x" placeholder="0" />
+			<Text id="T3">y</Text>
+			<LineBox id="y" placeholder="0" />
+		</Row>
+	</Block>
+</Kind>

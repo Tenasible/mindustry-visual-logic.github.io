@@ -1,0 +1,75 @@
+[gd_scene format=3 uid="uid://c5aww1ajt7842"]
+
+[ext_resource type="Script" uid="uid://dppg5bxirnd23" path="res://srcs/pages/editor.gd" id="1_x6qec"]
+[ext_resource type="Script" uid="uid://ba61nhstol3lv" path="res://srcs/view/canvas/editor_canvas.gd" id="2_canvas"]
+[ext_resource type="Script" uid="uid://b53fyu6tp4klc" path="res://srcs/view/canvas/editor_camera.gd" id="3_camera"]
+[ext_resource type="Script" uid="uid://bo00f80eayfyo" path="res://srcs/view/drag/drag_controller.gd" id="5_drag"]
+[ext_resource type="Script" path="res://srcs/view/link/link_layer.gd" id="6_links"]
+[ext_resource type="Script" path="res://srcs/view/link/link_controller.gd" id="7_link"]
+
+[node name="Editor" type="Control" unique_id=614836996]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_x6qec")
+
+[node name="Split" type="HSplitContainer" parent="." unique_id=834291643]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+dragging_enabled = false
+dragger_visibility = 2
+
+[node name="BlockKindList" type="VBoxContainer" parent="Split" unique_id=621628208]
+layout_mode = 2
+
+[node name="EditorSplit" type="HSplitContainer" parent="Split" unique_id=1948171920]
+layout_mode = 2
+theme_override_constants/separation = 0
+theme_override_constants/minimum_grab_thickness = 12
+theme_override_constants/autohide = 0
+split_offsets = PackedInt32Array(260)
+dragger_visibility = 1
+split_offset = 260
+
+[node name="BlockArea" type="ScrollContainer" parent="Split/EditorSplit" unique_id=877662676]
+layout_mode = 2
+
+[node name="EditArea" type="SubViewportContainer" parent="Split/EditorSplit" unique_id=1581555908]
+layout_mode = 2
+stretch = true
+
+[node name="EditSpace" type="SubViewport" parent="Split/EditorSplit/EditArea" unique_id=1231024695]
+handle_input_locally = false
+size = Vector2i(884, 648)
+render_target_update_mode = 4
+script = ExtResource("2_canvas")
+
+[node name="Blocks" type="Node2D" parent="Split/EditorSplit/EditArea/EditSpace" unique_id=1906459448]
+
+[node name="Links" type="Node2D" parent="Split/EditorSplit/EditArea/EditSpace"]
+script = ExtResource("6_links")
+
+[node name="Camera" type="Camera2D" parent="Split/EditorSplit/EditArea/EditSpace" unique_id=1714148892]
+script = ExtResource("3_camera")
+
+[node name="DragLayer" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Drag" type="Node" parent="." unique_id=65624684]
+script = ExtResource("5_drag")
+
+[node name="Link" type="Node" parent="."]
+script = ExtResource("7_link")

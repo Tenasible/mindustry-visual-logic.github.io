@@ -1,0 +1,92 @@
+{
+	"values": [
+		{
+			"value": "@beryllium",
+			"icon": "assets/sprites/previews/blocks/item-beryllium.png"
+		},
+		{
+			"value": "@blast-compound",
+			"icon": "assets/sprites/previews/blocks/item-blast-compound.png"
+		},
+		{
+			"value": "@carbide",
+			"icon": "assets/sprites/previews/blocks/item-carbide.png"
+		},
+		{
+			"value": "@coal",
+			"icon": "assets/sprites/previews/blocks/item-coal.png"
+		},
+		{
+			"value": "@copper",
+			"icon": "assets/sprites/previews/blocks/item-copper.png"
+		},
+		{
+			"value": "@dormant-cyst",
+			"icon": "assets/sprites/previews/blocks/item-dormant-cyst.png"
+		},
+		{
+			"value": "@fissile-matter",
+			"icon": "assets/sprites/previews/blocks/item-fissile-matter.png"
+		},
+		{
+			"value": "@graphite",
+			"icon": "assets/sprites/previews/blocks/item-graphite.png"
+		},
+		{
+			"value": "@lead",
+			"icon": "assets/sprites/previews/blocks/item-lead.png"
+		},
+		{
+			"value": "@metaglass",
+			"icon": "assets/sprites/previews/blocks/item-metaglass.png"
+		},
+		{
+			"value": "@oxide",
+			"icon": "assets/sprites/previews/blocks/item-oxide.png"
+		},
+		{
+			"value": "@phase-fabric",
+			"icon": "assets/sprites/previews/blocks/item-phase-fabric.png"
+		},
+		{
+			"value": "@plastanium",
+			"icon": "assets/sprites/previews/blocks/item-plastanium.png"
+		},
+		{
+			"value": "@pyratite",
+			"icon": "assets/sprites/previews/blocks/item-pyratite.png"
+		},
+		{
+			"value": "@sand",
+			"icon": "assets/sprites/previews/blocks/item-sand.png"
+		},
+		{
+			"value": "@scrap",
+			"icon": "assets/sprites/previews/blocks/item-scrap.png"
+		},
+		{
+			"value": "@silicon",
+			"icon": "assets/sprites/previews/blocks/item-silicon.png"
+		},
+		{
+			"value": "@spore-pod",
+			"icon": "assets/sprites/previews/blocks/item-spore-pod.png"
+		},
+		{
+			"value": "@surge-alloy",
+			"icon": "assets/sprites/previews/blocks/item-surge-alloy.png"
+		},
+		{
+			"value": "@thorium",
+			"icon": "assets/sprites/previews/blocks/item-thorium.png"
+		},
+		{
+			"value": "@titanium",
+			"icon": "assets/sprites/previews/blocks/item-titanium.png"
+		},
+		{
+			"value": "@tungsten",
+			"icon": "assets/sprites/previews/blocks/item-tungsten.png"
+		}
+	]
+}

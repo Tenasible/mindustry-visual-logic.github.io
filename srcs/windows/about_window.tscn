@@ -1,0 +1,87 @@
+[gd_scene format=3]
+
+[ext_resource type="Theme" uid="uid://11wvq82locvq" path="res://assets/styles/main_theme.tres" id="1_theme"]
+[ext_resource type="Texture2D" path="res://icon.png" id="2_icon"]
+[ext_resource type="Script" path="res://srcs/windows/about_window.gd" id="3_script"]
+
+[node name="AboutWindow" type="Window"]
+title = "ABOUT_TITLE"
+size = Vector2i(520, 440)
+visible = false
+transient = true
+unresizable = true
+theme = ExtResource("1_theme")
+script = ExtResource("3_script")
+
+[node name="Panel" type="PanelContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Layout" type="VBoxContainer" parent="Panel"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Margin" type="MarginContainer" parent="Panel/Layout"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 12
+
+[node name="Stack" type="VBoxContainer" parent="Panel/Layout/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Head" type="HBoxContainer" parent="Panel/Layout/Margin/Stack"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Icon" type="TextureRect" parent="Panel/Layout/Margin/Stack/Head"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("2_icon")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Titles" type="VBoxContainer" parent="Panel/Layout/Margin/Stack/Head"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/separation = 2
+
+[node name="Name" type="Label" parent="Panel/Layout/Margin/Stack/Head/Titles"]
+layout_mode = 2
+text = "Mindustry Visual Logic"
+
+[node name="Version" type="Label" parent="Panel/Layout/Margin/Stack/Head/Titles"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.549020)
+text = "ABOUT_VERSION"
+
+[node name="Body" type="RichTextLabel" parent="Panel/Layout/Margin/Stack"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+selection_enabled = true
+
+[node name="BottomBar" type="PanelContainer" parent="Panel/Layout"]
+layout_mode = 2
+
+[node name="Buttons" type="HBoxContainer" parent="Panel/Layout/BottomBar"]
+layout_mode = 2
+alignment = 1
+
+[node name="Close" type="Button" parent="Panel/Layout/BottomBar/Buttons"]
+layout_mode = 2
+text = "ABOUT_CLOSE"
+
+[connection signal="close_requested" from="." to="." method="_on_close_pressed"]
+[connection signal="meta_clicked" from="Panel/Layout/Margin/Stack/Body" to="." method="_on_meta_clicked"]
+[connection signal="pressed" from="Panel/Layout/BottomBar/Buttons/Close" to="." method="_on_close_pressed"]

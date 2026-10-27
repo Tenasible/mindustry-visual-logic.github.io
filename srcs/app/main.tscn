@@ -1,0 +1,108 @@
+[gd_scene format=3 uid="uid://to5m6oa8dvib"]
+
+[ext_resource type="Theme" uid="uid://11wvq82locvq" path="res://assets/styles/main_theme.tres" id="1_5dlwx"]
+[ext_resource type="Script" uid="uid://doffj7i1kogj" path="res://srcs/app/main.gd" id="2_o81g6"]
+[ext_resource type="PackedScene" uid="uid://bbc36pgut7e0g" path="res://srcs/windows/notice_window.tscn" id="4_2lg1k"]
+[ext_resource type="PackedScene" path="res://srcs/windows/settings_window.tscn" id="5_settings"]
+[ext_resource type="PackedScene" path="res://srcs/windows/about_window.tscn" id="6_about"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3x73n"]
+content_margin_left = 12.0
+content_margin_top = 10.0
+content_margin_right = 12.0
+content_margin_bottom = 8.0
+bg_color = Color(0.25882354, 0.22352941, 0.30980393, 1)
+
+[node name="UI" type="Container" unique_id=176367658]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_5dlwx")
+script = ExtResource("2_o81g6")
+
+[node name="Panel" type="Panel" parent="." unique_id=1884224158]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_3x73n")
+
+[node name="MenuBar" type="MenuBar" parent="." unique_id=521672658]
+layout_mode = 2
+
+[node name="File" type="PopupMenu" parent="MenuBar" unique_id=1509104562]
+oversampling_override = 1.0
+title = "MENU_FILE"
+item_count = 7
+item_0/text = "MENU_FILE_NEW"
+item_0/id = 0
+item_1/text = "MENU_FILE_SAVE"
+item_1/id = 1
+item_2/text = "MENU_FILE_SAVE_AS"
+item_2/id = 2
+item_3/text = "MENU_FILE_OPEN"
+item_3/id = 3
+item_4/text = "MENU_FILE_EXPORT"
+item_4/id = 4
+item_5/text = "MENU_FILE_LOAD"
+item_5/id = 5
+item_6/text = "MENU_FILE_APPEND"
+item_6/id = 6
+
+[node name="Edit" type="PopupMenu" parent="MenuBar" unique_id=293360796]
+title = "MENU_EDIT"
+item_count = 4
+item_0/text = "MENU_EDIT_UNDO"
+item_0/id = 0
+item_1/text = "MENU_EDIT_REDO"
+item_1/id = 1
+item_2/text = "MENU_EDIT_CLEAR"
+item_2/id = 2
+item_3/text = "MENU_EDIT_SETTINGS"
+item_3/id = 3
+
+[node name="Help" type="PopupMenu" parent="MenuBar" unique_id=1442885816]
+title = "MENU_HELP"
+item_count = 3
+item_0/text = "MENU_HELP_DOCUMENT"
+item_0/id = 0
+item_1/text = "MENU_HELP_NOTICE"
+item_1/id = 1
+item_2/text = "MENU_HELP_ABOUT"
+item_2/id = 2
+
+[node name="Quit" type="Button" parent="." unique_id=258929731]
+custom_minimum_size = Vector2(84, 0)
+layout_mode = 2
+text = "TOOLBAR_QUIT"
+
+[node name="SettingsWindow" parent="." unique_id=793776163 instance=ExtResource("5_settings")]
+
+[node name="AboutWindow" parent="." unique_id=1620831575 instance=ExtResource("6_about")]
+
+[node name="Editors" type="TabContainer" parent="." unique_id=1245003327]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+current_tab = 0
+tabs_position = 1
+drag_to_rearrange_enabled = true
+
+[node name="ProjectDialog" type="FileDialog" parent="." unique_id=203232510]
+title = "Open a File or Directory"
+size = Vector2i(760, 520)
+ok_button_text = "DIALOG_OK"
+file_mode = 3
+access = 2
+filters = PackedStringArray("*.json ; MVL 逻辑图")
+use_native_dialog = true
+
+[node name="NoticeWindow" parent="." unique_id=1993725999 instance=ExtResource("4_2lg1k")]
+visible = false
+
+[connection signal="sort_children" from="." to="." method="_on_sort_children"]
+[connection signal="id_pressed" from="MenuBar/File" to="." method="_on_file_id_pressed"]
+[connection signal="about_to_popup" from="MenuBar/Edit" to="." method="_on_edit_about_to_popup"]
+[connection signal="id_pressed" from="MenuBar/Edit" to="." method="_on_edit_id_pressed"]
+[connection signal="id_pressed" from="MenuBar/Help" to="." method="_on_help_id_pressed"]
+[connection signal="pressed" from="Quit" to="." method="_on_quit_pressed"]
+[connection signal="file_selected" from="ProjectDialog" to="." method="_on_project_dialog_file_selected"]

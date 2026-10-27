@@ -1,0 +1,9 @@
+<Kind name="Special" color="#000000" hidden="true">
+	<Block name="Start" entry="true">
+		<Row>
+			<Text id="T">Start</Text>
+		</Row>
+	</Block>
+	<Block name="None">
+	</Block>
+</Kind>

@@ -7,12 +7,16 @@ android/
 # 忽略插件文件夹
 addons/
 
-# 忽略导出文件夹
+# 忽略构建脚手架（build/）与导出的发行包（export/）
 build/
+export/
 
 # 忽略项目根目录下可能生成的特定文件
 *.translation
 *.remap
+
+# 忽略临时文件夹
+.tmp/
 
 # 可选：如果你不希望提交导出模板，可以忽略 export_presets.cfg
 export_presets.cfg

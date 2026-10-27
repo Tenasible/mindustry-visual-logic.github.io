@@ -1,0 +1,30 @@
+积木定义（进阶）
+积木长什么样、怎么导出，全都写在 [code]blocks/{语言}/*.xml[/code] 里 ——
+[b]加一块积木不需要写代码[/b]：
+
+[code]<Block name="Print">
+  <Literal>print</Literal>
+  <Field id="content" />
+  <Row>
+	<Text>Print</Text>
+	<LineBox id="content" placeholder="frog" />
+  </Row>
+</Block>[/code]
+
+[ul]
+[*][code]<Literal>[/code] / [code]<Field>[/code]：导出模板（原样输出 / 取某个字段的值）；
+[*][code]<Field id="target" link="true"/>[/code]：这一格存的是[b]块引用[/b]（Jump 的目标就是它）；
+[*][code]<Field as="string"/>[/code]：字符串格（引号与转义由编辑器管，内容里打引号不会写坏）；
+[*][code]<Field allow_empty="true"/>[/code]：允许留空（注释文本）；
+[*][code]<AfterSubtree/>[/code]：本块[b]连巢[/b]之后那一条指令的行号（导出时才算得出来）—— If 靠它跳过整段巢；
+[*][code]<Block name="If" marker="if">[/code]：结构块标记 —— 导出时在指令行尾写 `#if 字段=值…`，导入据此把那一行认回这个块（连同巢）；
+[*][code]<Block name="While" loop="true">[/code]：循环块 —— 巢里的 Break / Continue 以它为跳转目标；
+[*][code]<Block name="Break" marker="break" loop_jump="break">[/code]：跳出 / 继续挡板 —— [code]loop_jump[/code] 让导出器把 [code]<AfterSubtree/>[/code] 那一格换成所属循环的行号（Continue 用尾跳那一行）；
+[*][code]<Tail>…</Tail>[/code]：尾跳模板（整段巢之后补的那一条）；里面的 [code]<SelfLine/>[/code] 是本块头部的行号 —— While 的回跳就是它；
+[*][code]<Item alias="atan2">angle</Item>[/code]：认旧名字（导入时自动换成现在的写法）；
+[*][code]<Place when="…" after="另一个元素 id"/>[/code]（或 [code]before=[/code]）：写在元素内部，满足条件时把它挪到另一个元素的前/后面 —— 选项不同就换顺序的块（如一元运算要 [code]result = not a[/code]）靠它，不用把字段写两遍；
+[*][code]<Row when="…">[/code]：显式分行；[code]when[/code] 支持 [code]&[/code]（与）、[code]|[/code]（或）、[code]~[/code]（非）与括号；
+[*]元素有 [code]<Text>[/code] / [code]<LineBox>[/code] / [code]<Option>[/code]+[code]<Item>[/code] / [code]<Button>[/code] / [code]<Selector>[/code] / [code]<JumpTarget>[/code] / [code]<Nest>[/code]。
+[/ul]
+
+字段名拼错、取值不合法、元素标签没注册，加载时都会报出来 —— 写错不会静默变成「永远显示」。

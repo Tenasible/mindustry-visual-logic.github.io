@@ -1,0 +1,48 @@
+{
+	"values": [
+		{
+			"value": "@arkycite",
+			"icon": "assets/sprites/previews/blocks/liquid-arkycite.png"
+		},
+		{
+			"value": "@cryofluid",
+			"icon": "assets/sprites/previews/blocks/liquid-cryofluid.png"
+		},
+		{
+			"value": "@cyanogen",
+			"icon": "assets/sprites/previews/blocks/liquid-cyanogen.png"
+		},
+		{
+			"value": "@gallium",
+			"icon": "assets/sprites/previews/blocks/liquid-gallium.png"
+		},
+		{
+			"value": "@hydrogen",
+			"icon": "assets/sprites/previews/blocks/liquid-hydrogen.png"
+		},
+		{
+			"value": "@neoplasm",
+			"icon": "assets/sprites/previews/blocks/liquid-neoplasm.png"
+		},
+		{
+			"value": "@nitrogen",
+			"icon": "assets/sprites/previews/blocks/liquid-nitrogen.png"
+		},
+		{
+			"value": "@oil",
+			"icon": "assets/sprites/previews/blocks/liquid-oil.png"
+		},
+		{
+			"value": "@ozone",
+			"icon": "assets/sprites/previews/blocks/liquid-ozone.png"
+		},
+		{
+			"value": "@slag",
+			"icon": "assets/sprites/previews/blocks/liquid-slag.png"
+		},
+		{
+			"value": "@water",
+			"icon": "assets/sprites/previews/blocks/liquid-water.png"
+		}
+	]
+}

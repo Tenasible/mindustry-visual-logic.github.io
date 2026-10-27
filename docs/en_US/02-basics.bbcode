@@ -1,0 +1,18 @@
+Basics
+[b]Drag with the left button[/b]: pick up a block and the blocks after it come along; when you insert into the middle of a chain, the later blocks make room.
+Dropping on empty canvas space = it becomes a new chain; dropping on the block list on the left = delete (the whole run you picked up is deleted).
+Releasing in place = nothing was moved, the data is unchanged.
+
+[b]Drag with the right button[/b]: copy. What you drag out is this block [b]and its whole subtree[/b] (nested blocks come along), while the original stays where it was;
+dropping on the block list on the left or outside the canvas = cancel; releasing in place = nothing happens.
+A copy counts as a single undo entry.
+
+[b]Tabs[/b]: click the tab that is already selected to rename it in place; double-click any tab to close it (closing the last one automatically adds a blank page);
+right-clicking any tab also renames it.
+
+[b]Canvas[/b]: scroll wheel to zoom; hold the left button on empty space and drag to pan.
+
+[b]Pickers[/b]: a field with a [code]▾[/code] (unit bind, buildings, items, sensor properties, and so on) opens an icon picker when clicked:
+there is a search box at the top (typing [code]c[/code] / [code]copper[/code] / [code]@copper[/code] all filter, and prefix matches come first),
+Enter picks the first entry and [code]Esc[/code] closes it; for grouped kinds (such as sensor properties) there are also group buttons at the top.
+You can also skip the popup and type a value straight into the field; click the dark area outside the popup or press [code]Esc[/code] to close it.

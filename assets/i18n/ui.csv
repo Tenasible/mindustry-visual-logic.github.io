@@ -1,0 +1,82 @@
+keys,en,zh_CN
+MENU_FILE,File,文件
+MENU_FILE_NEW,New,新建
+MENU_FILE_SAVE,Save,保存
+MENU_FILE_SAVE_AS,Save As…,另存为…
+MENU_FILE_OPEN,Open…,打开…
+MENU_FILE_EXPORT,Export to clipboard,导出到剪贴板
+MENU_FILE_LOAD,Load from clipboard,从剪贴板导入
+MENU_FILE_APPEND,Append from clipboard,追加导入剪贴板
+MENU_EDIT,Edit,编辑
+MENU_EDIT_UNDO,Undo,撤销
+MENU_EDIT_REDO,Redo,重做
+MENU_EDIT_CLEAR,Clear,清空
+MENU_EDIT_SETTINGS,Settings…,设置…
+MENU_HELP,Help,帮助
+MENU_HELP_DOCUMENT,Document,文档
+MENU_HELP_NOTICE,Notice,公告
+MENU_HELP_ABOUT,About,关于
+TOOLBAR_QUIT,Quit,退出
+DIALOG_SAVE_PROJECT,Save project,保存项目
+DIALOG_OPEN_PROJECT,Open project,打开项目
+DIALOG_OK,OK,确定
+TAB_UNTITLED,Untitled,未命名
+TAB_MANUAL,Manual,使用说明
+TAB_TOOLTIP,Double-click to close · Right-click to rename,双击关闭 · 右键重命名
+DOC_TITLE,Document,文档
+DOC_SECTIONS,Chapters,章节
+DOC_MISSING,"[b]No document files found[/b]: %s/*.%s
+When exporting, add docs/ to the ""Filters to export non-resource files/folders"" list.","[b]找不到文档文件[/b]：%s/*.%s
+导出时请把 docs/ 加进「Filters to export non-resource files/folders」。"
+SETTINGS_TITLE,Settings,设置
+SETTINGS_MAX_FPS,Max FPS,帧率上限
+SETTINGS_UI_SCALE,UI scale,界面缩放
+SETTINGS_LANGUAGE,Language,语言
+SETTINGS_EXPORT_ON_FOCUS_LOST,Export mlog when the window loses focus,切走窗口时自动导出 mlog
+SETTINGS_HINT,Changes apply immediately; saved when this window closes.,改动即时生效；关闭本窗口时写盘。
+SETTINGS_RESTORE_DEFAULTS,Restore defaults,恢复默认
+SETTINGS_CLOSE,Close,关闭
+LANGUAGE_SYSTEM,Follow system,跟随系统
+ABOUT_TITLE,About,关于
+ABOUT_VERSION,Version %s · %s,版本 %s · %s
+ABOUT_CLOSE,Close,关闭
+ABOUT_BODY,"[b]Mindustry Visual Logic[/b] — a visual logic editor for Mindustry
+%s (MVL)
+
+Creator: Te_泣鸣翡兀 (bilibili: 初来乍到TE_NasiLeyta)
+Major contributor: 使针乡呀
+Bilibili: [url]https://space.bilibili.com/1738617842[/url]
+Feedback group (QQ): 1038846685
+
+This software is dedicated to 使针乡呀 and released for everyone to use.
+It is still in beta: if you find a bug, please report it in the QQ group. Thank you!
+
+Repository: [url]%s[/url]
+Manual: Help → Document","[b]Mindustry 图形化逻辑编辑器[/b]
+%s（MVL）
+
+创作者：Te_泣鸣翡兀（bilibili：初来乍到TE_NasiLeyta）
+重要贡献：使针乡呀
+B 站空间：[url]https://space.bilibili.com/1738617842[/url]
+反馈群（QQ）：1038846685
+
+此软件赠给 使针乡呀，并且公开供所有人使用。
+目前应用处于测试阶段，若发现 bug，请在 QQ 群提出。非常感谢！
+
+项目仓库：[url]%s[/url]
+操作说明：帮助 → 文档"
+NOTICE_TITLE,Notice,公告
+NOTICE_CLOSE,Close,关闭
+NOTICE_TIME_UNKNOWN,Unknown time,未知时间
+NOTICE_EMPTY_ITEM,(no content),（无内容）
+SELECTOR_TITLE_UNITS,Units,单位
+SELECTOR_TITLE_BLOCKS,Blocks,建筑
+SELECTOR_TITLE_ITEMS,Items,物品
+SELECTOR_TITLE_LIQUIDS,Liquids,液体
+SELECTOR_TITLE_SENSORS,Properties / content,属性 / 内容
+SELECTOR_ALL,All,全部
+SELECTOR_SEARCH,Search (Enter picks the first),搜索（回车选第一个）
+SELECTOR_COUNT,%d items,共 %d 项
+SELECTOR_COUNT_FILTERED,"%d items, %d matching","共 %d 项，匹配 %d 项"
+LINK_UNLOCKED,Not linked,未锁定
+LINK_INVALID,Target missing,已失效

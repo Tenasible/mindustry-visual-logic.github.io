@@ -1,0 +1,19 @@
+嵌套与分支
+带巢的块（例如 If）左边有一条竖条，把块拖到竖条右边就会成为它的子块；
+子块再带巢也没问题，深度不限。
+
+[b]If[/b] 导出成一条 [code]jump[/code]：[b]条件不成立时跳过整段巢[/b] —— 所以比较是反着写的，
+「如果 a 相等 b」导出的是 [code]jump … notEqual a b[/code]。可选「相等 / 不等于 / 小于 / 小于等于 /
+大于 / 大于等于」；严格相等没法用一条 jump 取反，要就自己用 [b]Jump[/b] 搭。
+导出的行尾还会带一段标记（[code]#if a=1 cmp=equal b=2[/code]），导入靠它把这一行变回 If 并把巢里的块放回去。
+
+[b]While[/b] 是条件循环，导出成[b]两条[/b] [code]jump[/code]：头部一条「条件不成立就跳过整段巢」，尾部一条回跳
+（[code]jump 1 always 0 0[/code]）—— 出口在尾跳之后。行尾同样带标记（[code]#while a=1 cmp=lessThan b=2[/code]），
+导回来还是 While，巢也一起回来。
+
+[b]跳出[/b]（Break）/ [b]继续[/b]（Continue）只能放在循环的巢里：跳出就是一条无条件 jump 直接到循环之后
+（[code]jump 5 always 0 0[/code]）；继续则跳到循环的回跳那一行（[code]jump 3 always 0 0[/code]），也就是重新判断条件。
+两个行号都由导出时算好，放在循环外会导出 [code]-1[/code] 并在控制台警告；行尾带 [code]#break[/code] / [code]#continue[/code] 标记，导回来还是这两个块。
+跳出把目标放在循环之后 —— 循环正好在程序末尾时，落点就是末尾补的那条 [code]stop[/code]。
+
+要跳到别处，用 [b]Jump[/b]。

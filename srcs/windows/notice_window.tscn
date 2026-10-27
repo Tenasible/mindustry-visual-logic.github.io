@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://bbc36pgut7e0g"]
+
+[ext_resource type="Script" path="res://srcs/windows/notice_window.gd" id="1_script"]
+
+[node name="NoticeWindow" type="Window" unique_id=1993725999]
+oversampling_override = 1.0
+position = Vector2i(0, 36)
+script = ExtResource("1_script")
+
+[node name="Container" type="PanelContainer" parent="." unique_id=360047489]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Scroll" type="ScrollContainer" parent="Container" unique_id=1397023859]
+layout_mode = 2
+follow_focus = true
+horizontal_scroll_mode = 0
+
+[node name="Margin" type="MarginContainer" parent="Container/Scroll" unique_id=1453786039]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="NoticeList" type="VBoxContainer" parent="Container/Scroll/Margin" unique_id=1320570677]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="BottonBox" type="PanelContainer" parent="Container" unique_id=144566766]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="Container" type="HBoxContainer" parent="Container/BottonBox" unique_id=1472500335]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 100
+
+[node name="Close" type="Button" parent="Container/BottonBox/Container" unique_id=143222187]
+layout_mode = 2
+text = "NOTICE_CLOSE"
+
+[node name="Request" type="HTTPRequest" parent="." unique_id=257387753]
+use_threads = true
+
+[connection signal="close_requested" from="." to="." method="_on_close_requested"]
+[connection signal="pressed" from="Container/BottonBox/Container/Close" to="." method="_on_close_requested"]
+[connection signal="request_completed" from="Request" to="." method="_on_request_completed"]

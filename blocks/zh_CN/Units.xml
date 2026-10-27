@@ -1,0 +1,378 @@
+<Kind name="单位" color="#b8a269">
+	<Block name="UnitBind">
+		<Literal>ubind</Literal>
+		<Field id="type" />
+		<Row>
+			<Text id="T1">绑定单位</Text>
+			<Selector id="type" kind="units" placeholder="@unit" />
+		</Row>
+	</Block>
+	<Block name="UnitIdle">
+		<Literal>ucontrol</Literal>
+		<Literal>idle</Literal>
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Row>
+			<Text id="T1">单位待机</Text>
+		</Row>
+	</Block>
+	<Block name="UnitStop">
+		<Literal>ucontrol</Literal>
+		<Literal>stop</Literal>
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Row>
+			<Text id="T1">单位停止</Text>
+		</Row>
+	</Block>
+	<Block name="UnitMove">
+		<Literal>ucontrol</Literal>
+		<Field id="mode" />
+		<Field id="x" />
+		<Field id="y" />
+		<Field id="t" />
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Row>
+			<Text id="T1">单位移动</Text>
+			<Option id="mode">
+			<Item value="move">移动到...</Item>
+			<Item value="approach">靠近</Item>
+			<Item value="pathfind">敌式寻路到...</Item>
+			<Item value="autoPathfind">自动寻路</Item>
+		</Option>
+			<!-- 官方 LUnitControl 的参数表：move(x,y) / approach(x,y,radius) /
+			     pathfind(x,y) / autoPathfind(无参数) —— 不用的输入框不显示 -->
+			<Text id="T2" when="mode!=autoPathfind">x</Text>
+			<LineBox id="x" placeholder="0" when="mode!=autoPathfind" />
+			<Text id="T3" when="mode!=autoPathfind">y</Text>
+			<LineBox id="y" placeholder="0" when="mode!=autoPathfind" />
+			<Text id="Tt" when="mode=approach">半径</Text>
+			<LineBox id="t" placeholder="0" when="mode=approach" />
+		</Row>
+	</Block>
+	<Block name="UnitBoost">
+		<Literal>ucontrol</Literal>
+		<Literal>boost</Literal>
+		<Field id="id" />
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Row>
+			<Text id="T1">单位助推</Text>
+			<LineBox id="id" placeholder="0" />
+		</Row>
+	</Block>
+	<Block name="UnitShoot">
+		<Literal>ucontrol</Literal>
+		<Field id="mode" />
+		<!-- target(x, y, shoot) / targetp(unit, shoot)：p1、p2 是两套不同的含义，
+		    所以 p1 是 x|unit、p2 是 y|shoot（按模式只显示其中一套） -->
+		<FirstOf ids="x unit" />
+		<FirstOf ids="y sp" />
+		<FirstOf ids="s" />
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Row>
+			<Text id="T1">单位瞄准</Text>
+			<Option id="mode">
+			<Item value="target">瞄准</Item>
+			<Item value="targetp">根据提前量瞄准</Item>
+		</Option>
+			<Text id="T2" when="mode=target">x</Text>
+			<LineBox id="x" placeholder="0" when="mode=target" />
+			<Text id="T3" when="mode=target">y</Text>
+			<LineBox id="y" placeholder="0" when="mode=target" />
+			<Text id="Tu" when="mode=targetp">单位</Text>
+			<LineBox id="unit" placeholder="@unit" when="mode=targetp" />
+			<Text id="T4">射击</Text>
+			<LineBox id="s" placeholder="0" when="mode=target" />
+			<LineBox id="sp" placeholder="0" when="mode=targetp" />
+		</Row>
+	</Block>
+	<Block name="UnitItem">
+		<Literal>ucontrol</Literal>
+		<!-- ucontrol 的 p1..p5。itemDrop 与 itemTake 的参数不一样（官方：
+		     itemDrop = 目标, 数量；itemTake = 目标, 物品, 数量）—— 先前两者共用一个
+		     模板，itemTake 的数量与物品写到了错的位置。 -->
+		<Field id="mode" />
+		<Field id="to" />
+		<FirstOf ids="amount item" />
+		<FirstOf ids="ext" />
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Row>
+			<Text id="T1">单位物品</Text>
+			<Option id="mode">
+			<Item value="itemDrop">将物品放入建筑</Item>
+			<Item value="itemTake">从建筑取出物品</Item>
+		</Option>
+			<Text id="T2">到</Text>
+			<LineBox id="to" placeholder="0" />
+			<Text id="T3" when="mode=itemDrop">数量</Text>
+			<LineBox id="amount" placeholder="999" when="mode=itemDrop" />
+			<Text id="Ti" when="mode=itemTake">物品</Text>
+			<Selector id="item" kind="items" placeholder="@copper" when="mode=itemTake" />
+			<Text id="Te" when="mode=itemTake">数量</Text>
+			<LineBox id="ext" placeholder="999" when="mode=itemTake" />
+		</Row>
+	</Block>
+	<Block name="UnitPay">
+		<Literal>ucontrol</Literal>
+		<Field id="mode" />
+		<Field id="unit" />
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Row>
+			<Text id="T1">单位载荷</Text>
+			<Option id="mode">
+			<Item value="payTake">拾取载荷</Item>
+			<Item value="payDrop">卸下载荷</Item>
+			<Item value="payEnter">进入载荷</Item>
+		</Option>
+			<!-- 官方 payTake(takeUnits) 才有一个参数；payDrop / payEnter 无参数 -->
+			<Text id="T2" when="mode=payTake">拾取单位</Text>
+			<LineBox id="unit" placeholder="0" when="mode=payTake" />
+		</Row>
+	</Block>
+	<Block name="UnitMine">
+		<Literal>ucontrol</Literal>
+		<Literal>mine</Literal>
+		<Field id="x" />
+		<Field id="y" />
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Row>
+			<Text id="T1">单位采集</Text>
+			<Text id="T2">x</Text>
+			<LineBox id="x" placeholder="0" />
+			<Text id="T3">y</Text>
+			<LineBox id="y" placeholder="0" />
+		</Row>
+	</Block>
+	<Block name="UnitFlag">
+		<Literal>ucontrol</Literal>
+		<Literal>flag</Literal>
+		<Field id="id" />
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Row>
+			<Text id="T1">单位 flag</Text>
+			<LineBox id="id" placeholder="0" />
+		</Row>
+	</Block>
+	<Block name="UnitBuild">
+		<Literal>ucontrol</Literal>
+		<Literal>build</Literal>
+		<Field id="x" />
+		<Field id="y" />
+		<Field id="block" />
+		<Field id="rot" />
+		<Field id="cfg" />
+		<Row>
+			<Text id="T1">单位建造</Text>
+			<Text id="T2">x</Text>
+			<LineBox id="x" placeholder="0" />
+			<Text id="T3">y</Text>
+			<LineBox id="y" placeholder="0" />
+		</Row>
+		<Row>
+			<Text id="T4">方块</Text>
+			<!-- placeholder 只是提示，default 保留官方的默认值 0（placeholder 兼作默认值，所以必须显式写） -->
+			<Selector id="block" kind="blocks" placeholder="@router" default="0" />
+			<Text id="T5">旋转</Text>
+			<LineBox id="rot" placeholder="0" />
+			<Text id="T6">配置</Text>
+			<LineBox id="cfg" placeholder="0" />
+		</Row>
+	</Block>
+	<Block name="UnitGetblock">
+		<Literal>ucontrol</Literal>
+		<Literal>getBlock</Literal>
+		<Field id="x" />
+		<Field id="y" />
+		<Field id="type" />
+		<Field id="bld" />
+		<Field id="flr" />
+		<Row>
+			<Text id="T1">获取单位地块</Text>
+			<Text id="T2">x</Text>
+			<LineBox id="x" placeholder="0" />
+			<Text id="T3">y</Text>
+			<LineBox id="y" placeholder="0" />
+		</Row>
+		<Row>
+			<Text id="T4">类型</Text>
+			<LineBox id="type" placeholder="0" />
+			<Text id="T5">建筑</Text>
+			<LineBox id="bld" placeholder="0" />
+			<Text id="T6">地板</Text>
+			<LineBox id="flr" placeholder="0" />
+		</Row>
+	</Block>
+	<Block name="UnitWithin">
+		<Literal>ucontrol</Literal>
+		<Literal>within</Literal>
+		<Field id="x" />
+		<Field id="y" />
+		<Field id="radius" />
+		<Field id="result" />
+		<Literal>0</Literal>
+		<Row>
+			<Text id="T1">单位接近</Text>
+			<Text id="T2">x</Text>
+			<LineBox id="x" placeholder="0" />
+			<Text id="T3">y</Text>
+			<LineBox id="y" placeholder="0" />
+			<Text id="T4">半径</Text>
+			<LineBox id="radius" placeholder="0" />
+			<Text id="T5">结果</Text>
+			<LineBox id="result" placeholder="0" />
+		</Row>
+	</Block>
+	<Block name="UnitUnbind">
+		<Literal>ucontrol</Literal>
+		<Literal>unbind</Literal>
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Row>
+			<Text id="T1">取消单位控制</Text>
+		</Row>
+	</Block>
+	<Block name="UnitRadar">
+		<Literal>uradar</Literal>
+		<Field id="s1" />
+		<Field id="s2" />
+		<Field id="s3" />
+		<Field id="radar" />
+		<Literal>0</Literal>
+		<Field id="num" />
+		<Field id="result" />
+		<Row>
+			<Text id="T1">单位雷达</Text>
+			<Text id="T2">目标</Text>
+			<Option id="s1">
+			<Item value="any">任意单位</Item>
+			<Item value="enemy">敌方单位</Item>
+			<Item value="ally">己方单位</Item>
+			<Item value="player">玩家控制的单位</Item>
+			<Item value="attacker">有武器的单位</Item>
+			<Item value="flying">空中单位</Item>
+			<Item value="boss">Boss 单位</Item>
+			<Item value="ground">地面单位</Item>
+		</Option>
+			<Option id="s2">
+			<Item value="any">任意单位</Item>
+			<Item value="enemy">敌方单位</Item>
+			<Item value="ally">己方单位</Item>
+			<Item value="player">玩家控制的单位</Item>
+			<Item value="attacker">有武器的单位</Item>
+			<Item value="flying">空中单位</Item>
+			<Item value="boss">Boss 单位</Item>
+			<Item value="ground">地面单位</Item>
+		</Option>
+			<Option id="s3">
+			<Item value="any">任意单位</Item>
+			<Item value="enemy">敌方单位</Item>
+			<Item value="ally">己方单位</Item>
+			<Item value="player">玩家控制的单位</Item>
+			<Item value="attacker">有武器的单位</Item>
+			<Item value="flying">空中单位</Item>
+			<Item value="boss">Boss 单位</Item>
+			<Item value="ground">地面单位</Item>
+		</Option>
+		</Row>
+		<Row>
+			<Text id="T3">顺序</Text>
+			<LineBox id="num" placeholder="1" />
+			<Text id="T4">排序</Text>
+			<Option id="radar">
+			<Item value="distance">距离</Item>
+			<Item value="health">生命值</Item>
+			<Item value="shield">护盾</Item>
+			<Item value="armor">护甲</Item>
+			<Item value="maxHealth">最大生命值</Item>
+		</Option>
+			<LineBox id="result" placeholder="result" />
+		</Row>
+	</Block>
+	<Block name="UnitLocate">
+		<Literal>ulocate</Literal>
+		<Field id="find" />
+		<Field id="group" />
+		<Field id="enemy" />
+		<Field id="ore" />
+		<Field id="outX" />
+		<Field id="outY" />
+		<Field id="found" />
+		<Field id="building" />
+		<Row>
+			<Text id="T1">单位搜寻</Text>
+			<Option id="find">
+			<Item value="ore">矿脉</Item>
+			<Item value="building">建筑</Item>
+			<Item value="spawn">敌人出生点</Item>
+			<Item value="damaged">受损的己方建筑</Item>
+		</Option>
+			<Text id="Tore" when="find=ore">矿石</Text>
+			<Selector id="ore" kind="items" placeholder="@copper" when="find=ore" />
+			<Text id="T2" when="find=building">分组</Text>
+			<Option id="group" when="find=building">
+			<Item value="core">核心</Item>
+			<Item value="storage">仓储建筑</Item>
+			<Item value="generator">发电建筑</Item>
+			<Item value="turret">炮塔</Item>
+			<Item value="factory">工厂</Item>
+			<Item value="repair">维修点</Item>
+			<Item value="battery">电池</Item>
+			<Item value="reactor">反应堆</Item>
+			<Item value="drill">钻头</Item>
+			<Item value="shield">护盾</Item>
+		</Option>
+			<Text id="T3" when="find=building">敌方</Text>
+			<LineBox id="enemy" placeholder="true" when="find=building" />
+		</Row>
+		<Row>
+			<Text id="T4">输出X</Text>
+			<LineBox id="outX" placeholder="outx" />
+			<Text id="T5">输出Y</Text>
+			<LineBox id="outY" placeholder="outy" />
+			<Text id="T6">找到</Text>
+			<LineBox id="found" placeholder="found" />
+			<!-- 官方：building 这个输出在 ore 以外的三种查找下都有（`if(locate != ore)`） -->
+			<Text id="T7" when="find!=ore">建筑</Text>
+			<LineBox id="building" placeholder="building" when="find!=ore" />
+		</Row>
+	</Block>
+	<Block name="UnitDeconstruct">
+		<Literal>ucontrol</Literal>
+		<Literal>deconstruct</Literal>
+		<Field id="x" />
+		<Field id="y" />
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Literal>0</Literal>
+		<Row>
+			<Text id="T1">单位解构</Text>
+			<Text id="T2">x</Text>
+			<LineBox id="x" placeholder="0" />
+			<Text id="T3">y</Text>
+			<LineBox id="y" placeholder="0" />
+		</Row>
+	</Block>
+</Kind>

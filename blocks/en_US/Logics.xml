@@ -1,0 +1,168 @@
+<Kind name="Logics" color="#4199a8">
+	<Block name="Wait">
+		<Literal>wait</Literal>
+		<Field id="time" />
+		<Row>
+			<Text id="T1">Wait</Text>
+			<LineBox id="time" placeholder="0.5" />
+			<Text id="T2">sec</Text>
+		</Row>
+	</Block>
+	<Block name="Stop">
+		<Literal>stop</Literal>
+		<Row>
+			<Text id="T">Stop</Text>
+		</Row>
+	</Block>
+	<Block name="End">
+		<Literal>end</Literal>
+		<Row>
+			<Text id="T">End</Text>
+		</Row>
+	</Block>
+	<Block name="Expression">
+		<Literal>#</Literal>
+		<!-- 注释就是 `#` 加文本：空文本时不要被补成 `# 0`（那样导回来内容就变了） -->
+		<Field id="text" allow_empty="true" />
+		<Row>
+			<Text id="T1">Expression</Text>
+			<LineBox id="text" />
+		</Row>
+	</Block>
+	<Block name="Jump">
+		<Literal>jump</Literal>
+		<Field id="target" link="true" />
+		<Field id="cmp" />
+		<Field id="value1" />
+		<Field id="value2" />
+		<Row>
+			<Text id="T1">Jump</Text>
+			<JumpTarget id="target" />
+			<Text id="T2">if</Text>
+			<!-- cmp=always 时官方隐藏两个比较值（`addOp` 里的 `if(op != always)`）：
+				 文本上依旧占位（写 0），但界面上不给两个没用的输入框 -->
+			<LineBox id="value1" placeholder="x" when="cmp!=always" />
+			<Option id="cmp">
+			<Item>equal</Item>
+			<Item>notEqual</Item>
+			<Item>lessThan</Item>
+			<Item>lessThanEq</Item>
+			<Item>greaterThan</Item>
+			<Item>greaterThanEq</Item>
+			<Item>strictEqual</Item>
+			<Item>always</Item>
+		</Option>
+			<LineBox id="value2" placeholder="false" when="cmp!=always" />
+		</Row>
+	</Block>
+	<Block name="If" marker="if">
+		<!-- Conditional run = one `jump` that skips the whole nest: it jumps when the condition does NOT hold,
+			 so every template below writes the comparison "the other way round". marker="if" adds a `#if field=value…`
+			 comment to the exported line so the importer can turn it back into an If instead of a plain Jump.
+			 AfterSubtree is the line number the exporter computes for "after this block (nest included)";
+			 the Export without when= is the fallback. No strictEqual: a single jump cannot negate it. -->
+		<Export>
+			<Literal>jump</Literal><AfterSubtree/><Literal>notEqual</Literal>
+			<Field id="a" /><Field id="b" />
+		</Export>
+		<Export when="cmp=notEqual">
+			<Literal>jump</Literal><AfterSubtree/><Literal>equal</Literal>
+			<Field id="a" /><Field id="b" />
+		</Export>
+		<Export when="cmp=lessThan">
+			<Literal>jump</Literal><AfterSubtree/><Literal>greaterThanEq</Literal>
+			<Field id="a" /><Field id="b" />
+		</Export>
+		<Export when="cmp=lessThanEq">
+			<Literal>jump</Literal><AfterSubtree/><Literal>greaterThan</Literal>
+			<Field id="a" /><Field id="b" />
+		</Export>
+		<Export when="cmp=greaterThan">
+			<Literal>jump</Literal><AfterSubtree/><Literal>lessThanEq</Literal>
+			<Field id="a" /><Field id="b" />
+		</Export>
+		<Export when="cmp=greaterThanEq">
+			<Literal>jump</Literal><AfterSubtree/><Literal>lessThan</Literal>
+			<Field id="a" /><Field id="b" />
+		</Export>
+		<Row>
+			<Text id="T1">If</Text>
+			<LineBox id="a" placeholder="a" />
+			<Option id="cmp">
+			<Item>equal</Item>
+			<Item>notEqual</Item>
+			<Item>lessThan</Item>
+			<Item>lessThanEq</Item>
+			<Item>greaterThan</Item>
+			<Item>greaterThanEq</Item>
+		</Option>
+			<LineBox id="b" placeholder="b" />
+			<Nest id="nest" />
+		</Row>
+	</Block>
+	<Block name="While" marker="while" loop="true">
+		<!-- A conditional loop = a head `jump` that skips the whole nest when the condition does NOT hold,
+			 plus a tail jump back to the head (<Tail>, where <SelfLine/> is the head line).
+			 The comparison is negated and the line ends with a `#while field=value…` marker for import. -->
+		<Export>
+			<Literal>jump</Literal><AfterSubtree/><Literal>notEqual</Literal>
+			<Field id="a" /><Field id="b" />
+		</Export>
+		<Export when="cmp=notEqual">
+			<Literal>jump</Literal><AfterSubtree/><Literal>equal</Literal>
+			<Field id="a" /><Field id="b" />
+		</Export>
+		<Export when="cmp=lessThan">
+			<Literal>jump</Literal><AfterSubtree/><Literal>greaterThanEq</Literal>
+			<Field id="a" /><Field id="b" />
+		</Export>
+		<Export when="cmp=lessThanEq">
+			<Literal>jump</Literal><AfterSubtree/><Literal>greaterThan</Literal>
+			<Field id="a" /><Field id="b" />
+		</Export>
+		<Export when="cmp=greaterThan">
+			<Literal>jump</Literal><AfterSubtree/><Literal>lessThanEq</Literal>
+			<Field id="a" /><Field id="b" />
+		</Export>
+		<Export when="cmp=greaterThanEq">
+			<Literal>jump</Literal><AfterSubtree/><Literal>lessThan</Literal>
+			<Field id="a" /><Field id="b" />
+		</Export>
+		<Tail>
+			<Literal>jump</Literal><SelfLine/><Literal>always</Literal><Literal>0</Literal><Literal>0</Literal>
+		</Tail>
+		<Row>
+			<Text id="T1">While</Text>
+			<LineBox id="a" placeholder="a" />
+			<Option id="cmp">
+			<Item>equal</Item>
+			<Item>notEqual</Item>
+			<Item>lessThan</Item>
+			<Item>lessThanEq</Item>
+			<Item>greaterThan</Item>
+			<Item>greaterThanEq</Item>
+		</Option>
+			<LineBox id="b" placeholder="b" />
+			<Text id="T2">do</Text>
+			<Nest id="nest" />
+		</Row>
+	</Block>
+	<Block name="Break" marker="break" loop_jump="break">
+		<!-- Leaving the innermost loop = one unconditional jump; the exporter replaces AfterSubtree with the line just after that loop. -->
+		<Export>
+			<Literal>jump</Literal><AfterSubtree/><Literal>always</Literal><Literal>0</Literal><Literal>0</Literal>
+		</Export>
+		<Row>
+			<Text id="T">Break</Text>
+		</Row>
+	</Block>
+	<Block name="Continue" marker="continue" loop_jump="continue">
+		<!-- Back to the loop condition = one unconditional jump to the loop's tail jump (same exporter-computed line). -->
+		<Export>
+			<Literal>jump</Literal><AfterSubtree/><Literal>always</Literal><Literal>0</Literal><Literal>0</Literal>
+		</Export>
+		<Row>
+			<Text id="T">Continue</Text>
+		</Row>
+	</Block>
+</Kind>

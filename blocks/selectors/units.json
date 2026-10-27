@@ -1,0 +1,236 @@
+{
+ "values": [
+  {
+   "value": "@dagger",
+   "icon": "assets/sprites/previews/units/slg1.png"
+  },
+  {
+   "value": "@mace",
+   "icon": "assets/sprites/previews/units/slg2.png"
+  },
+  {
+   "value": "@fortress",
+   "icon": "assets/sprites/previews/units/slg3.png"
+  },
+  {
+   "value": "@scepter",
+   "icon": "assets/sprites/previews/units/slg4.png"
+  },
+  {
+   "value": "@reign",
+   "icon": "assets/sprites/previews/units/slg5.png"
+  },
+  {
+   "value": "@nova",
+   "icon": "assets/sprites/previews/units/slf1.png"
+  },
+  {
+   "value": "@pulsar",
+   "icon": "assets/sprites/previews/units/slf2.png"
+  },
+  {
+   "value": "@quasar",
+   "icon": "assets/sprites/previews/units/slf3.png"
+  },
+  {
+   "value": "@vela",
+   "icon": "assets/sprites/previews/units/slf4.png"
+  },
+  {
+   "value": "@corvus",
+   "icon": "assets/sprites/previews/units/slf5.png"
+  },
+  {
+   "value": "@crawler",
+   "icon": "assets/sprites/previews/units/slp1.png"
+  },
+  {
+   "value": "@atrax",
+   "icon": "assets/sprites/previews/units/slp2.png"
+  },
+  {
+   "value": "@spiroct",
+   "icon": "assets/sprites/previews/units/slp3.png"
+  },
+  {
+   "value": "@arkyid",
+   "icon": "assets/sprites/previews/units/slp4.png"
+  },
+  {
+   "value": "@toxopid",
+   "icon": "assets/sprites/previews/units/slp5.png"
+  },
+  {
+   "value": "@flare",
+   "icon": "assets/sprites/previews/units/skg1.png"
+  },
+  {
+   "value": "@horizon",
+   "icon": "assets/sprites/previews/units/skg2.png"
+  },
+  {
+   "value": "@zenith",
+   "icon": "assets/sprites/previews/units/skg3.png"
+  },
+  {
+   "value": "@antumbra",
+   "icon": "assets/sprites/previews/units/skg4.png"
+  },
+  {
+   "value": "@eclipse",
+   "icon": "assets/sprites/previews/units/skg5.png"
+  },
+  {
+   "value": "@mono",
+   "icon": "assets/sprites/previews/units/skf1.png"
+  },
+  {
+   "value": "@poly",
+   "icon": "assets/sprites/previews/units/skf2.png"
+  },
+  {
+   "value": "@mega",
+   "icon": "assets/sprites/previews/units/skf3.png"
+  },
+  {
+   "value": "@quad",
+   "icon": "assets/sprites/previews/units/skf4.png"
+  },
+  {
+   "value": "@oct",
+   "icon": "assets/sprites/previews/units/skf5.png"
+  },
+  {
+   "value": "@risso",
+   "icon": "assets/sprites/previews/units/shg1.png"
+  },
+  {
+   "value": "@minke",
+   "icon": "assets/sprites/previews/units/shg2.png"
+  },
+  {
+   "value": "@bryde",
+   "icon": "assets/sprites/previews/units/shg3.png"
+  },
+  {
+   "value": "@sei",
+   "icon": "assets/sprites/previews/units/shg4.png"
+  },
+  {
+   "value": "@omura",
+   "icon": "assets/sprites/previews/units/shg5.png"
+  },
+  {
+   "value": "@retusa",
+   "icon": "assets/sprites/previews/units/shf1.png"
+  },
+  {
+   "value": "@oxynoe",
+   "icon": "assets/sprites/previews/units/shf2.png"
+  },
+  {
+   "value": "@cyerce",
+   "icon": "assets/sprites/previews/units/shf3.png"
+  },
+  {
+   "value": "@aegires",
+   "icon": "assets/sprites/previews/units/shf4.png"
+  },
+  {
+   "value": "@navanax",
+   "icon": "assets/sprites/previews/units/shf5.png"
+  },
+  {
+   "value": "@stell",
+   "icon": "assets/sprites/previews/units/elg1.png"
+  },
+  {
+   "value": "@locus",
+   "icon": "assets/sprites/previews/units/elg2.png"
+  },
+  {
+   "value": "@precept",
+   "icon": "assets/sprites/previews/units/elg3.png"
+  },
+  {
+   "value": "@vanquish",
+   "icon": "assets/sprites/previews/units/elg4.png"
+  },
+  {
+   "value": "@conquer",
+   "icon": "assets/sprites/previews/units/elg5.png"
+  },
+  {
+   "value": "@merui",
+   "icon": "assets/sprites/previews/units/elp1.png"
+  },
+  {
+   "value": "@cleroi",
+   "icon": "assets/sprites/previews/units/elp2.png"
+  },
+  {
+   "value": "@anthicus",
+   "icon": "assets/sprites/previews/units/elp3.png"
+  },
+  {
+   "value": "@tecta",
+   "icon": "assets/sprites/previews/units/elp4.png"
+  },
+  {
+   "value": "@collaris",
+   "icon": "assets/sprites/previews/units/elp5.png"
+  },
+  {
+   "value": "@elude",
+   "icon": "assets/sprites/previews/units/ekg1.png"
+  },
+  {
+   "value": "@avert",
+   "icon": "assets/sprites/previews/units/ekg2.png"
+  },
+  {
+   "value": "@obviate",
+   "icon": "assets/sprites/previews/units/ekg3.png"
+  },
+  {
+   "value": "@quell",
+   "icon": "assets/sprites/previews/units/ekg4.png"
+  },
+  {
+   "value": "@disrupt",
+   "icon": "assets/sprites/previews/units/ekg5.png"
+  },
+  {
+   "value": "@alpha",
+   "icon": "assets/sprites/previews/units/hxj1.png"
+  },
+  {
+   "value": "@beta",
+   "icon": "assets/sprites/previews/units/hxj2.png"
+  },
+  {
+   "value": "@gamma",
+   "icon": "assets/sprites/previews/units/hxj3.png"
+  },
+  {
+   "value": "@evoke",
+   "icon": "assets/sprites/previews/units/hxj4.png"
+  },
+  {
+   "value": "@incite",
+   "icon": "assets/sprites/previews/units/hxj5.png"
+  },
+  {
+   "value": "@emanate",
+   "icon": "assets/sprites/previews/units/hxj6.png"
+  },
+  {
+   "value": "@renale",
+   "icon": "assets/sprites/previews/units/cz1.png"
+  },
+  {
+   "value": "@latum",
+   "icon": "assets/sprites/previews/units/cz2.png"
+  }
+ ]
+}

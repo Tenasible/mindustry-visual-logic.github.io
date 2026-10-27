@@ -1,0 +1,260 @@
+<Kind name="输入输出" color="#998e6e">
+	<Block name="Read">
+		<Literal>read</Literal>
+		<Field id="result" />
+		<Field id="cell" />
+		<Field id="idx" />
+		<Row>
+			<Text id="T1">读取</Text>
+			<LineBox id="result" placeholder="result" />
+			<Text id="T2">=</Text>
+			<LineBox id="cell" placeholder="cell1" />
+			<Text id="T3">于</Text>
+			<LineBox id="idx" placeholder="0" />
+		</Row>
+	</Block>
+	<Block name="Write">
+		<Literal>write</Literal>
+		<Field id="value" />
+		<Field id="cell" />
+		<Field id="idx" />
+		<Row>
+			<Text id="T1">写入</Text>
+			<LineBox id="value" placeholder="0" />
+			<Text id="T2">到</Text>
+			<LineBox id="cell" placeholder="cell1" />
+			<Text id="T3">于</Text>
+			<LineBox id="idx" placeholder="0" />
+		</Row>
+	</Block>
+	<Block name="Draw">
+		<Literal>draw</Literal>
+		<Field id="mode" />
+		<!-- 六个参数槽位 = 官方的 x, y, p1, p2, p3, p4。rot（旋转角度）必须落在 p1 上：
+			 LExecutor 的 rotate 分支读的是 p1，落在 x 上的话角度会被丢掉。 -->
+		<FirstOf ids="r clr sk x1 x" />
+		<FirstOf ids="g y1 y" />
+		<FirstOf ids="b x2 rw s img rot align" />
+		<FirstOf ids="a y2 h rd sz" />
+		<!-- 注意：最后一个槽位（p4）恒写 y3，这是故意的 ——
+			 Mindustry 的 LogicIO 就是无条件写全部字段，多余参数对用不到的指令无影响。 -->
+		<FirstOf ids="prot x3" />
+		<Field id="y3" />
+		<Row>
+			<Text id="T1">绘图</Text>
+			<Option id="mode">
+			<Item value="clear">清空</Item>
+			<Item value="color">颜色</Item>
+			<Item value="col">颜色</Item>
+			<Item value="stroke">描边</Item>
+			<Item value="line">线</Item>
+			<Item value="rect">矩形</Item>
+			<Item value="lineRect">矩形框</Item>
+			<Item value="poly">多边形</Item>
+			<Item value="linePoly">多边形框</Item>
+			<Item value="triangle">三角形</Item>
+			<Item value="image">图像</Item>
+			<Item value="print">打印</Item>
+			<Item value="translate">平移</Item>
+			<Item value="scale">缩放</Item>
+			<Item value="rotate">旋转</Item>
+			<Item value="reset">重置</Item>
+		</Option>
+			<Text id="Tr" when="mode=clear | mode=color">r</Text>
+			<LineBox id="r" placeholder="255" when="mode=clear | mode=color" />
+			<Text id="Tg" when="mode=clear | mode=color">g</Text>
+			<LineBox id="g" placeholder="0" when="mode=clear | mode=color" />
+			<Text id="Tb" when="mode=clear | mode=color">b</Text>
+			<LineBox id="b" placeholder="255" when="mode=clear | mode=color" />
+			<Text id="Ta" when="mode=color">a</Text>
+			<LineBox id="a" placeholder="255" when="mode=color" />
+			<Text id="Tclr" when="mode=col">颜色</Text>
+			<LineBox id="clr" placeholder="0" when="mode=col" />
+			<Text id="Tsk" when="mode=stroke">描边</Text>
+			<LineBox id="sk" placeholder="0" when="mode=stroke" />
+			<Text id="Tx1" when="mode=line | mode=triangle">x1</Text>
+			<LineBox id="x1" placeholder="0" when="mode=line | mode=triangle" />
+			<Text id="Ty1" when="mode=line | mode=triangle">y1</Text>
+			<LineBox id="y1" placeholder="0" when="mode=line | mode=triangle" />
+			<Text id="Tx2" when="mode=line | mode=triangle">x2</Text>
+			<LineBox id="x2" placeholder="0" when="mode=line | mode=triangle" />
+			<Text id="Ty2" when="mode=line | mode=triangle">y2</Text>
+			<LineBox id="y2" placeholder="0" when="mode=line | mode=triangle" />
+			<Text id="Tx" when="mode=rect | mode=lineRect | mode=poly | mode=linePoly | mode=image | mode=translate | mode=scale | mode=print">x</Text>
+			<LineBox id="x" placeholder="0" when="mode=rect | mode=lineRect | mode=poly | mode=linePoly | mode=image | mode=translate | mode=scale | mode=print" />
+			<Text id="Ty" when="mode=rect | mode=lineRect | mode=poly | mode=linePoly | mode=image | mode=translate | mode=scale | mode=print">y</Text>
+			<LineBox id="y" placeholder="0" when="mode=rect | mode=lineRect | mode=poly | mode=linePoly | mode=image | mode=translate | mode=scale | mode=print" />
+			<!-- draw print：把预打印区画到 (x, y)，p1 是对齐方式（@bottomLeft 这种常量） -->
+			<Text id="Tal" when="mode=print">对齐</Text>
+			<Option id="align" default="6" when="mode=print">
+			<Item>@topLeft</Item>
+			<Item>@top</Item>
+			<Item>@topRight</Item>
+			<Item>@left</Item>
+			<Item>@center</Item>
+			<Item>@right</Item>
+			<Item>@bottomLeft</Item>
+			<Item>@bottom</Item>
+			<Item>@bottomRight</Item>
+			</Option>
+			<Text id="Trw" when="mode=rect | mode=lineRect">宽</Text>
+			<LineBox id="rw" placeholder="0" when="mode=rect | mode=lineRect" />
+			<Text id="Th" when="mode=rect | mode=lineRect">高</Text>
+			<LineBox id="h" placeholder="0" when="mode=rect | mode=lineRect" />
+			<Text id="Ts" when="mode=poly | mode=linePoly">边数</Text>
+			<LineBox id="s" placeholder="4" when="mode=poly | mode=linePoly" />
+			<Text id="Trd" when="mode=poly | mode=linePoly">半径</Text>
+			<LineBox id="rd" placeholder="0" when="mode=poly | mode=linePoly" />
+			<Text id="Tx3" when="mode=triangle">x3</Text>
+			<LineBox id="x3" placeholder="0" when="mode=triangle" />
+			<Text id="Ty3" when="mode=triangle">y3</Text>
+			<LineBox id="y3" placeholder="0" when="mode=triangle" />
+			<Text id="Timg" when="mode=image">图像</Text>
+			<LineBox id="img" placeholder="@copper" when="mode=image" />
+			<Text id="Tsz" when="mode=image">大小</Text>
+			<LineBox id="sz" placeholder="32" when="mode=image" />
+			<Text id="Trot" when="mode=poly | mode=linePoly | mode=image | mode=rotate">旋转</Text>
+			<LineBox id="rot" placeholder="0" when="mode=rotate" />
+			<LineBox id="prot" placeholder="0" when="mode=poly | mode=linePoly | mode=image" />
+		</Row>
+	</Block>
+	<Block name="Print">
+		<Literal>print</Literal>
+		<Field id="content" />
+		<!-- as="string"：引号由导出器加并转义（内容里的 `"` / `\` 不会被写坏） -->
+		<Export when="txt=true">
+			<Literal>print</Literal>
+			<Field id="content" as="string" />
+		</Export>
+		<Row>
+			<Text id="T1">打印</Text>
+			<Text id="T2" when="txt=true">"</Text>
+			<LineBox id="content" placeholder="frog" />
+			<Text id="T3" when="txt=true">"</Text>
+			<Button id="txt" text="TXT" />
+		</Row>
+	</Block>
+	<Block name="PrintChar">
+		<Literal>printchar</Literal>
+		<Field id="char" />
+		<Row>
+			<Text id="T1">打印字符</Text>
+			<Option id="char">
+			<Item value="32"></Item>
+			<Item value="33">!</Item>
+			<Item value="34">"</Item>
+			<Item value="35">#</Item>
+			<Item value="36">$</Item>
+			<Item value="37">%</Item>
+			<Item value="38">&amp;</Item>
+			<Item value="39">'</Item>
+			<Item value="40">(</Item>
+			<Item value="41">)</Item>
+			<Item value="42">*</Item>
+			<Item value="43">+</Item>
+			<Item value="44">,</Item>
+			<Item value="45">-</Item>
+			<Item value="46">.</Item>
+			<Item value="47">/</Item>
+			<Item value="48">0</Item>
+			<Item value="49">1</Item>
+			<Item value="50">2</Item>
+			<Item value="51">3</Item>
+			<Item value="52">4</Item>
+			<Item value="53">5</Item>
+			<Item value="54">6</Item>
+			<Item value="55">7</Item>
+			<Item value="56">8</Item>
+			<Item value="57">9</Item>
+			<Item value="58">:</Item>
+			<Item value="59">;</Item>
+			<Item value="60">&lt;</Item>
+			<Item value="61">=</Item>
+			<Item value="62">&gt;</Item>
+			<Item value="63">?</Item>
+			<Item value="64">@</Item>
+			<Item value="65">A</Item>
+			<Item value="66">B</Item>
+			<Item value="67">C</Item>
+			<Item value="68">D</Item>
+			<Item value="69">E</Item>
+			<Item value="70">F</Item>
+			<Item value="71">G</Item>
+			<Item value="72">H</Item>
+			<Item value="73">I</Item>
+			<Item value="74">J</Item>
+			<Item value="75">K</Item>
+			<Item value="76">L</Item>
+			<Item value="77">M</Item>
+			<Item value="78">N</Item>
+			<Item value="79">O</Item>
+			<Item value="80">P</Item>
+			<Item value="81">Q</Item>
+			<Item value="82">R</Item>
+			<Item value="83">S</Item>
+			<Item value="84">T</Item>
+			<Item value="85">U</Item>
+			<Item value="86">V</Item>
+			<Item value="87">W</Item>
+			<Item value="88">X</Item>
+			<Item value="89">Y</Item>
+			<Item value="90">Z</Item>
+			<Item value="91">[</Item>
+			<Item value="92">\</Item>
+			<Item value="93">]</Item>
+			<Item value="94">^</Item>
+			<Item value="95">_</Item>
+			<Item value="96">`</Item>
+			<Item value="97">a</Item>
+			<Item value="98">b</Item>
+			<Item value="99">c</Item>
+			<Item value="100">d</Item>
+			<Item value="101">e</Item>
+			<Item value="102">f</Item>
+			<Item value="103">g</Item>
+			<Item value="104">h</Item>
+			<Item value="105">i</Item>
+			<Item value="106">j</Item>
+			<Item value="107">k</Item>
+			<Item value="108">l</Item>
+			<Item value="109">m</Item>
+			<Item value="110">n</Item>
+			<Item value="111">o</Item>
+			<Item value="112">p</Item>
+			<Item value="113">q</Item>
+			<Item value="114">r</Item>
+			<Item value="115">s</Item>
+			<Item value="116">t</Item>
+			<Item value="117">u</Item>
+			<Item value="118">v</Item>
+			<Item value="119">w</Item>
+			<Item value="120">x</Item>
+			<Item value="121">y</Item>
+			<Item value="122">z</Item>
+			<Item value="123">{</Item>
+			<Item value="124">|</Item>
+			<Item value="125">}</Item>
+			<Item value="126">~</Item>
+		</Option>
+		</Row>
+	</Block>
+	<Block name="Format">
+		<Literal>format</Literal>
+		<Field id="content" />
+		<Export when="txt=true">
+			<Literal>format</Literal>
+			<Field id="content" as="string" />
+		</Export>
+		<Export when="txt=false">
+			<Literal>format</Literal>
+			<Field id="content" />
+		</Export>
+		<Row>
+			<Text id="T1">格式化</Text>
+			<Text id="T2" when="txt=true">"</Text>
+			<LineBox id="content" placeholder="frog" />
+			<Text id="T3" when="txt=true">"</Text>
+			<Button id="txt" text="TXT" />
+		</Row>
+	</Block>
+</Kind>

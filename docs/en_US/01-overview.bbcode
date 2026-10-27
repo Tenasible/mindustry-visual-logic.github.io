@@ -1,0 +1,19 @@
+Overview
+[b]Mindustry Visual Logic[/b] turns mlog into building blocks: drag blocks to build your logic, then export
+it as mlog text you can paste straight into a Mindustry processor.
+
+[ul]
+[*]The block library is on the left, grouped by category;
+[*]The canvas is on the right; a vertical run of blocks is called a [b]chain[/b];
+[*]Blocks can nest: drag other blocks into the nest of a nesting block like If and they become its children;
+[*]Every new page comes with a [b]Start[/b] — it is the entry point of the program and does not appear in the palette (it is placed automatically).
+[/ul]
+
+[b]Export starts at Start[/b]: only the blocks [b]below[/b] it in the same chain make it into the mlog — the blocks before it
+and any other chains on the canvas are not exported. So "a program" is "the run of blocks going down from Start".
+Start cannot be copied or deleted (a document has exactly one entry point).
+A [code]stop[/code] is appended at the end by default (unless the last instruction is already [code]stop[/code] / [code]end[/code]):
+running off the end of a program stops it anyway, and writing that down gives jumps that point past the end (a loop or Break at the end) a place to land.
+
+Projects are saved as JSON — it stores "which block is whose child, what value every field holds, and where each chain sits on the canvas",
+independent of the Godot version and readable by hand. To export mlog use [code]File → Export to clipboard[/code] (or press [code]F5[/code]).

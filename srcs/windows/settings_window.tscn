@@ -1,0 +1,149 @@
+[gd_scene format=3]
+
+[ext_resource type="Theme" uid="uid://11wvq82locvq" path="res://assets/styles/main_theme.tres" id="1_theme"]
+[ext_resource type="FontFile" uid="uid://i8tur3ohx1u2" path="res://assets/fonts/font.woff" id="2_font"]
+[ext_resource type="Script" path="res://srcs/windows/settings_window.gd" id="3_script"]
+
+[node name="SettingsWindow" type="Window"]
+title = "SETTINGS_TITLE"
+size = Vector2i(560, 456)
+visible = false
+transient = true
+unresizable = true
+theme = ExtResource("1_theme")
+script = ExtResource("3_script")
+
+[node name="Panel" type="PanelContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Layout" type="VBoxContainer" parent="Panel"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Margin" type="MarginContainer" parent="Panel/Layout"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 12
+
+[node name="Body" type="VBoxContainer" parent="Panel/Layout/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="MaxFpsRow" type="HBoxContainer" parent="Panel/Layout/Margin/Body"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="Panel/Layout/Margin/Body/MaxFpsRow"]
+custom_minimum_size = Vector2(110, 0)
+layout_mode = 2
+text = "SETTINGS_MAX_FPS"
+
+[node name="MaxFpsSlider" type="HSlider" parent="Panel/Layout/Margin/Body/MaxFpsRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+min_value = 10.0
+max_value = 400.0
+step = 1.0
+value = 60.0
+
+[node name="MaxFpsEdit" type="LineEdit" parent="Panel/Layout/Margin/Body/MaxFpsRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+text = "60"
+alignment = 1
+
+[node name="UiScaleRow" type="HBoxContainer" parent="Panel/Layout/Margin/Body"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="Panel/Layout/Margin/Body/UiScaleRow"]
+custom_minimum_size = Vector2(110, 0)
+layout_mode = 2
+text = "SETTINGS_UI_SCALE"
+
+[node name="UiScaleSlider" type="HSlider" parent="Panel/Layout/Margin/Body/UiScaleRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+min_value = 0.5
+max_value = 2.0
+step = 0.05
+value = 1.0
+
+[node name="UiScaleEdit" type="LineEdit" parent="Panel/Layout/Margin/Body/UiScaleRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+text = "1.00"
+alignment = 1
+
+[node name="LanguageRow" type="HBoxContainer" parent="Panel/Layout/Margin/Body"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="Panel/Layout/Margin/Body/LanguageRow"]
+custom_minimum_size = Vector2(110, 0)
+layout_mode = 2
+text = "SETTINGS_LANGUAGE"
+
+[node name="LanguageOption" type="OptionButton" parent="Panel/Layout/Margin/Body/LanguageRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_font")
+
+[node name="ExportOnFocusLost" type="CheckButton" parent="Panel/Layout/Margin/Body"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+text = "SETTINGS_EXPORT_ON_FOCUS_LOST"
+
+[node name="Hint" type="Label" parent="Panel/Layout/Margin/Body"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.549020)
+text = "SETTINGS_HINT"
+autowrap_mode = 3
+
+[node name="Spacer" type="Control" parent="Panel/Layout/Margin/Body"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="BottomBar" type="PanelContainer" parent="Panel/Layout"]
+layout_mode = 2
+
+[node name="Buttons" type="HBoxContainer" parent="Panel/Layout/BottomBar"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 40
+
+[node name="Defaults" type="Button" parent="Panel/Layout/BottomBar/Buttons"]
+layout_mode = 2
+text = "SETTINGS_RESTORE_DEFAULTS"
+
+[node name="Close" type="Button" parent="Panel/Layout/BottomBar/Buttons"]
+layout_mode = 2
+text = "SETTINGS_CLOSE"
+
+[connection signal="close_requested" from="." to="." method="_on_close_pressed"]
+[connection signal="value_changed" from="Panel/Layout/Margin/Body/MaxFpsRow/MaxFpsSlider" to="." method="_on_max_fps_changed"]
+[connection signal="text_submitted" from="Panel/Layout/Margin/Body/MaxFpsRow/MaxFpsEdit" to="." method="_on_max_fps_submitted"]
+[connection signal="focus_exited" from="Panel/Layout/Margin/Body/MaxFpsRow/MaxFpsEdit" to="." method="_on_max_fps_submitted"]
+[connection signal="value_changed" from="Panel/Layout/Margin/Body/UiScaleRow/UiScaleSlider" to="." method="_on_ui_scale_changed"]
+[connection signal="text_submitted" from="Panel/Layout/Margin/Body/UiScaleRow/UiScaleEdit" to="." method="_on_ui_scale_submitted"]
+[connection signal="focus_exited" from="Panel/Layout/Margin/Body/UiScaleRow/UiScaleEdit" to="." method="_on_ui_scale_submitted"]
+[connection signal="toggled" from="Panel/Layout/Margin/Body/ExportOnFocusLost" to="." method="_on_export_toggled"]
+[connection signal="pressed" from="Panel/Layout/BottomBar/Buttons/Defaults" to="." method="_on_defaults_pressed"]
+[connection signal="pressed" from="Panel/Layout/BottomBar/Buttons/Close" to="." method="_on_close_pressed"]

@@ -1,0 +1,19 @@
+Save, export, import
+[ul]
+[*][code]File → Save[/code] / [code]Save As…[/code]: save as a .json project file;
+[*][code]File → Export to clipboard[/code]: export the mlog to the system clipboard, ready to paste straight into the game;
+[*][code]F5[/code]: quick export — the same thing as the item above without touching the menu (if the current page is not the editor it just shows a message);
+[*][code]File → Load from clipboard[/code]: turn the mlog on the clipboard back into blocks (replacing the current project);
+[*][code]Ctrl+C[/code] / [code]Ctrl+V[/code]: quick copy (the same as exporting: only the entry block's chain is exported) / paste the clipboard contents as [b]a new chain[/b] below the existing content — it is [b]not connected[/b] and leaves a gap in between (export will not include it, so drag it in yourself if you want it connected);
+[*]Inside an input field, [code]Ctrl+C[/code] / [code]Ctrl+V[/code] are still ordinary text copy/paste and do not trigger the two shortcuts above;
+[*][code]File → Append from clipboard[/code]: append to the current project;
+[*][code]Edit → Undo[/code] / [code]Redo[/code]: undo / redo; [code]Edit → Clear[/code]: clear the page (undoable).
+[/ul]
+
+Import tries to recognize every line as its original block; lines it cannot recognize are skipped and reported in the output.
+
+Jump numbers are re-resolved against [b]this text's own instruction line numbers[/b]: what you import stands on its own and never links to blocks already in the document.
+
+A [b]structural block[/b] (If / While — a loop also carries one extra jump back) exports with a marker comment at the end of its line ([code]jump … #if a=1 cmp=equal b=2[/code]):
+the importer uses it to recognize that line as an If and puts the blocks up to the jump target back into its nest — nesting is restored to any depth.
+A [code]jump[/code] line without that marker is an ordinary Jump.

@@ -1,0 +1,54 @@
+[gd_scene format=3 uid="uid://dmlbwe25w5qd7"]
+
+[ext_resource type="Script" uid="uid://dsshjf6p3wdjb" path="res://srcs/pages/document_page.gd" id="1_script"]
+
+[node name="DocumentPage" type="Control" unique_id=752547448]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="Split" type="HSplitContainer" parent="." unique_id=85104530]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 6
+split_offsets = PackedInt32Array(168)
+dragger_visibility = 1
+split_offset = 168
+
+[node name="Scroll" type="ScrollContainer" parent="Split" unique_id=1171500694]
+custom_minimum_size = Vector2(168, 0)
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="Chapters" type="VBoxContainer" parent="Split/Scroll" unique_id=422107878]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="Content" type="PanelContainer" parent="Split" unique_id=1358561460]
+layout_mode = 2
+size_flags_horizontal = 3
+[node name="Layout" type="VBoxContainer" parent="Split/Content" unique_id=588330543]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Title" type="Label" parent="Split/Content/Layout" unique_id=1363060720]
+unique_name_in_owner = true
+layout_mode = 2
+text = "DOC_SECTIONS"
+
+[node name="Body" type="RichTextLabel" parent="Split/Content/Layout" unique_id=869996466]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+focus_mode = 2
+bbcode_enabled = true
+selection_enabled = true
